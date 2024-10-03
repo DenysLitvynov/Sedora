@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/verde_primario" /> <!-- Cambia esto al color de tu elección -->
+    <corners android:radius="20dp" />
+</shape>

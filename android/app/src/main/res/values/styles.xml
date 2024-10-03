@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Heading 1 -->
+    <style name="Heading1">
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/negro</item>
+    </style>
+
+    <!-- Heading 2 -->
+    <style name="Heading2">
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/negro</item>
+    </style>
+
+    <!-- Heading 3 -->
+    <style name="Heading3">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/negro</item>
+    </style>
+
+    <!-- Parrafos -->
+    <style name="ParagraphGris">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gris</item>
+    </style>
+
+    <style name="ParagraphNegro">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/negro</item>
+    </style>
+
+    <style name="ParagraphBlanco">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/blanco</item>
+        <item name="android:background">@color/verde_secundario</item>
+    </style>
+
+
+    <!-- Se debe ajustar manualmente el RADIO DEL BORDE A 20 -->
+    <!-- Estilo para Botones Verdes -->
+    <style name="BotonVerde">
+        <item name="android:background">@drawable/boton_verde</item>
+        <item name="android:textColor">@color/blanco</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:padding">12dp</item> <!-- Opcional: añade padding para el texto del botón -->
+    </style>
+
+    <!-- Estilo para Botones Blancos -->
+    <style name="BotonBlanco">
+        <item name="android:backgroundTint">@color/blanco</item>
+        <item name="android:textColor">@color/negro</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <!-- Box Background -->
+    <style name="BoxBackground">
+        <item name="android:background">@drawable/box_background</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+    ﬁ</resources>
