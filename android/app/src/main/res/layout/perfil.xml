@@ -1,0 +1,231 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/heading"
+        style="@style/Heading1"
+        android:layout_width="84dp"
+        android:layout_height="34dp"
+        android:text="Perfil"
+        app:layout_constraintBottom_toTopOf="@+id/boxExample2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55" />
+
+
+    <View
+        android:id="@+id/boxExample2"
+        style="@style/BoxBackground"
+        android:layout_width="403dp"
+        android:layout_height="750dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/boxExample11"
+        style="@style/BoxBackgroundblanco"
+        android:layout_width="379dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample8" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/Heading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:text="Editar Perfil"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample9"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample9"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/boxExample9"
+        app:layout_constraintTop_toTopOf="@+id/boxExample9" />
+
+    <View
+        android:id="@+id/boxExample4"
+        style="@style/BoxBackgroundblanco"
+        android:layout_width="379dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/heading5"
+        style="@style/Heading2"
+        android:layout_width="298dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:elevation="6dp"
+        android:text="@string/correo_electronico"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample4"
+        app:layout_constraintTop_toTopOf="@+id/boxExample5" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="182dp"
+        android:layout_height="179dp"
+        android:layout_marginTop="4dp"
+        android:elevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/boxExample2"
+        app:srcCompat="@drawable/perfil" />
+
+    <TextView
+        android:id="@+id/heading8"
+        style="@style/Heading2"
+        android:layout_width="298dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:elevation="6dp"
+        android:text="@string/altura"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample4"
+        app:layout_constraintTop_toTopOf="@+id/boxExample8" />
+
+    <View
+        android:id="@+id/boxExample7"
+        style="@style/BoxBackgroundblanco"
+        android:layout_width="379dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample6" />
+
+    <TextView
+        android:id="@+id/heading6"
+        style="@style/Heading2"
+        android:layout_width="298dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:elevation="6dp"
+        android:text="@string/telefono"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample4"
+        app:layout_constraintTop_toTopOf="@+id/boxExample6" />
+
+    <TextView
+        android:id="@+id/heading7"
+        style="@style/Heading2"
+        android:layout_width="298dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:elevation="6dp"
+        android:text="@string/fecha_nacimiento"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample4"
+        app:layout_constraintTop_toTopOf="@+id/boxExample7" />
+
+    <View
+        android:id="@+id/boxExample6"
+        style="@style/BoxBackgroundblanco"
+        android:layout_width="379dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample5" />
+
+    <TextView
+        android:id="@+id/heading10"
+        style="@style/Heading2"
+        android:layout_width="298dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:elevation="6dp"
+        android:text="@string/contrasena"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample4"
+        app:layout_constraintTop_toTopOf="@+id/boxExample11" />
+
+    <View
+        android:id="@+id/boxExample5"
+        style="@style/BoxBackgroundblanco"
+        android:layout_width="379dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample4" />
+
+    <TextView
+        android:id="@+id/heading4"
+        style="@style/Heading2"
+        android:layout_width="141dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:elevation="6dp"
+        android:text="@string/nombre"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample4"
+        app:layout_constraintTop_toTopOf="@+id/boxExample4" />
+
+    <View
+        android:id="@+id/boxExample9"
+        style="@style/BoxBackgroundblanco"
+        android:layout_width="377dp"
+        android:layout_height="52dp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample11"
+        app:layout_constraintVertical_bias="0.941" />
+
+    <View
+        android:id="@+id/boxExample8"
+        style="@style/BoxBackgroundblanco"
+        android:layout_width="379dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample7" />
+
+    <Button
+        android:id="@+id/cerrar_sesion"
+        style="@style/BotonVerde"
+        android:layout_width="403dp"
+        android:layout_height="52dp"
+        android:padding="0dp"
+        android:text="Cerrar Sesión"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample2"
+        app:layout_constraintVertical_bias="0.141" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

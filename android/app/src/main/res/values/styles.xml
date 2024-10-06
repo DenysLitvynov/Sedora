@@ -41,14 +41,12 @@
         <item name="android:background">@color/verde_secundario</item>
     </style>
 
-
-    <!-- Se debe ajustar manualmente el RADIO DEL BORDE A 20 -->
     <!-- Estilo para Botones Verdes -->
     <style name="BotonVerde">
         <item name="android:background">@drawable/boton_verde</item>
         <item name="android:textColor">@color/blanco</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
-        <item name="android:padding">12dp</item> <!-- Opcional: añade padding para el texto del botón -->
+        <item name="android:padding">12dp</item>
     </style>
 
     <!-- Estilo para Botones Blancos -->
@@ -61,6 +59,13 @@
     <!-- Box Background -->
     <style name="BoxBackground">
         <item name="android:background">@drawable/box_background</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <!-- Box Background Blanco -->
+    <style name="BoxBackgroundblanco">
+        <item name="android:background">@drawable/box_background_blanco</item>
         <item name="android:padding">16dp</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:elevation">4dp</item>
