@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Sedora</string>
+    <!-- Página de perfil -->
+    <string name="nombre">Nombre</string>
+    <string name="telefono">Teléfono</string>
+    <string name="correo_electronico">Correo Electrónico</string>
+    <string name="fecha_nacimiento">Fecha de Nacimiento</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="altura">Altura</string>
 </resources>
