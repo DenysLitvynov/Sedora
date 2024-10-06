@@ -7,4 +7,15 @@
     <string name="fecha_nacimiento">Fecha de Nacimiento</string>
     <string name="contrasena">Contraseña</string>
     <string name="altura">Altura</string>
+
+    <!--Iniciar sesión-->
+    <string name="IniciarSesion">Iniciar sesión</string>
+    <string name="Email">E-mail</string>
+    <string name="contrasenya">Contraseña</string>
+    <string name="olvidadoContrasenya">¿Has olvidado tu contraseña?</string>
+    <string name="Entrar">Entrar</string>
+    <string name="NoTienesUnaCuenta">¿No tienes una cuenta?</string>
+    <string name="AccedeCon">- O accede con -</string>
+    <string name="Registrate">Regístrate</string>
+
 </resources>

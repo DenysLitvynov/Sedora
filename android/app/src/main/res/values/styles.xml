@@ -34,6 +34,12 @@
         <item name="android:textColor">@color/negro</item>
     </style>
 
+    <style name="ParagraphNegrita">
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/negro</item>
+    </style>
+
     <style name="ParagraphBlanco">
         <item name="android:fontFamily">@font/poppins_regular</item>
         <item name="android:textSize">14sp</item>
@@ -45,8 +51,9 @@
     <style name="BotonVerde">
         <item name="android:background">@drawable/boton_verde</item>
         <item name="android:textColor">@color/blanco</item>
-        <item name="android:fontFamily">@font/poppins_regular</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:padding">0dp</item> <!-- Opcional: añade padding para el texto del botón -->
     </style>
 
     <!-- Estilo para Botones Blancos -->
@@ -63,10 +70,12 @@
         <item name="android:layout_margin">8dp</item>
     </style>
 
-    <!-- Box Background Blanco -->
-    <style name="BoxBackgroundblanco">
-        <item name="android:background">@drawable/box_background_blanco</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:layout_margin">8dp</item>
+    <!-- Estilo para Inputs -->
+    <style name="Inputs">
+        <item name="android:background">@drawable/borde_del_input</item>
+        <item name="android:hint">@color/negro</item> <!-- Color del hint -->
+        <item name="android:paddingStart">8dp</item> <!-- Espacio izquierdo -->
+        <item name="android:paddingEnd">8dp</item> <!-- Espacio derecho -->
     </style>
-    ﬁ</resources>
+
+</resources>
