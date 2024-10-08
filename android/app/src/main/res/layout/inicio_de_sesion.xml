@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/inicioLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="202dp"
-        android:layout_height="277dp"
+        android:layout_width="180dp"
+        android:layout_height="207dp"
         app:layout_constraintBottom_toTopOf="@+id/txtIniciarSesion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="263dp" />
+        app:layout_constraintGuide_begin="180dp" />
 
     <EditText
         android:id="@+id/edtEmail"
@@ -146,7 +148,7 @@
         android:layout_marginTop="64dp"
         android:text="@string/NoTienesUnaCuenta"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/btnGoogleLogin"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <TextView
@@ -178,12 +180,13 @@
         app:layout_constraintTop_toBottomOf="@+id/txt" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnGoogleLogin"
         style="@style/BotonBlanco"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text=""
+        android:onClick="autentificarGoogle"
         app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btnIniciarSesion"
@@ -199,7 +202,7 @@
         android:text=""
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/btnGoogleLogin"
         app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
 
     <Button
@@ -220,11 +223,11 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="@+id/btnGoogleLogin"
+        app:layout_constraintEnd_toEndOf="@+id/btnGoogleLogin"
         app:layout_constraintHorizontal_bias="0.551"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/btnGoogleLogin"
+        app:layout_constraintTop_toTopOf="@+id/btnGoogleLogin"
         app:srcCompat="@drawable/logo_google" />
 
     <ImageView
