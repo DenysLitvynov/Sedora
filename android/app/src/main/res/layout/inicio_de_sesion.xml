@@ -7,22 +7,22 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="186dp"
-        android:layout_height="258dp"
+        android:layout_width="202dp"
+        android:layout_height="277dp"
         app:layout_constraintBottom_toTopOf="@+id/txtIniciarSesion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/sedoraLogo" />
+        app:srcCompat="@drawable/sedora_logo" />
 
     <TextView
         android:id="@+id/txtIniciarSesion"
         style="@style/Heading2"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:text="@string/IniciarSesion"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
@@ -39,15 +39,15 @@
     <EditText
         android:id="@+id/edtEmail"
         style="@style/Inputs"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:hint="@string/Email"
         android:inputType="textEmailAddress"
         android:textColorHint="@color/negro"
-        android:textSize="12sp"
+        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,15 +67,15 @@
     <EditText
         android:id="@+id/edtContraseña"
         style="@style/Inputs"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:hint="@string/contrasenya"
         android:inputType="textPassword"
         android:textColorHint="@color/negro"
-        android:textSize="12sp"
+        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,7 +113,7 @@
         style="@style/ParagraphNegro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="48dp"
         android:gravity="center"
         android:text="@string/AccedeCon"
         android:textSize="14sp"
@@ -125,11 +125,11 @@
     <Button
         android:id="@+id/btnIniciarSesion"
         style="@style/BotonVerde"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:onClick="inicioSesionCorreo"
         android:text="@string/Entrar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -142,65 +142,112 @@
         style="@style/ParagraphNegro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="64dp"
         android:text="@string/NoTienesUnaCuenta"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvRegistrate"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/accedeCon"
-        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
+        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <TextView
         android:id="@+id/tvRegistrate"
         style="@style/ParagraphNegrita"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/Registrate"
         android:textColor="@color/verde_primario"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/txt"
-        app:layout_constraintEnd_toEndOf="@+id/accedeCon"
-        app:layout_constraintTop_toTopOf="@+id/txt"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toEndOf="@+id/button3"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toEndOf="@+id/txt"
+        app:layout_constraintTop_toTopOf="@+id/txt" />
 
     <TextView
         android:id="@+id/respuestaLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:textColor="#972F2F"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/edtEmail"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.437"
         app:layout_constraintStart_toStartOf="@+id/edtEmail"
         app:layout_constraintTop_toBottomOf="@+id/txt" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        style="@style/BotonBlanco"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteY="592dp" />
+        android:layout_marginTop="32dp"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/btnIniciarSesion"
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
+        style="@style/BotonBlanco"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="149dp"
-        tools:layout_editor_absoluteY="592dp" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
+        style="@style/BotonBlanco"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="282dp"
-        tools:layout_editor_absoluteY="592dp" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/btnIniciarSesion"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
+
+    <ImageView
+        android:id="@+id/logoGoogle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintTop_toTopOf="@+id/button"
+        app:srcCompat="@drawable/logo_google" />
+
+    <ImageView
+        android:id="@+id/logoFacebook"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="@+id/button2"
+        app:layout_constraintStart_toStartOf="@+id/button2"
+        app:layout_constraintTop_toTopOf="@+id/button2"
+        app:srcCompat="@drawable/facebook" />
+
+    <ImageView
+        android:id="@+id/logoX"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="@+id/button3"
+        app:layout_constraintStart_toStartOf="@+id/button3"
+        app:layout_constraintTop_toTopOf="@+id/button3"
+        app:srcCompat="@drawable/logo_twitter" />
 
     <!--
 
