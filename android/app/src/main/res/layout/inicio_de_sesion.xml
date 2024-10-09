@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/inicioLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="202dp"
-        android:layout_height="277dp"
+        android:layout_width="246dp"
+        android:layout_height="287dp"
         app:layout_constraintBottom_toTopOf="@+id/txtIniciarSesion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,13 +36,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="263dp" />
+        app:layout_constraintGuide_begin="260dp" />
 
     <EditText
         android:id="@+id/edtEmail"
         style="@style/Inputs"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -51,7 +53,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        tools:ignore="TextSizeCheck" />
 
     <TextView
         android:id="@+id/tvCorreo"
@@ -68,7 +71,7 @@
         android:id="@+id/edtContraseña"
         style="@style/Inputs"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -79,7 +82,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail"
+        tools:ignore="TextSizeCheck" />
 
     <TextView
         android:id="@+id/txtOlvidarContraseña"
@@ -89,6 +93,7 @@
         android:layout_marginTop="16dp"
         android:clickable="true"
         android:focusable="true"
+        android:minHeight="48dp"
         android:text="@string/olvidadoContrasenya"
         android:textColor="@color/verde_primario"
         android:textSize="12sp"
@@ -126,7 +131,7 @@
         android:id="@+id/btnIniciarSesion"
         style="@style/BotonVerde"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="32dp"
@@ -142,11 +147,12 @@
         style="@style/ParagraphNegro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
         android:layout_marginTop="64dp"
         android:text="@string/NoTienesUnaCuenta"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/tvRegistrate"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <TextView
@@ -154,16 +160,19 @@
         style="@style/ParagraphNegrita"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:clickable="true"
         android:focusable="true"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
         android:text="@string/Registrate"
         android:textColor="@color/verde_primario"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/txt"
-        app:layout_constraintEnd_toEndOf="@+id/button3"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txt"
         app:layout_constraintTop_toTopOf="@+id/txt" />
+
 
     <TextView
         android:id="@+id/respuestaLogin"
@@ -178,16 +187,18 @@
         app:layout_constraintTop_toBottomOf="@+id/txt" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnGoogleLogin"
         style="@style/BotonBlanco"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:onClick="autentificarGoogle"
         android:text=""
         app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btnIniciarSesion"
-        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/button2"
@@ -199,8 +210,9 @@
         android:text=""
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
+        app:layout_constraintStart_toEndOf="@+id/btnGoogleLogin"
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/button3"
@@ -213,18 +225,19 @@
         app:layout_constraintEnd_toEndOf="@+id/btnIniciarSesion"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/logoGoogle"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="@+id/btnGoogleLogin"
+        app:layout_constraintEnd_toEndOf="@+id/btnGoogleLogin"
         app:layout_constraintHorizontal_bias="0.551"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/btnGoogleLogin"
+        app:layout_constraintTop_toTopOf="@+id/btnGoogleLogin"
         app:srcCompat="@drawable/logo_google" />
 
     <ImageView
