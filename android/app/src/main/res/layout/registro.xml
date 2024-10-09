@@ -16,6 +16,7 @@
         android:layout_marginTop="16dp"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
+        android:contentDescription="TODO"
         android:elevation="4dp"
         android:focusable="true"
         android:padding="8dp"
@@ -24,12 +25,13 @@
         app:layout_constraintEnd_toStartOf="@+id/imageView4"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="222dp"
-        android:layout_height="190dp"
+        android:layout_width="246dp"
+        android:layout_height="287dp"
         app:layout_constraintBottom_toTopOf="@+id/txtRegistrarse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,13 +57,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="180dp" />
+        app:layout_constraintGuide_begin="260dp" />
 
     <EditText
         android:id="@+id/edtEmail"
         style="@style/Inputs"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -72,7 +74,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        tools:ignore="TextSizeCheck" />
 
     <TextView
         android:id="@+id/tvCorreo"
@@ -89,7 +92,7 @@
         android:id="@+id/edtContraseña"
         style="@style/Inputs"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -100,13 +103,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail"
+        tools:ignore="TextSizeCheck" />
 
 
     <TextView
         android:id="@+id/tvContraseña"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:textColor="#972F2F"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/edtEmail"
@@ -119,7 +124,7 @@
         android:id="@+id/edtConfirmContraseña"
         style="@style/Inputs"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -130,7 +135,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtContraseña" />
+        app:layout_constraintTop_toBottomOf="@+id/edtContraseña"
+        tools:ignore="TextSizeCheck" />
 
 
     <TextView
@@ -167,6 +173,7 @@
         android:clickable="true"
         android:focusable="true"
         android:gravity="center_vertical"
+        android:minHeight="48dp"
         android:text="@string/Polpriv"
         android:textColor="@color/verde_primario"
         android:textSize="12sp"
@@ -192,7 +199,7 @@
         android:id="@+id/btnRegistro"
         style="@style/BotonVerde"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -201,7 +208,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_privacy_policy" />
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_privacy_policy"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/btnGoogleRegister"
@@ -213,7 +221,8 @@
         app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btnRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/button2"
@@ -225,7 +234,8 @@
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnGoogleRegister"
-        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/button3"
@@ -237,7 +247,8 @@
         app:layout_constraintEnd_toEndOf="@+id/btnRegistro"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/accedeCon" />
+        app:layout_constraintTop_toBottomOf="@+id/accedeCon"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/logoGoogle"
