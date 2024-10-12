@@ -3,6 +3,7 @@ package com.example.sedora;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,12 +89,30 @@ public class RegistroActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             dialogo.dismiss();
                             if (task.isSuccessful()) {
-                                Intent i = new Intent(RegistroActivity.this, MainActivity.class);
-                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                        | Intent.FLAG_ACTIVITY_NEW_TASK
-                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(i);
-                                finish();
+                                if (auth.getCurrentUser() != null) {
+                                    auth.getCurrentUser().sendEmailVerification()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> emailTask) {
+                                                    if (emailTask.isSuccessful()) {
+                                                        Toast.makeText(RegistroActivity.this,
+                                                                "Se ha enviado un correo de verificación. Por favor, verifica tu correo antes de iniciar sesión.",
+                                                                Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        mensaje("Error al enviar el correo de verificación.");
+                                                    }
+                                                }
+                                            });
+                                }
+                                auth.signOut();
+                                new Handler().postDelayed(() -> {
+                                    Intent i = new Intent(RegistroActivity.this, LoginActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                            | Intent.FLAG_ACTIVITY_NEW_TASK
+                                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
+                                    finish();
+                                }, 2000);
                             } else {
                                 mensaje(task.getException().getLocalizedMessage());
                             }
@@ -100,6 +120,7 @@ public class RegistroActivity extends AppCompatActivity {
                     });
         }
     }
+
 
     public void autentificarGoogle(View v) {
         Intent intent = googleSignInClient.getSignInIntent();

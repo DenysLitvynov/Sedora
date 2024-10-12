@@ -84,15 +84,22 @@ public class LoginActivity extends AppCompatActivity {
         if (verificaCampos()) {
             dialogo.show();
             auth.signInWithEmailAndPassword(correo, contraseña)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            dialogo.dismiss();
-                            if (task.isSuccessful()) {
-                                verificaSiUsuarioValidado();
+                    .addOnCompleteListener(this, task -> {
+                        dialogo.dismiss();
+                        if (task.isSuccessful()) {
+                            if (auth.getCurrentUser().isEmailVerified()) {
+                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                        | Intent.FLAG_ACTIVITY_NEW_TASK
+                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(i);
+                                finish();
                             } else {
-                                mensaje(task.getException().getLocalizedMessage());
+                                mensaje("Debes verificar tu correo antes de iniciar sesión.");
+                                auth.signOut();
                             }
+                        } else {
+                            mensaje("Error al iniciar sesión: " + task.getException().getLocalizedMessage());
                         }
                     });
         }
