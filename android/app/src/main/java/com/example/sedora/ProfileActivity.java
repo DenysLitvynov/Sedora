@@ -8,6 +8,7 @@ import android.util.LruCache;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,10 @@ public class ProfileActivity extends AppCompatActivity {
         Button botonActualizar = findViewById(R.id.botonActualizar);
         Button botonMostrarCampos = findViewById(R.id.botonEditar);
         botonCancelar = findViewById(R.id.botonCancelar);
+
+        // para entrar en la página de notificaciones
+        ImageButton buttonIcon = findViewById(R.id.button_icon);
+
 
         // Inicialmente deshabilitar los EditText
         nuevoNombre.setEnabled(false);
@@ -100,6 +105,16 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        // Configura el clic en el button_icon para entrar en Notificaciones
+        buttonIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, RecyclerActivity.class);
+                startActivity(intent);
+                finish(); // Opcional: cerrar la actividad actual
+            }
+        });
     }
 
     private void cargarImagenPerfil(Uri urlImagen) {

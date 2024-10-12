@@ -17,6 +17,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
+
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -31,6 +32,12 @@
             android:name=".RegistroActivity"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".RecyclerActivity"
+            android:exported="true">
+        </activity>
+
         <activity android:name=".ProfileActivity"></activity>
     </application>
 

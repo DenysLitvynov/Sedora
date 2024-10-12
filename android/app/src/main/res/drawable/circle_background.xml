@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- Color de fondo del círculo -->
+    <solid android:color="@color/verde_primario" /> <!-- Cambia @color/rojo por el color que prefieras -->
+
+    <!-- Tamaño del borde del círculo (opcional) -->
+    <stroke
+        android:width="0dp"
+        android:color="@color/blanco" /> <!-- Si quieres un borde alrededor del círculo -->
+
+    <!-- Tamaño del círculo -->
+    <size
+        android:width="24dp"
+        android:height="24dp" />
+
+</shape>

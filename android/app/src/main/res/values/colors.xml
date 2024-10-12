@@ -7,4 +7,7 @@
     <color name="verde_primario">#009774</color>
     <color name="verde_secundario" >#2AA78A</color>
     <color name="fondo_caja">#D4EDE7</color>
+    <color name="rojo">#D9001B</color>
+    <color name="amarillo">#F59A23</color>
+
 </resources>
