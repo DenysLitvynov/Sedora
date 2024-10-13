@@ -7,4 +7,6 @@
     <string name="fecha_nacimiento">Fecha de Nacimiento</string>
     <string name="contrasena">Contraseña</string>
     <string name="altura">Altura</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
