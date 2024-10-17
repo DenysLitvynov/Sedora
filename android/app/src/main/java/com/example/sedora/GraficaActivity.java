@@ -1,11 +1,8 @@
 package com.example.sedora;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -94,12 +91,12 @@ public class GraficaActivity extends AppCompatActivity {
         @Override
         @NonNull
         public Fragment createFragment(int position) {
-            //CREAR UNA CLASE GRAFICA Y LE PASE PARAMETROS EN VEZX DE DOS IGUALES
+
             switch (position) {
                 case 0:
-                    return new Grafica_Semanal();//Grafica para parametros semanales
+                    return  Grafica.newInstance("semanal");//Grafica para parametros semanales
                 case  1:
-                    return  new Grafica_Mensual();//Grafica para parametros mensuales
+                    return Grafica.newInstance("mensual");//Grafica para parametros mensuales
             }
             return null;
     }
