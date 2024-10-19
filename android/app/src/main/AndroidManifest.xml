@@ -44,6 +44,8 @@
 
         <activity android:name=".AcercaDe"></activity>
 
+        <activity android:name=".PoliticaDePrivacidad"></activity>
+
     </application>
 
 </manifest>
