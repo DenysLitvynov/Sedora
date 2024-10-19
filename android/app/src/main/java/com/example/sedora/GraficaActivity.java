@@ -29,7 +29,7 @@ public class GraficaActivity extends AppCompatActivity {
     }
 
     private String  grafica_elegida;
-   private String nombres[]= new String[]{"Esta Semana","Este Mes"};
+    private String nombres[]= new String[]{"Esta Semana","Este Mes"};
 
 
 
