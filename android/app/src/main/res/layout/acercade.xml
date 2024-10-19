@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
@@ -9,7 +10,7 @@
     android:padding="8dp">
 
     <ImageButton
-        android:id="@+id/FlechaRetrocesoFAQ"
+        android:id="@+id/FlechaRetrocesoAcercaDe"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -27,7 +28,7 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
-        android:id="@+id/CamapanaNotificacionesFAQ"
+        android:id="@+id/CamapanaNotificacionesAcercaDe"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
@@ -42,23 +43,23 @@
         android:src="@drawable/icono_campana_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/FAQ"
+        app:layout_constraintStart_toEndOf="@+id/AcercaDe"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
-        android:id="@+id/FAQ"
+        android:id="@+id/AcercaDe"
         style="@style/Heading1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="24dp"
-        android:text="FAQ"
-        app:layout_constraintStart_toEndOf="@+id/FlechaRetrocesoFAQ"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="32dp"
+        android:text="Acerca De"
+        app:layout_constraintStart_toEndOf="@+id/FlechaRetrocesoAcercaDe"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewFAQ"
+        android:id="@+id/recyclerViewAcercaDe"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -69,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.753"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/FAQ"
+        app:layout_constraintTop_toBottomOf="@+id/AcercaDe"
         app:layout_constraintVertical_bias="0.041"
         tools:listitem="@layout/recycler_view_item" />
 
