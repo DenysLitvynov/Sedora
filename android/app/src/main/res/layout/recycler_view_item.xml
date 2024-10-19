@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/BoxBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <!-- Título de la sección -->
+    <TextView
+        android:id="@+id/textViewFAQHeader"
+        style="@style/BoxBackground"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Título de la Sección"
+        android:textAppearance="@style/Heading3"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/buttonToggle"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Botón de flecha para expandir/colapsar -->
+    <ImageButton
+        android:id="@+id/buttonToggle"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="Botón para expandir o colapsar"
+        android:scaleType="fitCenter"
+        android:src="@drawable/flecha_abajo"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewFAQHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewFAQHeader" />
+
+    <!-- Contenido expandible -->
+    <TextView
+        android:id="@+id/textViewFAQContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Aquí va el contenido de la sección"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFAQHeader" />
+</androidx.constraintlayout.widget.ConstraintLayout>
