@@ -1,12 +1,12 @@
 package com.example.sedora;
 
-public class FAQItem {
+public class RecyclerViewItem {
     private String title;
     private String content;
     private boolean isExpanded;
 
     // Constructor vacío necesario para evitar el error
-    public FAQItem() {
+    public RecyclerViewItem() {
         // Inicializa con valores por defecto
         this.title = "";
         this.content = "";
@@ -14,7 +14,7 @@ public class FAQItem {
     }
 
     // Constructor con parámetros
-    public FAQItem(String title, String content) {
+    public RecyclerViewItem(String title, String content) {
         this.title = title;
         this.content = content;
         this.isExpanded = false;

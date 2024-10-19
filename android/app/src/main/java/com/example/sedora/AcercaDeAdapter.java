@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.FAQViewHolder> {
+public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.FAQViewHolder> {
 
-    private final List<RecyclerViewItem> faqItems;
+    private final List<RecyclerViewItem> AcercaDeItems;
 
-    public FAQAdapter(List<RecyclerViewItem> faqItems) {
-        this.faqItems = faqItems;
+    public AcercaDeAdapter(List<RecyclerViewItem> AcercaDeItems) {
+        this.AcercaDeItems = AcercaDeItems;
     }
 
     @NonNull
@@ -29,13 +29,13 @@ public class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.FAQViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FAQViewHolder holder, int position) {
-        RecyclerViewItem faqItem = faqItems.get(position);
+        RecyclerViewItem faqItem = AcercaDeItems.get(position);
         holder.bind(faqItem);
     }
 
     @Override
     public int getItemCount() {
-        return faqItems.size();
+        return AcercaDeItems.size();
     }
 
     public class FAQViewHolder extends RecyclerView.ViewHolder {
@@ -51,16 +51,16 @@ public class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.FAQViewHolder> {
             buttonToggle = itemView.findViewById(R.id.buttonToggle);
         }
 
-        public void bind(RecyclerViewItem faqItem) {
-            textViewHeader.setText(faqItem.getTitle());
-            textViewContent.setText(faqItem.getContent());
+        public void bind(RecyclerViewItem AcercaDeItems) {
+            textViewHeader.setText(AcercaDeItems.getTitle());
+            textViewContent.setText(AcercaDeItems.getContent());
 
-            boolean isExpanded = faqItem.isExpanded();
+            boolean isExpanded = AcercaDeItems.isExpanded();
             textViewContent.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
             buttonToggle.setImageResource(isExpanded ? R.drawable.flecha_arriba : R.drawable.flecha_abajo);
 
             buttonToggle.setOnClickListener(v -> {
-                faqItem.setExpanded(!faqItem.isExpanded());
+                AcercaDeItems.setExpanded(!AcercaDeItems.isExpanded());
                 notifyItemChanged(getAdapterPosition());
             });
         }
