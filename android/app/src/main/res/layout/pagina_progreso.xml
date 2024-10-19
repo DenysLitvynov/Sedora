@@ -13,6 +13,7 @@
         android:layout_width="363dp"
         android:layout_height="140dp"
         app:layout_constraintBottom_toTopOf="@+id/HorasSensibles"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/HorasSentado" />
 
@@ -22,6 +23,7 @@
         android:layout_width="363dp"
         android:layout_height="140dp"
         app:layout_constraintBottom_toTopOf="@+id/AvisosIgnorados"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/ProgresoAvisos" />
 
@@ -31,6 +33,7 @@
         android:layout_width="363dp"
         android:layout_height="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/HorasSensibles" />
 

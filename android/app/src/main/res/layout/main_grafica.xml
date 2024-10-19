@@ -28,8 +28,8 @@
 
         <ImageView
             android:id="@+id/campananoti"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:translationX="355dp"
             android:translationY="-50dp"
             app:srcCompat="@drawable/campana" />
@@ -65,7 +65,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="618dp"
+            android:layout_height="match_parent"
             android:translationY="-80dp" />
 
     </LinearLayout>
