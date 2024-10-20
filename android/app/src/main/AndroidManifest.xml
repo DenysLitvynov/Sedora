@@ -45,6 +45,15 @@
         </activity>
 
         <activity android:name=".ProfileActivity"></activity>
+
+        <activity
+            android:name=".PantallaInicioActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".TusMetasActivity"
+            android:exported="true"/>
+
     </application>
 
 </manifest>
