@@ -15,6 +15,12 @@
         android:theme="@style/Theme.Sedora"
         tools:targetApi="31">
         <activity
+            android:name=".GraficaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProgresoActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
 
