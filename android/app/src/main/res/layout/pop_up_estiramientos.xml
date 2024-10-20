@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/cerrar"
         android:layout_width="91dp"
         android:layout_height="50dp"
         android:layout_marginStart="148dp"
@@ -41,15 +41,15 @@
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
     <ImageView
-        android:id="@+id/imageView15"
+        android:id="@+id/Estiramientos"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="231dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.162"
+        app:layout_constraintVertical_bias="0.216"
         app:srcCompat="@drawable/estiramiento" />
 
     <ImageView
@@ -63,12 +63,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView15"
+        app:layout_constraintTop_toBottomOf="@+id/Estiramientos"
         app:layout_constraintVertical_bias="0.339"
         app:srcCompat="@drawable/circulo" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/contador"
         style="@style/Heading2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,37 +79,43 @@
         app:layout_constraintTop_toTopOf="@+id/imageView16" />
 
     <Button
-        android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/siguiente"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="36dp"
-        android:layout_marginBottom="30dp"
-        android:text="Siguiente"
+        android:layout_marginEnd="30dp"
+        android:text="Empezar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+        app:layout_constraintStart_toEndOf="@+id/Cancelar"
+        app:layout_constraintTop_toBottomOf="@+id/imageView16"
+        app:layout_constraintVertical_bias="0.035" />
 
     <Button
-        android:id="@+id/button7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/Cancelar"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="36dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="30dp"
         android:backgroundTint="#C62828"
         android:text="Cancelar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button6"
+        app:layout_constraintEnd_toStartOf="@+id/siguiente"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView16"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView20"
         android:layout_width="128dp"
         android:layout_height="45dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/Estiramientos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.943"
         app:layout_constraintStart_toStartOf="parent"
