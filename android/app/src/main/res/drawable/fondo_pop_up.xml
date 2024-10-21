@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="12dp"/>
+
+    <solid android:color="@color/blanco"/>
+    <!-- Definir el borde (color y grosor) -->
+    <stroke
+        android:width="4dp"
+        android:color="@color/verde_primario" /> <!-- Color del borde -->
+</shape>
