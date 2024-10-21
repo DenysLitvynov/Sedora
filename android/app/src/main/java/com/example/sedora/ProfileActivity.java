@@ -8,6 +8,7 @@ import android.util.LruCache;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import com.example.sedora.MenuManager;
+
+
 public class ProfileActivity extends AppCompatActivity {
 
     private EditText nuevoNombre;
@@ -37,6 +41,25 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil);
+
+        //FUNCIONALIDAD BOTONES MENUS
+        MenuManager funcionMenu = new MenuManager();
+
+        View Perfil= findViewById(R.id.Perfil);
+        Perfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaProfile(ProfileActivity.this);
+            }
+        });
+
+        View btnAjustes = findViewById(R.id.btnAjustes);
+        btnAjustes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirNuevaPagina(ProfileActivity.this);
+            }
+        });
 
         nuevoNombre = findViewById(R.id.nuevoNombre2);
         nuevoCorreo = findViewById(R.id.nuevoCorreo);

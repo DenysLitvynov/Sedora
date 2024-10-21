@@ -4,6 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--FOOTER-->
+    <!--FIN DE FOOTER-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <include
+            layout="@layout/menu_acciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/Heading3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nombre"
+            tools:layout_editor_absoluteX="98dp"
+            tools:layout_editor_absoluteY="319dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <Button
         android:id="@+id/cerrar_sesion"
         style="@style/BotonVerde"
@@ -154,10 +183,10 @@
         style="@style/ParagraphNegro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@null"
         android:hint="Nuevo nombre"
         android:singleLine="true"
         android:textSize="14dp"
-        android:background="@null"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toEndOf="@+id/textView"
@@ -212,19 +241,6 @@
         app:layout_constraintStart_toStartOf="@+id/textView"
         android:background="@null"
     app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <TextView
-        android:id="@+id/textView"
-        style="@style/Heading3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:text="@string/nombre"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3" />
 
     <TextView
         android:id="@+id/textView4"
