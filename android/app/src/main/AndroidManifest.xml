@@ -54,6 +54,8 @@
             android:name=".TusMetasActivity"
             android:exported="true"/>
 
+        <activity android:name=".HeaderManager"></activity>
+
     </application>
 
 </manifest>
