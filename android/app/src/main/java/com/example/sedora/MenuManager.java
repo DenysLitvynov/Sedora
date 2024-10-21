@@ -32,6 +32,7 @@ public class MenuManager {
         context.startActivity(intent);
     }
 
+    /*
     public void abrirNuevaPagina(Context context) {
         Intent intent = new Intent(context,PruebaActivity.class);
         context.startActivity(intent);
@@ -43,6 +44,6 @@ public class MenuManager {
         intent.putExtra("TITULO_SECCION", "Notificaciones");
         context.startActivity(intent);
     }
-
+    */
 
 }

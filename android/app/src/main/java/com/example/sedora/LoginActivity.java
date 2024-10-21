@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void verificaSiUsuarioValidado() {
         if (auth.getCurrentUser() != null) {
-            Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, ProfileActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                         dialogo.dismiss();
                         if (task.isSuccessful()) {
                             if (auth.getCurrentUser().isEmailVerified()) {
-                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                         | Intent.FLAG_ACTIVITY_NEW_TASK
                                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);

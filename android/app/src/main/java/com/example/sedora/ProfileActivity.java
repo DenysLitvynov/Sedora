@@ -43,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil);
 
+        /*
         //FUNCIONALIDAD BOTONES MENUS
         MenuManager funcionMenu = new MenuManager();
 
@@ -53,7 +54,8 @@ public class ProfileActivity extends AppCompatActivity {
                 funcionMenu.abrirPantallaProfile(ProfileActivity.this);
             }
         });
-
+    */
+        /*
         View btnAjustes = findViewById(R.id.btnAjustes);
         btnAjustes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
                 funcionMenu.abrirNuevaPagina(ProfileActivity.this);
             }
         });
+         */
 
         nuevoNombre = findViewById(R.id.nuevoNombre2);
         nuevoCorreo = findViewById(R.id.nuevoCorreo);

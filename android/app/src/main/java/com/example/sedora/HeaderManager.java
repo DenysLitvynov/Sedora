@@ -15,9 +15,9 @@ public class HeaderManager extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.menu_acciones);
 
-
+        /*
         nombreSeccion = findViewById(R.id.nombreseccion);
         notificaciones = findViewById(R.id.notificaciones);
 
@@ -47,11 +47,8 @@ public class HeaderManager extends AppCompatActivity {
             MenuManager.abrirPantallaProfile(this);
         });
 
+        */
 
-        notificaciones.setOnClickListener(view -> {
-            Intent intent = new Intent(HeaderManager.this, PruebaActivity2.class);
-            startActivity(intent);
-        });
     }
 
     private void cambiarTextoHeader(String texto) {
