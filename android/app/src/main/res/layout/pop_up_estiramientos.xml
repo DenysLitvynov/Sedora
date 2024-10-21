@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <Toolbar
@@ -44,12 +44,13 @@
         android:id="@+id/Estiramientos"
         android:layout_width="0dp"
         android:layout_height="231dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.216"
         app:srcCompat="@drawable/estiramiento" />
 
     <ImageView
@@ -85,13 +86,13 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
         android:text="Empezar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/Cancelar"
-        app:layout_constraintTop_toBottomOf="@+id/imageView16"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView16" />
 
     <Button
         android:id="@+id/Cancelar"
@@ -100,14 +101,14 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="#C62828"
         android:text="Cancelar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/siguiente"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView16"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView16" />
 
     <ImageView
         android:id="@+id/imageView20"
