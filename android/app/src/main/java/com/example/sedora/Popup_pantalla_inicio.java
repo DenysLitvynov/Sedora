@@ -35,11 +35,15 @@ public class Popup_pantalla_inicio {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popupView = inflater.inflate(R.layout.pantalla_inicio_2, null);  // Asegúrate de que 'pantalla_inicio_2' es correcto
 
-                // Crear el PopupWindow
-                final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                // Crear el PopupWindow con MATCH_PARENT para que cubra toda la pantalla
+                final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+
+                // Permitir que se vea semitransparente detrás del popup
+                popupWindow.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 
                 // Mostrar el popup centrado en la pantalla
                 popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+
 
                 // Encuentra la ImageView del botón de cerrar en el popup
                 ImageView closePopupButton = popupView.findViewById(R.id.cerrar_popup_inicio); // Asegúrate de que este es el ID del botón de cerrar

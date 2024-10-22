@@ -4,15 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pantalla_inicio_2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_background"
+    tools:layout_editor_absoluteX="-1dp"
+    tools:layout_editor_absoluteY="26dp">
 
     <TextView
         android:id="@+id/paragraphBlanco2"
         style="@style/ParagraphBlanco"
         android:layout_width="350dp"
         android:layout_height="568dp"
+        android:background="@drawable/rounded_box"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,11 +26,11 @@
         style="@style/Heading3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Información de los sensores"
         android:textColor="@color/blanco"
+        app:layout_constraintBottom_toTopOf="@+id/boxExample20"
         app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
-        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="@+id/paragraphBlanco2"
         app:layout_constraintTop_toTopOf="@+id/paragraphBlanco2" />
 
@@ -34,24 +39,20 @@
         style="@style/BoxBackground"
         android:layout_width="332dp"
         android:layout_height="140dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/paragraphBlanco2"
         app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
-        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="@+id/paragraphBlanco2"
-        app:layout_constraintTop_toBottomOf="@+id/boxExample21"
-        app:layout_constraintVertical_bias="0.166" />
+        app:layout_constraintTop_toBottomOf="@+id/boxExample21" />
 
     <View
         android:id="@+id/boxExample21"
         style="@style/BoxBackground"
         android:layout_width="332dp"
         android:layout_height="140dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/boxExample17"
         app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
         app:layout_constraintStart_toStartOf="@+id/paragraphBlanco2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintTop_toBottomOf="@+id/boxExample20" />
 
     <View
         android:id="@+id/boxExample20"
@@ -60,10 +61,8 @@
         android:layout_height="140dp"
         app:layout_constraintBottom_toTopOf="@+id/boxExample21"
         app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
-        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="@+id/paragraphBlanco2"
-        app:layout_constraintTop_toTopOf="@+id/paragraphBlanco2"
-        app:layout_constraintVertical_bias="0.744" />
+        app:layout_constraintTop_toBottomOf="@+id/heading17" />
 
     <TextView
         android:id="@+id/heading16"
@@ -296,6 +295,7 @@
         android:id="@+id/cerrar_popup_inicio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/paragraphBlanco2"
         app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
         app:layout_constraintHorizontal_bias="0.85"

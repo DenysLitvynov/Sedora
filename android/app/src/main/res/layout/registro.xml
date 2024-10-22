@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/registroLayout"
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/registroLayout"
+        android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
@@ -82,29 +87,30 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="#972F2F"
-        android:textSize="14sp"
+        android:textSize="10dp"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="@+id/edtEmail"
         app:layout_constraintStart_toStartOf="@+id/edtEmail"
         app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
 
-    <EditText
-        android:id="@+id/edtContraseña"
-        style="@style/Inputs"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/contrasenya"
-        android:inputType="textPassword"
-        android:textColorHint="@color/negro"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmail"
-        tools:ignore="TextSizeCheck" />
+        <EditText
+            android:id="@+id/edtContraseña"
+            style="@style/Inputs"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:hint="@string/contrasenya"
+            android:inputType="textPassword"
+            android:textColorHint="@color/negro"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtEmail"
+            tools:ignore="TextSizeCheck" />
 
 
     <TextView
@@ -113,30 +119,31 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:textColor="#972F2F"
-        android:textSize="14sp"
+        android:textSize="10dp"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="@+id/edtEmail"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edtEmail"
         app:layout_constraintTop_toBottomOf="@+id/edtContraseña" />
 
 
-    <EditText
-        android:id="@+id/edtConfirmContraseña"
-        style="@style/Inputs"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/ConfirmContra"
-        android:inputType="textPassword"
-        android:textColorHint="@color/negro"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtContraseña"
-        tools:ignore="TextSizeCheck" />
+        <EditText
+            android:id="@+id/edtConfirmContraseña"
+            style="@style/Inputs"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:hint="@string/ConfirmContra"
+            android:inputType="textPassword"
+            android:textColorHint="@color/negro"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtContraseña"
+            tools:ignore="TextSizeCheck" />
 
 
     <TextView
@@ -144,7 +151,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="#972F2F"
-        android:textSize="14sp"
+        android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="@+id/edtEmail"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edtEmail"
@@ -161,25 +168,26 @@
         android:gravity="center_vertical"
         android:padding="4dp"
         android:text="@string/HeLeido"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtConfirmContraseña" />
 
-    <TextView
-        android:id="@+id/text_privacy_policy"
-        style="@style/ParagraphNegrita"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:minHeight="48dp"
-        android:text="@string/Polpriv"
-        android:textColor="@color/verde_primario"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/checkbox_privacy_policy"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_privacy_policy"
-        app:layout_constraintTop_toTopOf="@+id/checkbox_privacy_policy" />
+        <TextView
+            android:id="@+id/text_privacy_policy"
+            style="@style/ParagraphNegrita"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:minHeight="48dp"
+            android:text="@string/Polpriv"
+            android:textColor="@color/verde_primario"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/checkbox_privacy_policy"
+            app:layout_constraintEnd_toEndOf="@+id/tvConfirmContraseña"
+            app:layout_constraintStart_toEndOf="@+id/checkbox_privacy_policy"
+            app:layout_constraintTop_toTopOf="@+id/checkbox_privacy_policy" />
 
     <TextView
         android:id="@+id/accedeCon"
@@ -284,16 +292,18 @@
         app:layout_constraintTop_toTopOf="@+id/button3"
         app:srcCompat="@drawable/logo_twitter" />
 
-    <TextView
-        android:id="@+id/respuestaRegistro"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="#972F2F"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/edtEmail"
-        app:layout_constraintStart_toStartOf="@+id/edtEmail"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        <TextView
+            android:id="@+id/respuestaRegistro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:textColor="#972F2F"
+            android:textSize="10dp"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/edtEmail"
+            app:layout_constraintStart_toStartOf="@+id/edtEmail"
+            app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <!--
 
@@ -312,3 +322,5 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
