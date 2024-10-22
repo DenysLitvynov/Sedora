@@ -46,6 +46,13 @@
 
         <activity android:name=".ProfileActivity"></activity>
 
+        <activity android:name=".FAQ"></activity>
+
+        <activity android:name=".AcercaDe"></activity>
+
+        <activity android:name=".PoliticaDePrivacidad"></activity>
+
+
         <activity
             android:name=".PantallaInicioActivity"
             android:exported="true"/>
