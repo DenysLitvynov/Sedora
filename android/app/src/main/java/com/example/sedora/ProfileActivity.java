@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +26,6 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-
 import com.example.sedora.MenuManager;
 
 
@@ -43,27 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil);
 
-        /*
-        //FUNCIONALIDAD BOTONES MENUS
-        MenuManager funcionMenu = new MenuManager();
 
-        View Perfil= findViewById(R.id.Perfil);
-        Perfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                funcionMenu.abrirPantallaProfile(ProfileActivity.this);
-            }
-        });
-    */
-        /*
-        View btnAjustes = findViewById(R.id.btnAjustes);
-        btnAjustes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                funcionMenu.abrirNuevaPagina(ProfileActivity.this);
-            }
-        });
-         */
+
 
         nuevoNombre = findViewById(R.id.nuevoNombre2);
         nuevoCorreo = findViewById(R.id.nuevoCorreo);
@@ -72,11 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         Button botonMostrarCampos = findViewById(R.id.botonEditar);
         botonCancelar = findViewById(R.id.botonCancelar);
 
-        // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.button_icon);
 
-
-        // Inicialmente deshabilitar los EditText
         nuevoNombre.setEnabled(false);
         nuevoCorreo.setEnabled(false);
         nuevaContraseña.setEnabled(false);
@@ -132,15 +107,48 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         }
 
-        // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
+
+
+//FUNCIONALIDAD BOTONES MENUS
+
+        MenuManager funcionMenu = new MenuManager();
+
+
+        ImageView btnPantallaPrincipal = findViewById(R.id.btnHome);
+        btnPantallaPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, RecyclerActivity.class);
-                startActivity(intent);
-                finish(); // Opcional: cerrar la actividad actual
+                funcionMenu.abrirPantallaInicio(ProfileActivity.this);
             }
         });
+
+        ImageView btnPantallaProgreso = findViewById(R.id.btnProgreso);
+        btnPantallaProgreso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaProgreso(ProfileActivity.this);
+            }
+        });
+
+        /*ImageView btnAjustes = findViewById(R.id.btnAjustes);
+        btnAjustes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaAjustes(AjustesActivity.this);
+            }
+        });*/
+
+        ImageView btnPantallaPerfil = findViewById(R.id.Perfil);
+        btnPantallaPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaPerfil(ProfileActivity.this);
+            }
+        });
+
+        /*FIN FUNCIONALIDAD BOTONES*/
+
+
     }
 
     private void cargarImagenPerfil(Uri urlImagen) {

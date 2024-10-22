@@ -3,6 +3,7 @@ package com.example.sedora;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,6 +75,46 @@ public class ProgresoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //FUNCIONALIDAD BOTONES MENUS
+
+        MenuManager funcionMenu = new MenuManager();
+
+
+        ImageView btnPantallaPrincipal = findViewById(R.id.btnHome);
+        btnPantallaPrincipal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaInicio(ProgresoActivity.this);
+            }
+        });
+
+        ImageView btnPantallaProgreso = findViewById(R.id.btnProgreso);
+        btnPantallaProgreso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaProgreso(ProgresoActivity.this);
+            }
+        });
+
+        /*ImageView btnAjustes = findViewById(R.id.btnAjustes);
+        btnAjustes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaAjustes(AjustesActivity.this);
+            }
+        });*/
+
+        ImageView btnPantallaPerfil = findViewById(R.id.Perfil);
+        btnPantallaPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaPerfil(ProgresoActivity.this);
+            }
+        });
+
+        /*FIN FUNCIONALIDAD BOTONES*/
+
     }
     //================================FIN DE ON CREATE==============================================
 

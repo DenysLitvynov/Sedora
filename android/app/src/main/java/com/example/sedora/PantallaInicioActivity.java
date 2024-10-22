@@ -18,6 +18,45 @@ public class PantallaInicioActivity extends AppCompatActivity {
         popupPantallaInicio.setupPopup();  // Configurar el popup para la imagen con el ID "popup_ambiente"
 
         configurarPantallaInicio();
+
+        //FUNCIONALIDAD BOTONES MENUS
+
+        MenuManager funcionMenu = new MenuManager();
+
+
+        ImageView btnPantallaPrincipal = findViewById(R.id.btnHome);
+        btnPantallaPrincipal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaInicio(PantallaInicioActivity.this);
+            }
+        });
+
+        ImageView btnPantallaProgreso = findViewById(R.id.btnProgreso);
+        btnPantallaProgreso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaProgreso(PantallaInicioActivity.this);
+            }
+        });
+
+        /*ImageView btnAjustes = findViewById(R.id.btnAjustes);
+        btnAjustes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaAjustes(PantallaInicioActivity.this);
+            }
+        });*/
+
+        ImageView btnPantallaPerfil = findViewById(R.id.Perfil);
+        btnPantallaPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaPerfil(PantallaInicioActivity.this);
+            }
+        });
+
+        /*FIN FUNCIONALIDAD BOTONES*/
     }
 
     private void configurarPantallaInicio() {
@@ -34,4 +73,6 @@ public class PantallaInicioActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
