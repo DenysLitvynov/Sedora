@@ -1,0 +1,78 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blanco">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </View>
+
+    <ImageView
+        android:id="@+id/btnHome"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:elevation="20dp"
+        android:focusable="true"
+        android:src="@drawable/home"
+        android:tint="@color/verde_secundario"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnProgreso"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/btnProgreso"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:elevation="20dp"
+        android:focusable="true"
+        android:src="@drawable/calendar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnAjustes"
+        app:layout_constraintStart_toEndOf="@id/btnHome"
+        app:tint="@color/verde_secundario" />
+
+    <ImageView
+        android:id="@+id/btnAjustes"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:elevation="20dp"
+        android:focusable="true"
+        android:src="@drawable/settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/Perfil"
+        app:layout_constraintStart_toEndOf="@id/btnProgreso"
+        app:tint="@color/verde_secundario" />
+
+    <ImageView
+        android:id="@+id/Perfil"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:elevation="0dp"
+        android:focusable="true"
+        android:src="@drawable/user"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnAjustes"
+        app:tint="@color/verde_secundario" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

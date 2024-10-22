@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GraficaActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/botonRegreso"
+            android:layout_width="55dp"
+            android:layout_height="56dp"
+            android:background="@color/blanco"
+            android:contentDescription="botonFlecha"
+            android:scaleX="2"
+            android:scaleY="2"
+            app:srcCompat="@drawable/flecha_vuelta" />
+
+        <ImageView
+            android:id="@+id/campananoti"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:translationX="355dp"
+            android:translationY="-50dp"
+            app:srcCompat="@drawable/campana" />
+
+        <TextView
+            android:id="@+id/Titulo"
+            style="@style/Heading1"
+            android:layout_width="335dp"
+            android:layout_height="wrap_content"
+            android:text="Titulo"
+            android:textAlignment="center"
+            android:translationX="40dp"
+            android:translationY="-95dp" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/cambioGrafica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:translationY="-85dp">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Este Semana" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Este Mes" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:translationY="-80dp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

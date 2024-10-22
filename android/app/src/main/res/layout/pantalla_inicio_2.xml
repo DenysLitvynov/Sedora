@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pantalla_inicio_2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/paragraphBlanco2"
+        style="@style/ParagraphBlanco"
+        android:layout_width="350dp"
+        android:layout_height="568dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/heading17"
+        style="@style/Heading3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Información de los sensores"
+        android:textColor="@color/blanco"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
+        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintStart_toStartOf="@+id/paragraphBlanco2"
+        app:layout_constraintTop_toTopOf="@+id/paragraphBlanco2" />
+
+    <View
+        android:id="@+id/boxExample17"
+        style="@style/BoxBackground"
+        android:layout_width="332dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="@+id/paragraphBlanco2"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample21"
+        app:layout_constraintVertical_bias="0.166" />
+
+    <View
+        android:id="@+id/boxExample21"
+        style="@style/BoxBackground"
+        android:layout_width="332dp"
+        android:layout_height="140dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
+        app:layout_constraintStart_toStartOf="@+id/paragraphBlanco2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.541" />
+
+    <View
+        android:id="@+id/boxExample20"
+        style="@style/BoxBackground"
+        android:layout_width="332dp"
+        android:layout_height="140dp"
+        app:layout_constraintBottom_toTopOf="@+id/boxExample21"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="@+id/paragraphBlanco2"
+        app:layout_constraintTop_toTopOf="@+id/paragraphBlanco2"
+        app:layout_constraintVertical_bias="0.744" />
+
+    <TextView
+        android:id="@+id/heading16"
+        style="@style/Heading3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:text="Luminosidad:"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample20"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample20"
+        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintStart_toStartOf="@+id/boxExample20"
+        app:layout_constraintTop_toTopOf="@+id/boxExample20"
+        app:layout_constraintVertical_bias="0.088" />
+
+    <TextView
+        android:id="@+id/paragraphNegro5"
+        style="@style/ParagraphNegro"
+        android:layout_width="294dp"
+        android:layout_height="39dp"
+        android:text="El nivel de sonido es correcto ahora mismo hay  44 decibelios. "
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample21"
+        app:layout_constraintStart_toStartOf="@+id/boxExample21"
+        app:layout_constraintTop_toBottomOf="@+id/heading18" />
+
+    <TextView
+        android:id="@+id/heading18"
+        style="@style/Heading3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:text="Sonido ambiente:"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample21"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample21"
+        app:layout_constraintHorizontal_bias="0.016"
+        app:layout_constraintStart_toStartOf="@+id/boxExample21"
+        app:layout_constraintTop_toTopOf="@+id/boxExample21"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ProgressBar
+        android:id="@+id/progressBar4"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="294dp"
+        android:layout_height="30dp"
+        android:maxWidth="100dip"
+        android:minWidth="100dip"
+        android:progress="56"
+        android:progressTint="@color/verde_secundario"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample21"
+        app:layout_constraintStart_toStartOf="@+id/boxExample21"
+        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro5" />
+
+    <TextView
+        android:id="@+id/heading19"
+        style="@style/Heading3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperatura:"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample17"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample17"
+        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintStart_toStartOf="@+id/boxExample17"
+        app:layout_constraintTop_toTopOf="@+id/boxExample17"
+        app:layout_constraintVertical_bias="0.07999998" />
+
+    <TextView
+        android:id="@+id/paragraphNegro6"
+        style="@style/ParagraphNegro"
+        android:layout_width="294dp"
+        android:layout_height="39dp"
+        android:text="El nivel de luminosidad es suficiente ahora mismo  hay 500 lux en la sala, un nivel óptimo."
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample20"
+        app:layout_constraintStart_toStartOf="@+id/boxExample20"
+        app:layout_constraintTop_toBottomOf="@+id/heading16" />
+
+    <TextView
+        android:id="@+id/paragraphNegro8"
+        style="@style/ParagraphNegro"
+        android:layout_width="50dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="19dp"
+        android:text="300lux"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample20"
+        app:layout_constraintStart_toStartOf="@+id/boxExample20"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/paragraphNegro10"
+        style="@style/ParagraphNegro"
+        android:layout_width="50dp"
+        android:layout_height="19dp"
+        android:text="30dB"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample21"
+        app:layout_constraintEnd_toStartOf="@+id/paragraphNegro11"
+        app:layout_constraintHorizontal_bias="0.091"
+        app:layout_constraintStart_toStartOf="@+id/boxExample21"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/paragraphNegro11"
+        style="@style/ParagraphNegro"
+        android:layout_width="36dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="20dp"
+        android:text="55dB"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample21"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample21"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/paragraphNegro12"
+        style="@style/ParagraphNegro"
+        android:layout_width="42dp"
+        android:layout_height="19dp"
+        android:text="30ºC"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample17"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample17"
+        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintStart_toStartOf="@+id/boxExample17"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar5"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/paragraphNegro13"
+        style="@style/ParagraphNegro"
+        android:layout_width="50dp"
+        android:layout_height="19dp"
+        android:text="21ºC"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample17"
+        app:layout_constraintEnd_toStartOf="@+id/paragraphNegro12"
+        app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintStart_toStartOf="@+id/boxExample17"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar5"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/paragraphNegro9"
+        style="@style/ParagraphNegro"
+        android:layout_width="50dp"
+        android:layout_height="19dp"
+        android:text="750lux"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample20"
+        app:layout_constraintHorizontal_bias="0.905"
+        app:layout_constraintStart_toEndOf="@+id/paragraphNegro8"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+    <TextView
+        android:id="@+id/paragraphNegro7"
+        style="@style/ParagraphNegro"
+        android:layout_width="294dp"
+        android:layout_height="39dp"
+        android:text="La temperatura es muy elevada, intenta bajar la temperatura de la sala."
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample17"
+        app:layout_constraintStart_toStartOf="@+id/boxExample17"
+        app:layout_constraintTop_toBottomOf="@+id/heading19" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="294dp"
+        android:layout_height="30dp"
+        android:maxWidth="100dip"
+        android:minWidth="100dip"
+        android:progress="23"
+        android:progressTint="@color/verde_secundario"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample20"
+        app:layout_constraintStart_toStartOf="@+id/boxExample20"
+        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro6" />
+
+    <ProgressBar
+        android:id="@+id/progressBar5"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="294dp"
+        android:layout_height="30dp"
+        android:maxWidth="100dip"
+        android:minWidth="100dip"
+        android:progress="90"
+        android:progressTint="@color/verde_secundario"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample17"
+        app:layout_constraintStart_toStartOf="@+id/boxExample17"
+        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro7" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/paragraphNegro6"
+        app:layout_constraintStart_toEndOf="@+id/heading16"
+        app:layout_constraintTop_toTopOf="@+id/boxExample20"
+        app:layout_constraintVertical_bias="0.857"
+        app:srcCompat="@drawable/icono_bombilla" />
+
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/paragraphNegro5"
+        app:layout_constraintStart_toEndOf="@+id/heading18"
+        app:layout_constraintTop_toTopOf="@+id/boxExample21"
+        app:layout_constraintVertical_bias="0.857"
+        app:srcCompat="@drawable/icono_altavoz" />
+
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/paragraphNegro7"
+        app:layout_constraintStart_toEndOf="@+id/heading19"
+        app:layout_constraintTop_toTopOf="@+id/boxExample17"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/icono_temperatura" />
+
+    <ImageView
+        android:id="@+id/cerrar_popup_inicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/paragraphBlanco2"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphBlanco2"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toEndOf="@+id/heading17"
+        app:layout_constraintTop_toTopOf="@+id/paragraphBlanco2"
+        app:layout_constraintVertical_bias="0.029"
+        app:srcCompat="@drawable/icono_cerrar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

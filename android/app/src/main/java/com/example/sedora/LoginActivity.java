@@ -22,6 +22,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.OAuthProvider;
+import com.google.firebase.auth.OAuthCredential;
+
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -71,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void verificaSiUsuarioValidado() {
         if (auth.getCurrentUser() != null) {
-            Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, ProfileActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -88,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                         dialogo.dismiss();
                         if (task.isSuccessful()) {
                             if (auth.getCurrentUser().isEmailVerified()) {
-                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                         | Intent.FLAG_ACTIVITY_NEW_TASK
                                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -166,4 +169,30 @@ public class LoginActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    public void autentificarTwitter(View v) {
+        OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
+
+        provider.addCustomParameter("lang", "es"); // Localizar a español
+
+        auth.startActivityForSignInWithProvider(/*activity=*/ this, provider.build())
+                .addOnSuccessListener(
+                        authResult -> {
+
+                            OAuthCredential credential = (OAuthCredential) authResult.getCredential();
+                            String accessToken = credential.getAccessToken();
+                            String secret = credential.getSecret();
+                            verificaSiUsuarioValidado();
+                        })
+                .addOnFailureListener(e -> {
+
+                    mensaje("Error de autenticación con Twitter: " + e.getLocalizedMessage());
+                });
+    }
+
+
+    private void mensaje2(String mensaje) {
+        Snackbar.make(findViewById(R.id.inicioLayout), mensaje, Snackbar.LENGTH_LONG).show();
+    }
 }
+
