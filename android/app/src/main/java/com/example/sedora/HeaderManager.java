@@ -1,5 +1,6 @@
 package com.example.sedora;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,49 +10,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class HeaderManager extends AppCompatActivity {
 
-    private TextView nombreSeccion;
-    private ImageView notificaciones;
+    private ImageView buttonIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu_acciones);
+        setContentView(R.layout.header);
 
-        /*
-        nombreSeccion = findViewById(R.id.nombreseccion);
-        notificaciones = findViewById(R.id.notificaciones);
+        buttonIcon = findViewById(R.id.notificaciones);
 
-        ImageView btnHome = findViewById(R.id.btnHome);
-        ImageView btnProgreso = findViewById(R.id.btnProgreso);
-        ImageView btnAjustes = findViewById(R.id.btnAjustes);
-        ImageView perfil = findViewById(R.id.Perfil);
-
-
-        btnHome.setOnClickListener(view -> {
-            cambiarTextoHeader("Inicio");
-
+        buttonIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HeaderManager.this, RecyclerActivity.class);
+                startActivity(intent);
+            }
         });
-
-        btnProgreso.setOnClickListener(view -> {
-            cambiarTextoHeader("Progreso");
-
-        });
-
-        btnAjustes.setOnClickListener(view -> {
-            cambiarTextoHeader("Ajustes");
-
-        });
-
-        perfil.setOnClickListener(view -> {
-            cambiarTextoHeader("Perfil");
-            MenuManager.abrirPantallaProfile(this);
-        });
-
-        */
-
     }
 
-    private void cambiarTextoHeader(String texto) {
-        nombreSeccion.setText(texto);
-    }
 }

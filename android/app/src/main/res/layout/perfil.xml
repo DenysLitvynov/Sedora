@@ -4,26 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/button_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:contentDescription="TODO"
-        android:elevation="4dp"
-        android:focusable="true"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icono_campana_2"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="@+id/textView8"
-        tools:ignore="SpeakableTextPresentCheck" />
-
+    <include
+        layout="@layout/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/cerrar_sesion"
@@ -251,9 +235,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Perfil"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--FOOTER-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp">
+
+        <include
+            layout="@layout/menu_acciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--FIN DE FOOTER-->
 </androidx.constraintlayout.widget.ConstraintLayout>
