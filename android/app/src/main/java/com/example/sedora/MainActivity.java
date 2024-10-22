@@ -11,11 +11,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*
-        // Redirigir a ProfileActivity al abrir la aplicación
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
-        finish(); // Termina MainActivity para que no se pueda volver a ella
-        */
     }
 }

@@ -38,7 +38,7 @@ public class RegistroActivity extends AppCompatActivity {
     private String confirmContraseña = "";
     private ViewGroup contenedor;
     private EditText etCorreo, etContraseña, etConfirmContraseña;
-    private TextView tilCorreo, tilContraseña, tilConfirmContraseña;
+    private TextView tvCorreo, tvContraseña, tvConfirmContraseña;
     private CheckBox checkboxPrivacyPolicy;
     private ProgressDialog dialogo;
 
@@ -50,9 +50,9 @@ public class RegistroActivity extends AppCompatActivity {
         etCorreo = findViewById(R.id.edtEmail);
         etContraseña = findViewById(R.id.edtContraseña);
         etConfirmContraseña = findViewById(R.id.edtConfirmContraseña);
-        tilCorreo = findViewById(R.id.tvCorreo);
-        tilContraseña = findViewById(R.id.tvContraseña);
-        tilConfirmContraseña = findViewById(R.id.tvConfirmContraseña);
+        tvCorreo = findViewById(R.id.tvCorreo);
+        tvContraseña = findViewById(R.id.tvContraseña);
+        tvConfirmContraseña = findViewById(R.id.tvConfirmContraseña);
         checkboxPrivacyPolicy = findViewById(R.id.checkbox_privacy_policy);
         contenedor = findViewById(R.id.registroLayout);
         ImageButton buttonIcon = findViewById(R.id.button_icon);
@@ -170,24 +170,25 @@ public class RegistroActivity extends AppCompatActivity {
         contraseña = etContraseña.getText().toString();
         confirmContraseña = etConfirmContraseña.getText().toString(); // Confirmación de contraseña
 
-        tilCorreo.setError("");
-        tilContraseña.setError("");
-        tilConfirmContraseña.setError("");
+        // Limpiar mensajes de error
+        tvCorreo.setText("");  // Limpiamos el TextView en vez de setError
+        tvContraseña.setText("");
+        tvConfirmContraseña.setText("");
 
         if (correo.isEmpty()) {
-            tilCorreo.setError("Introduce un correo");
+            tvCorreo.setText("Introduce un correo");
         } else if (!correo.matches(".+@.+[.].+")) {
-            tilCorreo.setError("Correo no válido");
+            tvCorreo.setText("Correo no válido");
         } else if (contraseña.isEmpty()) {
-            tilContraseña.setError("Introduce una contraseña");
+            tvContraseña.setText("Introduce una contraseña");
         } else if (contraseña.length() < 6) {
-            tilContraseña.setError("Ha de contener al menos 6 caracteres");
+            tvContraseña.setText("Ha de contener al menos 6 caracteres");
         } else if (!contraseña.matches(".*[0-9].*")) {
-            tilContraseña.setError("Ha de contener un número");
+            tvContraseña.setText("Ha de contener un número");
         } else if (!contraseña.matches(".*[A-Z].*")) {
-            tilContraseña.setError("Ha de contener una letra mayúscula");
+            tvContraseña.setText("Ha de contener una letra mayúscula");
         } else if (!contraseña.equals(confirmContraseña)) { // Validar confirmación
-            tilConfirmContraseña.setError("Las contraseñas no coinciden");
+            tvConfirmContraseña.setText("Las contraseñas no coinciden");
         } else if (!checkboxPrivacyPolicy.isChecked()) { // Verificar si se acepta la política de privacidad
             Snackbar.make(contenedor, "Debes aceptar la política de privacidad", Snackbar.LENGTH_LONG).show();
         } else {
@@ -195,4 +196,5 @@ public class RegistroActivity extends AppCompatActivity {
         }
         return false;
     }
+
 }

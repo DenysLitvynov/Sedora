@@ -7,278 +7,286 @@
     android:layout_height="match_parent"
     tools:context=".ProgresoActivity">
 
-    <View
-        android:id="@+id/ProgresoAvisos"
-        style="@style/BoxBackground"
-        android:layout_width="363dp"
-        android:layout_height="140dp"
-        app:layout_constraintBottom_toTopOf="@+id/HorasSensibles"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/HorasSentado" />
-
-    <View
-        android:id="@+id/HorasSensibles"
-        style="@style/BoxBackground"
-        android:layout_width="363dp"
-        android:layout_height="140dp"
-        app:layout_constraintBottom_toTopOf="@+id/AvisosIgnorados"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/ProgresoAvisos" />
-
-    <View
-        android:id="@+id/AvisosIgnorados"
-        style="@style/BoxBackground"
-        android:layout_width="363dp"
-        android:layout_height="140dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/HorasSensibles" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08071136" />
-
-    <TextView
-        android:id="@+id/ProgresoText"
-        style="@style/Heading1"
-        android:layout_width="wrap_content"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:text="Progreso"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.727" />
+        app:layout_constraintBottom_toTopOf="@+id/menu_acciones"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <View
-        android:id="@+id/HorasSentado"
-        style="@style/BoxBackground"
-        android:layout_width="0dp"
-        android:layout_height="140dp"
-        app:layout_constraintBottom_toTopOf="@+id/ProgresoAvisos"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/HorasSentadotit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Horas Sentado/Sentada"
-        style="@style/Heading2"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/HorasSentado"
-        app:layout_constraintTop_toTopOf="@+id/HorasSentado" />
+            <View
+                android:id="@+id/ProgresoAvisos"
+                style="@style/BoxBackground"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintBottom_toTopOf="@+id/HorasSensibles"
+                app:layout_constraintEnd_toEndOf="@+id/HorasSentado"
+                app:layout_constraintStart_toStartOf="@+id/HorasSentado"
+                app:layout_constraintTop_toBottomOf="@+id/HorasSentado" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
+            <View
+                android:id="@+id/HorasSensibles"
+                style="@style/BoxBackground"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintBottom_toTopOf="@+id/AvisosIgnorados"
+                app:layout_constraintEnd_toEndOf="@+id/ProgresoAvisos"
+                app:layout_constraintStart_toStartOf="@+id/ProgresoAvisos"
+                app:layout_constraintTop_toBottomOf="@+id/ProgresoAvisos" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
+            <View
+                android:id="@+id/AvisosIgnorados"
+                style="@style/BoxBackground"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/HorasSensibles"
+                app:layout_constraintStart_toStartOf="@+id/HorasSensibles"
+                app:layout_constraintTop_toBottomOf="@+id/HorasSensibles" />
 
-    <TextView
-        android:id="@+id/DescHorasSentado"
-        style="@style/ParagraphGris"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:fontFamily="@font/poppins_regular"
-        android:text="Consulta cuántas horas has pasado sentado cada día, y observa tu promedio semanal o mensual. Usa esta información para ajustar tus tiempos de descanso y mejorar tu bienestar."
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/HorasSentado"
-        app:layout_constraintStart_toStartOf="@+id/HorasSentado"
-        app:layout_constraintTop_toBottomOf="@+id/HorasSentadotit" />
+            <TextView
+                android:id="@+id/ProgresoText"
+                style="@style/Heading1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:text="Progreso"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/ProgresoAvisosTit"
-        style="@style/Heading2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Progreso Avisos"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/ProgresoAvisos"
-        app:layout_constraintTop_toTopOf="@+id/ProgresoAvisos" />
+            <View
+                android:id="@+id/HorasSentado"
+                style="@style/BoxBackground"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toTopOf="@+id/ProgresoAvisos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ProgresoText" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Visualiza cómo ha sido tu evolución en cuanto a la cantidad de avisos emitidos por los sensores de postura y proximidad. Identifica mejoras o áreas que aún necesitan atención."
-        app:layout_constraintEnd_toEndOf="@+id/ProgresoAvisos"
-        app:layout_constraintStart_toStartOf="@+id/ProgresoAvisos"
-        app:layout_constraintTop_toBottomOf="@+id/ProgresoAvisosTit" />
+            <TextView
+                android:id="@+id/HorasSentadotit"
+                style="@style/Heading2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Horas Sentado"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/HorasSentado"
+                app:layout_constraintTop_toTopOf="@+id/HorasSentado" />
 
-    <TextView
-        android:id="@+id/HorasSensiblesTit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        style="@style/Heading2"
-        android:text="Horas Sensibles"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/HorasSensibles"
-        app:layout_constraintTop_toTopOf="@+id/HorasSensibles" />
+            <TextView
+                android:id="@+id/DescHorasSentado"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Consulta cuántas horas has pasado sentado cada día, y observa tu promedio semanal o mensual. Usa esta información para ajustar tus tiempos de descanso y mejorar tu bienestar."
+                app:layout_constraintBottom_toBottomOf="@+id/HorasSentado"
+                app:layout_constraintEnd_toEndOf="@+id/HorasSentado"
+                app:layout_constraintStart_toStartOf="@+id/HorasSentado"
+                app:layout_constraintTop_toBottomOf="@+id/HorasSentadotit" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Descubre en qué momentos del día eres menos productivo o cometes más errores. Esta información te ayudará a identificar patrones y ajustar tu rutina para optimizar tu rendimiento."
-        app:layout_constraintEnd_toEndOf="@+id/HorasSensibles"
-        app:layout_constraintStart_toStartOf="@+id/HorasSensibles"
-        app:layout_constraintTop_toBottomOf="@+id/HorasSensiblesTit" />
+            <TextView
+                android:id="@+id/ProgresoAvisosTit"
+                style="@style/Heading2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Progreso Avisos"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/ProgresoAvisos"
+                app:layout_constraintTop_toTopOf="@+id/ProgresoAvisos" />
 
-    <TextView
-        android:id="@+id/AvsisosIgnoradosTtit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Avisos Ignorados"
-        style="@style/Heading2"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/AvisosIgnorados"
-        app:layout_constraintTop_toTopOf="@+id/AvisosIgnorados" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Visualiza cómo ha sido tu evolución en cuanto a la cantidad de avisos emitidos por los sensores de postura y proximidad. Identifica mejoras o áreas que aún necesitan atención."
+                app:layout_constraintBottom_toBottomOf="@+id/ProgresoAvisos"
+                app:layout_constraintEnd_toEndOf="@+id/ProgresoAvisos"
+                app:layout_constraintStart_toStartOf="@+id/ProgresoAvisos"
+                app:layout_constraintTop_toBottomOf="@+id/ProgresoAvisosTit" />
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Revisa cuántos avisos has ignorado durante la semana o el mes. Esta estadística te permitirá tomar conciencia sobre las áreas que podrías estar desatendiendo y mejorar tus hábitos."
-        app:layout_constraintEnd_toEndOf="@+id/AvisosIgnorados"
-        app:layout_constraintStart_toStartOf="@+id/AvisosIgnorados"
-        app:layout_constraintTop_toBottomOf="@+id/AvsisosIgnoradosTtit" />
+            <TextView
+                android:id="@+id/HorasSensiblesTit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                style="@style/Heading2"
+                android:text="Horas Sensibles"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/HorasSensibles"
+                app:layout_constraintTop_toTopOf="@+id/HorasSensibles" />
 
-    <ImageView
-        android:id="@+id/campana"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.782"
-        app:srcCompat="@drawable/campana" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Descubre en qué momentos del día eres menos productivo o cometes más errores. Esta información te ayudará a identificar patrones y ajustar tu rutina para optimizar tu rendimiento."
+                app:layout_constraintBottom_toBottomOf="@+id/HorasSensibles"
+                app:layout_constraintEnd_toEndOf="@+id/HorasSensibles"
+                app:layout_constraintStart_toStartOf="@+id/HorasSensibles"
+                app:layout_constraintTop_toBottomOf="@+id/HorasSensiblesTit" />
 
-    <ImageView
-        android:id="@+id/iconoHorasSentado"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="11dp"
-        app:layout_constraintStart_toEndOf="@+id/HorasSentadotit"
-        app:layout_constraintTop_toTopOf="@+id/HorasSentado"
-        app:srcCompat="@drawable/horasentado" />
+            <TextView
+                android:id="@+id/AvsisosIgnoradosTtit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Avisos Ignorados"
+                style="@style/Heading2"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/AvisosIgnorados"
+                app:layout_constraintTop_toTopOf="@+id/AvisosIgnorados" />
 
-    <ImageView
-        android:id="@+id/ProgresoAvisosIcono"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="11dp"
-        app:layout_constraintStart_toEndOf="@+id/ProgresoAvisosTit"
-        app:layout_constraintTop_toTopOf="@+id/ProgresoAvisos"
-        app:srcCompat="@drawable/graficaemoji" />
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Revisa cuántos avisos has ignorado durante la semana o el mes. Esta estadística te permitirá tomar conciencia sobre las áreas que podrías estar desatendiendo y mejorar tus hábitos."
+                app:layout_constraintEnd_toEndOf="@+id/AvisosIgnorados"
+                app:layout_constraintStart_toStartOf="@+id/AvisosIgnorados"
+                app:layout_constraintTop_toBottomOf="@+id/AvsisosIgnoradosTtit" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="11dp"
-        app:layout_constraintStart_toEndOf="@+id/HorasSensiblesTit"
-        app:layout_constraintTop_toTopOf="@+id/HorasSensibles"
-        app:srcCompat="@drawable/horassensibleemoji" />
+            <ImageView
+                android:id="@+id/campana"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ProgresoText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/ProgresoText"
+                app:layout_constraintTop_toTopOf="@+id/ProgresoText"
+                app:srcCompat="@drawable/campana" />
 
-    <ImageView
-        android:id="@+id/avsisosIgnoradosIcono"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="11dp"
-        app:layout_constraintStart_toEndOf="@+id/AvsisosIgnoradosTtit"
-        app:layout_constraintTop_toTopOf="@+id/AvisosIgnorados"
-        app:srcCompat="@drawable/avisosignorados" />
+            <ImageView
+                android:id="@+id/iconoHorasSentado"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="11dp"
+                app:layout_constraintBottom_toBottomOf="@+id/HorasSentadotit"
+                app:layout_constraintStart_toEndOf="@+id/HorasSentadotit"
+                app:layout_constraintTop_toTopOf="@+id/HorasSentado"
+                app:srcCompat="@drawable/horasentado" />
 
-    <ImageView
-        android:id="@+id/mas3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/HorasSensibles"
-        app:layout_constraintTop_toTopOf="@+id/HorasSensibles"
-        app:srcCompat="@drawable/mas" />
+            <ImageView
+                android:id="@+id/ProgresoAvisosIcono"
+                android:layout_width="18dp"
+                android:layout_height="29dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="11dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ProgresoAvisosTit"
+                app:layout_constraintStart_toEndOf="@+id/ProgresoAvisosTit"
+                app:layout_constraintTop_toTopOf="@+id/ProgresoAvisos"
+                app:srcCompat="@drawable/graficaemoji" />
 
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/AvisosIgnorados"
-        app:layout_constraintTop_toTopOf="@+id/AvisosIgnorados"
-        app:srcCompat="@drawable/mas" />
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="11dp"
+                app:layout_constraintBottom_toBottomOf="@+id/HorasSensiblesTit"
+                app:layout_constraintStart_toEndOf="@+id/HorasSensiblesTit"
+                app:layout_constraintTop_toTopOf="@+id/HorasSensibles"
+                app:srcCompat="@drawable/horassensibleemoji" />
 
-    <ImageView
-        android:id="@+id/mas1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/HorasSentado"
-        app:layout_constraintTop_toTopOf="@+id/HorasSentado"
-        app:srcCompat="@drawable/mas" />
+            <ImageView
+                android:id="@+id/avsisosIgnoradosIcono"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="11dp"
+                app:layout_constraintBottom_toBottomOf="@+id/AvsisosIgnoradosTtit"
+                app:layout_constraintStart_toEndOf="@+id/AvsisosIgnoradosTtit"
+                app:layout_constraintTop_toTopOf="@+id/AvisosIgnorados"
+                app:srcCompat="@drawable/avisosignorados" />
 
-    <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/ProgresoAvisos"
-        app:layout_constraintTop_toTopOf="@+id/ProgresoAvisos"
-        app:srcCompat="@drawable/mas" />
-    <!--FOOTER-->
+            <ImageView
+                android:id="@+id/mas3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/HorasSensibles"
+                app:layout_constraintTop_toTopOf="@+id/HorasSensibles"
+                app:srcCompat="@drawable/mas" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/AvisosIgnorados"
+                app:layout_constraintTop_toTopOf="@+id/AvisosIgnorados"
+                app:srcCompat="@drawable/mas" />
+
+            <ImageView
+                android:id="@+id/mas1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/iconoHorasSentado"
+                app:layout_constraintEnd_toEndOf="@+id/HorasSentado"
+                app:layout_constraintTop_toTopOf="@+id/HorasSentado"
+                app:srcCompat="@drawable/mas" />
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/ProgresoAvisos"
+                app:layout_constraintTop_toTopOf="@+id/ProgresoAvisos"
+                app:srcCompat="@drawable/mas" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- FOOTER -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menu_acciones"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="20dp">
+        android:layout_height="wrap_content"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <include
             layout="@layout/menu_acciones"
@@ -287,8 +295,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--FIN DE FOOTER-->
+    <!-- FIN DE FOOTER -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
