@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private String contraseña = "";
     private ViewGroup contenedor;
     private EditText etCorreo, etContraseña;
-    private TextView tilCorreo, tilContraseña, tvRegistrate;
+    private TextView tvCorreo, tvContraseña, tvRegistrate;
     private ProgressDialog dialogo;
 
     @Override
@@ -44,8 +44,8 @@ public class LoginActivity extends AppCompatActivity {
 
         etCorreo = findViewById(R.id.edtEmail);
         etContraseña = findViewById(R.id.edtContraseña);
-        tilCorreo = findViewById(R.id.tvCorreo);
-        tilContraseña = findViewById(R.id.tvContraseña);
+        tvCorreo = findViewById(R.id.tvCorreo);
+        tvContraseña = findViewById(R.id.tvContraseña);
         contenedor = findViewById(R.id.inicioLayout);
         tvRegistrate = findViewById(R.id.tvRegistrate);
 
@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void verificaSiUsuarioValidado() {
         if (auth.getCurrentUser() != null) {
-            Intent i = new Intent(this, ProfileActivity.class);
+            Intent i = new Intent(this, PantallaInicioActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                         dialogo.dismiss();
                         if (task.isSuccessful()) {
                             if (auth.getCurrentUser().isEmailVerified()) {
-                                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+                                Intent i = new Intent(LoginActivity.this, PantallaInicioActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                         | Intent.FLAG_ACTIVITY_NEW_TASK
                                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -149,24 +149,29 @@ public class LoginActivity extends AppCompatActivity {
     private boolean verificaCampos() {
         correo = etCorreo.getText().toString();
         contraseña = etContraseña.getText().toString();
-        tilCorreo.setError("");
-        tilContraseña.setError("");
 
+        // Limpiar los errores antes de comenzar
+        tvCorreo.setText("");
+        tvContraseña.setText("");
+
+        // Verificar los campos y mostrar errores en los TextViews correctos
         if (correo.isEmpty()) {
-            tilCorreo.setError("Introduce un correo");
+            tvCorreo.setText("Introduce un correo");
         } else if (!correo.matches(".+@.+[.].+")) {
-            tilCorreo.setError("Correo no válido");
+            tvCorreo.setText("Correo no válido");
         } else if (contraseña.isEmpty()) {
-            tilContraseña.setError("Introduce una contraseña");
+            tvContraseña.setText("Introduce una contraseña");
         } else if (contraseña.length() < 6) {
-            tilContraseña.setError("Ha de contener al menos 6 caracteres");
+            tvContraseña.setText("Ha de contener al menos 6 caracteres");
         } else if (!contraseña.matches(".*[0-9].*")) {
-            tilContraseña.setError("Ha de contener un número");
+            tvContraseña.setText("Ha de contener un número");
         } else if (!contraseña.matches(".*[A-Z].*")) {
-            tilContraseña.setError("Ha de contener una letra mayúscula");
+            tvContraseña.setText("Ha de contener una letra mayúscula");
         } else {
+            // Si no hay errores, devuelve true
             return true;
         }
+        // Si hay errores, devuelve false
         return false;
     }
 

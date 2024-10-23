@@ -8,6 +8,13 @@
 #define DHTPIN 26
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
+int micPin = 35;
+int ldrPin = 36;
+
+int thresholdHigh = 800;
+int thresholdLow = 200;   // Umbral bajo para sonido adecuado
+int prevSoundState = -1;  // Para controlar el cambio de estado del sonido
+int prevLightState = -1;  // Para controlar el cambio de estado de la luminosidad
 
 #define BLANCO 0xFFFF
 #define NEGRO 0
@@ -15,8 +22,8 @@ DHT dht(DHTPIN, DHTTYPE);
 #define VERDE 0x009774
 #define AZUL 0x001F
 
-const char* ssid = "***************";
-const char* password = "***********";
+const char* ssid = "********";
+const char* password = "******";
 
 char texto[200];
 boolean recibido = 0;
@@ -104,6 +111,50 @@ void procesarPaqueteUDP() {
   }
 }
 
+void mostrarNivelDeSonido() {
+  int micValue = analogRead(micPin);  // Lee el valor analógico del micrófono
+  int currentState;
+  M5.Lcd.setCursor(0, 160);
+
+  // Aplica histeresis para evitar cambios rápidos
+  if (micValue > thresholdHigh) {
+    currentState = 1;  // Nivel de sonido inadecuado
+  } else if (micValue < thresholdLow) {
+    currentState = 0;  // Nivel de sonido adecuado
+  } else {
+    currentState = prevSoundState;  // Mantén el estado anterior si está en el margen intermedio
+  }
+
+  if (currentState == 1) {
+    M5.Lcd.println("Nivel de sonido inadecuado");
+    Serial.println("Estado: Nivel de sonido inadecuado");
+  } else {
+    M5.Lcd.println("Nivel de sonido adecuado");  
+    Serial.println("Estado: Nivel de sonido adecuado");
+  }
+  prevSoundState = currentState;  
+}
+
+
+void mostrarLuminosidad() {
+  M5.Lcd.setCursor(0, 120);
+
+  int ldrValue = analogRead(ldrPin);
+  int currentState = (ldrValue < 800) ? 0 : 1;
+
+  if (currentState == 0) {
+    M5.Lcd.println("Luminosidad adecuada");
+    Serial.println("Estado: Luminosidad adecuada");
+  }
+   else {
+    M5.Lcd.println("Luminosidad inadecuada");
+    Serial.println("Estado: Luminosidad inadecuada");
+  }
+
+  delay(500);
+}
+
+
 void setup() {
   M5.begin();
   conectarWiFi();
@@ -117,5 +168,7 @@ void loop() {
   M5.Lcd.clear();
   mostrarHumedadYTemperatura();
   procesarPaqueteUDP();
-  delay(4000);
+  mostrarNivelDeSonido();
+  mostrarLuminosidad();
+  delay(3000);
 }
