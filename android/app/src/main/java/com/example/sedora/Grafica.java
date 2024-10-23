@@ -49,7 +49,7 @@ public class Grafica extends Fragment {
         assert graficaMain != null;
 
         final View stopPoint = vista.findViewById(R.id.stopPoint);
-        final View stopPoint2 = vista.findViewById(R.id.stopPoint2);
+
 
         scrollView=vista.findViewById(R.id.scrollView);
 
@@ -137,6 +137,7 @@ public class Grafica extends Fragment {
                 vmin.setText("1");
                 vprom.setText("7");
                 vmax.setText("22");
+                grafica.setImageResource(R.drawable.avisossemanales);
                 break;
         }
 
@@ -178,6 +179,7 @@ public class Grafica extends Fragment {
                 vmin.setText("5");
                 vprom.setText("15");
                 vmax.setText("35");
+                grafica.setImageResource(R.drawable.avisosmensuales);
                 break;
         }
     }
@@ -228,7 +230,7 @@ public class Grafica extends Fragment {
         valorMax.setVisibility(View.VISIBLE);
 
         TextView minText2 = vista_graficas.findViewById(R.id.Min_text);
-        TextView promText2 = vista_graficas.findViewById(R.id.Promedio_text);
+        TextView promText2 = vista_graficas.findViewById(R.id.textView16);
         TextView maxText2 = vista_graficas.findViewById(R.id.max_text);
         minText2.setVisibility(View.VISIBLE);
         promText2.setVisibility(View.VISIBLE);
