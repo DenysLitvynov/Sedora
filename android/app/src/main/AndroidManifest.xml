@@ -46,6 +46,8 @@
 
         <activity android:name=".ProfileActivity"></activity>
 
+        <activity android:name=".AjustesActivity"></activity>
+
         <activity android:name=".FAQ"></activity>
 
         <activity android:name=".AcercaDe"></activity>

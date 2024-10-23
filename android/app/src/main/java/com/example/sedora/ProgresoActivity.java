@@ -97,13 +97,13 @@ public class ProgresoActivity extends AppCompatActivity {
             }
         });
 
-        /*ImageView btnAjustes = findViewById(R.id.btnAjustes);
+        ImageView btnAjustes = findViewById(R.id.btnAjustes);
         btnAjustes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirPantallaAjustes(AjustesActivity.this);
+                funcionMenu.abrirPantallaAjustes(ProgresoActivity.this);
             }
-        });*/
+        });
 
         ImageView btnPantallaPerfil = findViewById(R.id.Perfil);
         btnPantallaPerfil.setOnClickListener(new View.OnClickListener() {

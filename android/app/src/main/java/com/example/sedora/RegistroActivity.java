@@ -148,7 +148,7 @@ public class RegistroActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent i = new Intent(RegistroActivity.this, MainActivity.class);
+                            Intent i = new Intent(RegistroActivity.this, LoginActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                     | Intent.FLAG_ACTIVITY_NEW_TASK
                                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);

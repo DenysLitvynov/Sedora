@@ -41,10 +41,10 @@ public class MenuManager {
 
     }
 
-    /*public static void abrirPantallaAjustes(Context context) {
-        Intent intent = new Intent(context, Activity.class);
+    public static void abrirPantallaAjustes(Context context) {
+        Intent intent = new Intent(context, AjustesActivity.class);
         context.startActivity(intent);
-    }*/
+    }
 
     public static void abrirPantallaPerfil(Context context){
 
