@@ -29,41 +29,48 @@
         app:layout_constraintVertical_bias="0.28"
         app:srcCompat="@drawable/icono_puntorojo" />
 
+
     <View
         android:id="@+id/boxExample15"
-        style="@style/BoxBackground"
-        android:layout_width="348dp"
-        android:layout_height="600dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/heading13"
-        app:layout_constraintVertical_bias="0.243" />
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline14"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/guideline16"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/boxExample16"
-        style="@style/BoxBackground"
-        android:layout_width="298dp"
-        android:layout_height="146dp"
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/box_background_blanco"
-        app:layout_constraintBottom_toTopOf="@+id/heading15"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample15"
-        app:layout_constraintStart_toStartOf="@+id/boxExample15"
-        app:layout_constraintTop_toBottomOf="@+id/heading14" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/heading14"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/paragraphNegro2"
         style="@style/ParagraphNegro"
-        android:layout_width="197dp"
-        android:layout_height="59dp"
+        android:layout_width="245dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="50dp"
         android:text="Menos de 5 avisos sobre postura incorrecta durante un día."
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/textView25"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.331"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample16"
+        app:layout_constraintStart_toStartOf="@+id/boxExample16"
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
     <TextView
@@ -71,56 +78,75 @@
         style="@style/Heading3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="79dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="8dp"
         android:text="Tiempo sentado"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/paragraphNegro2"
         app:layout_constraintEnd_toStartOf="@+id/imageView8"
-        app:layout_constraintTop_toBottomOf="@+id/boxExample16" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample16"
+        app:layout_constraintTop_toTopOf="@+id/boxExample16" />
 
     <View
         android:id="@+id/boxExample18"
-        style="@style/BoxBackground"
-        android:layout_width="298dp"
-        android:layout_height="146dp"
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/box_background_blanco"
         android:backgroundTint="#CDC8C8"
-        app:layout_constraintBottom_toBottomOf="@+id/boxExample15"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample15"
-        app:layout_constraintStart_toStartOf="@+id/boxExample15"
-        app:layout_constraintTop_toBottomOf="@+id/boxExample19" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline14"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/guideline11"
+        app:layout_constraintVertical_bias="0.777" />
 
     <View
         android:id="@+id/boxExample19"
-        style="@style/BoxBackground"
-        android:layout_width="298dp"
-        android:layout_height="146dp"
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/box_background_blanco"
         android:backgroundTint="#CDC8C8"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample18"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample15"
-        app:layout_constraintStart_toStartOf="@+id/boxExample15"
-        app:layout_constraintTop_toBottomOf="@+id/heading15" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline11"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
     <TextView
         android:id="@+id/paragraphNegro3"
         style="@style/ParagraphNegro"
-        android:layout_width="197dp"
-        android:layout_height="59dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
         android:text="Haz pausas de 5 minutos cada 50 minutos para mover los músculos."
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/textView23"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample19"
         app:layout_constraintHorizontal_bias="0.331"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/boxExample19"
         app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
     <TextView
         android:id="@+id/paragraphNegro4"
         style="@style/ParagraphNegro"
-        android:layout_width="197dp"
-        android:layout_height="59dp"
-        android:text="Menos de 5 avisos sobre postura incorrecta durante un día."
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Menos de 10 avisos sobre la distancia a a tu pantalla durante una semana."
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/textView24"
         app:layout_constraintEnd_toStartOf="@+id/imageView11"
@@ -130,14 +156,16 @@
     <TextView
         android:id="@+id/textView21"
         style="@style/Heading3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="8dp"
         android:text="Menos de 1 hora sentado"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/paragraphNegro3"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.314"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/boxExample19"
         app:layout_constraintTop_toBottomOf="@+id/boxExample19" />
 
     <TextView
@@ -148,9 +176,9 @@
         android:text="Finaliza tu meta anterior..."
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/boxExample19"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.324"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample19"
+        app:layout_constraintHorizontal_bias="0.078"
+        app:layout_constraintStart_toStartOf="@+id/boxExample19"
         app:layout_constraintTop_toBottomOf="@+id/paragraphNegro3" />
 
     <TextView
@@ -158,12 +186,14 @@
         style="@style/Heading3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
         android:text="Llevas 1 de 5 posibles..."
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample16"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.29"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample16"
         app:layout_constraintTop_toBottomOf="@+id/paragraphNegro2" />
 
     <TextView
@@ -171,12 +201,13 @@
         style="@style/Heading3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="1dp"
         android:text="Finaliza tu meta anterior..."
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample18"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample18"
         app:layout_constraintEnd_toStartOf="@+id/imageView11"
-        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/boxExample18"
         app:layout_constraintTop_toBottomOf="@+id/paragraphNegro4" />
 
@@ -191,7 +222,7 @@
         app:layout_constraintBottom_toTopOf="@+id/paragraphNegro4"
         app:layout_constraintEnd_toStartOf="@+id/imageView11"
         app:layout_constraintStart_toStartOf="@+id/boxExample18"
-        app:layout_constraintTop_toBottomOf="@+id/boxExample18" />
+        app:layout_constraintTop_toTopOf="@+id/boxExample18" />
 
     <TextView
         android:id="@+id/heading13"
@@ -209,35 +240,37 @@
     <TextView
         android:id="@+id/heading14"
         style="@style/Heading1"
-        android:layout_width="157dp"
-        android:layout_height="26dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Meta Actual"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample16"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample15"
-        app:layout_constraintHorizontal_bias="0.163"
-        app:layout_constraintStart_toStartOf="@+id/boxExample15"
-        app:layout_constraintTop_toTopOf="@+id/boxExample15"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/boxExample15" />
 
     <TextView
         android:id="@+id/heading15"
         style="@style/Heading1"
-        android:layout_width="217dp"
-        android:layout_height="28dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:text="Próximas Metas"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample19"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample15"
-        app:layout_constraintHorizontal_bias="0.222"
-        app:layout_constraintStart_toStartOf="@+id/boxExample15"
-        app:layout_constraintTop_toBottomOf="@+id/boxExample16" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline15"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/guideline13" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="30dp" />
+        app:layout_constraintGuide_begin="31dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -249,7 +282,8 @@
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="73dp"
-        android:layout_height="123dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/boxExample16"
         app:layout_constraintEnd_toEndOf="@+id/boxExample16"
         app:layout_constraintStart_toEndOf="@+id/paragraphNegro2"
@@ -260,10 +294,12 @@
         android:id="@+id/imageView10"
         android:layout_width="82dp"
         android:layout_height="126dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/boxExample19"
         app:layout_constraintEnd_toEndOf="@+id/boxExample19"
         app:layout_constraintStart_toEndOf="@+id/paragraphNegro3"
         app:layout_constraintTop_toTopOf="@+id/boxExample19"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/icono_andando" />
 
     <ImageView
@@ -348,5 +384,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icono_flecha" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="534dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="534dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="317dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="114dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="718dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="388dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
