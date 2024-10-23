@@ -48,13 +48,41 @@ public class Grafica extends Fragment {
         GraficaActivity graficaMain = (GraficaActivity) getActivity();
         assert graficaMain != null;
 
-        scrollView = vista.findViewById(R.id.scrollView);
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
+        final View stopPoint = vista.findViewById(R.id.stopPoint);
+
+
+        scrollView=vista.findViewById(R.id.scrollView);
+
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true; // Esto deshabilita el desplazamiento
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                // Obtener la posición Y inferior del stopPoint relativo al ScrollView
+                int stopPointBottom = stopPoint.getBottom();  // Esto te da la posición inferior del stopPoint dentro del padre (ScrollView)
+
+                // Obtener la altura visible del ScrollView
+                int scrollViewHeight = scrollView.getHeight();
+
+                // Obtener la posición Y actual más la altura visible del ScrollView
+                int scrollViewBottomY = scrollY + scrollViewHeight;
+
+                // Verificar si la gráfica actual es "Progreso Avisos"
+                if (!"Progreso Avisos".equals(graficaMain.getGrafica_elegida())) {
+                    // Si no es "Progreso Avisos", limitar el desplazamiento al stopPoint
+                    if (scrollViewBottomY >= stopPointBottom) {
+                        scrollView.scrollTo(scrollX, stopPointBottom - scrollViewHeight); // Fijar el scroll en el punto límite
+                    }
+                } else {
+                    // En "Progreso Avisos", permitir desplazamiento completo
+                    scrollView.setOnTouchListener(null);
+                }
             }
         });
+
+
+
+
+
 
 
         // Dependiendo del tipo de gráfica, cargamos los datos correspondientes
@@ -109,6 +137,7 @@ public class Grafica extends Fragment {
                 vmin.setText("1");
                 vprom.setText("7");
                 vmax.setText("22");
+                grafica.setImageResource(R.drawable.avisossemanales);
                 break;
         }
 
@@ -150,6 +179,7 @@ public class Grafica extends Fragment {
                 vmin.setText("5");
                 vprom.setText("15");
                 vmax.setText("35");
+                grafica.setImageResource(R.drawable.avisosmensuales);
                 break;
         }
     }
@@ -200,7 +230,7 @@ public class Grafica extends Fragment {
         valorMax.setVisibility(View.VISIBLE);
 
         TextView minText2 = vista_graficas.findViewById(R.id.Min_text);
-        TextView promText2 = vista_graficas.findViewById(R.id.Promedio_text);
+        TextView promText2 = vista_graficas.findViewById(R.id.textView16);
         TextView maxText2 = vista_graficas.findViewById(R.id.max_text);
         minText2.setVisibility(View.VISIBLE);
         promText2.setVisibility(View.VISIBLE);
