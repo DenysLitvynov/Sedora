@@ -19,10 +19,12 @@ public class RecyclerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notificaciones);
 
         ImageButton buttonIcon = findViewById(R.id.button_icon);
+
 
         notificacionManager = new NotificacionManager();
         recyclerView = findViewById(R.id.recyclerView);

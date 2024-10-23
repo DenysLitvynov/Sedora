@@ -8,6 +8,15 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-12dp">
 
+    <!-- Include del Header -->
+    <include
+        layout="@layout/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Aquí tu contenido principal del layout -->
+
     <TextView
         android:id="@+id/heading9"
         style="@style/Heading1"

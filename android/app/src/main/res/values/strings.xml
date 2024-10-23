@@ -24,5 +24,6 @@
     <string name="HeLeido">He leído y acepto la</string>
     <string name="Polpriv">Política de privacidad</string>
 
+    <string name="flecha_vuelta_desc">Volver</string>
 
 </resources>
