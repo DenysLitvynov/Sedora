@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificacionManager {
+
     private List<Notificacion> notificaciones;
+
 
     public NotificacionManager() {
         // Inicializamos la lista de notificaciones
@@ -21,6 +23,7 @@ public class NotificacionManager {
         notificaciones.add(new Notificacion("Hidratación", "Es recomendable que tomes un momento para beber agua y asegurarte de que estás bien hidratado.", "Recordatorio", "14:15 19/09/2024", 2, R.drawable.icono_hidratacion));
     }
 
+
     public List<Notificacion> getNotificaciones() {
         return notificaciones;
     }
@@ -29,5 +32,7 @@ public class NotificacionManager {
     public void addNotificacion(Notificacion notificacion) {
         notificaciones.add(notificacion);
     }
+
+
 }
 

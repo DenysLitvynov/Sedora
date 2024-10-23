@@ -19,7 +19,16 @@ public class PantallaInicioActivity extends AppCompatActivity {
 
         configurarPantallaInicio();
 
-        //FUNCIONALIDAD BOTONES MENUS
+
+        //FUNCIONALIDAD HEADER
+
+        HeaderManager headerManager = new HeaderManager();
+        View rootView = findViewById(android.R.id.content);
+        headerManager.setupHeader(this, rootView);
+
+        //FIN FUNIONALIDAD HEADER
+
+        //FUNCIONALIDAD BOTONES MENU
 
         MenuManager funcionMenu = new MenuManager();
 
@@ -56,7 +65,7 @@ public class PantallaInicioActivity extends AppCompatActivity {
             }
         });
 
-        /*FIN FUNCIONALIDAD BOTONES*/
+        /*FIN FUNCIONALIDAD BOTONES MENU*/
     }
 
     private void configurarPantallaInicio() {
