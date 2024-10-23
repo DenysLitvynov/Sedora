@@ -48,13 +48,41 @@ public class Grafica extends Fragment {
         GraficaActivity graficaMain = (GraficaActivity) getActivity();
         assert graficaMain != null;
 
-        scrollView = vista.findViewById(R.id.scrollView);
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
+        final View stopPoint = vista.findViewById(R.id.stopPoint);
+        final View stopPoint2 = vista.findViewById(R.id.stopPoint2);
+
+        scrollView=vista.findViewById(R.id.scrollView);
+
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true; // Esto deshabilita el desplazamiento
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                // Obtener la posición Y inferior del stopPoint relativo al ScrollView
+                int stopPointBottom = stopPoint.getBottom();  // Esto te da la posición inferior del stopPoint dentro del padre (ScrollView)
+
+                // Obtener la altura visible del ScrollView
+                int scrollViewHeight = scrollView.getHeight();
+
+                // Obtener la posición Y actual más la altura visible del ScrollView
+                int scrollViewBottomY = scrollY + scrollViewHeight;
+
+                // Verificar si la gráfica actual es "Progreso Avisos"
+                if (!"Progreso Avisos".equals(graficaMain.getGrafica_elegida())) {
+                    // Si no es "Progreso Avisos", limitar el desplazamiento al stopPoint
+                    if (scrollViewBottomY >= stopPointBottom) {
+                        scrollView.scrollTo(scrollX, stopPointBottom - scrollViewHeight); // Fijar el scroll en el punto límite
+                    }
+                } else {
+                    // En "Progreso Avisos", permitir desplazamiento completo
+                    scrollView.setOnTouchListener(null);
+                }
             }
         });
+
+
+
+
+
 
 
         // Dependiendo del tipo de gráfica, cargamos los datos correspondientes
