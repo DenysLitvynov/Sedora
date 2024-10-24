@@ -1,10 +1,12 @@
 package com.example.sedora;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,9 @@ public class AcercaDe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acercade);
+
+        // para entrar en la página de notificaciones
+        ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesAcercaDe);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewAcercaDe);
@@ -32,10 +37,29 @@ public class AcercaDe extends AppCompatActivity {
         AcercaDeItemList.add(new RecyclerViewItem("¿Cuál es nuestro objetivo?", "Nuestro objetivo es mejorar la calidad de vida de las personas a través de soluciones tecnológicas que optimicen la ergonomía en espacios de trabajo y estudio. Buscamos promover hábitos saludables y prevenir problemas derivados de una mala postura, ayudando a nuestros usuarios a crear entornos más confortables, eficientes y saludables."));
         AcercaDeItemList.add(new RecyclerViewItem("¿Qué impacto buscamos generar?", "Buscamos generar un impacto positivo en la salud y el bienestar de las personas al transformar sus hábitos de trabajo y estudio. Queremos reducir los problemas asociados con la ergonomía deficiente, fomentando prácticas saludables y sostenibles. Aspiramos a crear entornos más seguros, productivos y adaptados a las necesidades individuales de cada usuario, contribuyendo a su bienestar a largo plazo. "));
 
-        //Log.d("Acerca De", "Número de ítems: " + AcercaDeItemList.size());
-
         // Configurar el adapter
         AcercaDeAdapter acercaDeAdapter = new AcercaDeAdapter(AcercaDeItemList);
         recyclerView.setAdapter(acercaDeAdapter);
+
+        // Funcionalidad al botón de flecha
+        ImageButton flechaRetroceso = findViewById(R.id.FlechaRetrocesoAcercaDe);
+        flechaRetroceso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crear un Intent para redirigir a la actividad de ajustes
+                Intent intent = new Intent(AcercaDe.this, AjustesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Configura el clic en el button_icon para entrar en Notificaciones
+        buttonIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AcercaDe.this, RecyclerActivity.class);
+                startActivity(intent);
+                finish(); // Opcional: cerrar la actividad actual
+            }
+        });
     }
 }

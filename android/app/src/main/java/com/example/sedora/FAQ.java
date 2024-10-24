@@ -1,10 +1,14 @@
 package com.example.sedora;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +18,9 @@ public class FAQ extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.faq);
+
+        // para entrar en la página de notificaciones
+        ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesFAQ);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewFAQ);
@@ -44,5 +51,26 @@ public class FAQ extends AppCompatActivity {
         // Configurar el adapter
         FAQAdapter faqAdapter = new FAQAdapter(faqItemList);
         recyclerView.setAdapter(faqAdapter);
+
+        // Funcionalidad al botón de flecha
+        ImageButton flechaRetroceso = findViewById(R.id.FlechaRetrocesoFAQ);
+        flechaRetroceso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crear un Intent para redirigir a la actividad de ajustes
+                Intent intent = new Intent(FAQ.this, AjustesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Configura el clic en el button_icon para entrar en Notificaciones
+        buttonIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FAQ.this, RecyclerActivity.class);
+                startActivity(intent);
+                finish(); // Opcional: cerrar la actividad actual
+            }
+        });
     }
 }
