@@ -21,11 +21,11 @@ public class PantallaInicioActivity extends AppCompatActivity {
 
 
         //FUNCIONALIDAD HEADER
-
+        /*
         HeaderManager headerManager = new HeaderManager();
         View rootView = findViewById(android.R.id.content);
         headerManager.setupHeader(this, rootView);
-
+         */
         //FIN FUNIONALIDAD HEADER
 
         //FUNCIONALIDAD BOTONES MENU

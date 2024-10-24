@@ -36,9 +36,6 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText nuevaContraseña;
     private Button botonCancelar;
 
-    // para entrar en la página de notificaciones - TEMPORAL
-    ImageButton buttonIcon = findViewById(R.id.button_icon);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,19 +142,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         /*FIN FUNCIONALIDAD BOTONES*/
-
-
-        // TEMPORAL PARA ABRIR LA PAGINA DE NOTIFICACIONES
-        // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, RecyclerActivity.class);
-                startActivity(intent);
-                finish(); // Opcional: cerrar la actividad actual
-            }
-        });
-
 
     }
 
