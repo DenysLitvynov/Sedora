@@ -83,5 +83,9 @@ public class PantallaInicioActivity extends AppCompatActivity {
         });
     }
 
+    public void irARecyclerActivity(View view) {
+        Intent intent = new Intent(this, RecyclerActivity.class);
+        startActivity(intent);
+    }
 
 }

@@ -3,6 +3,7 @@ package com.example.sedora;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,12 @@ public class AjustesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.ajustes);
+
+
+        // para entrar en la página de notificaciones
+        ImageButton buttonIcon = findViewById(R.id.button_icon);
+
+
 
         //FUNCIONALIDAD BOTONES MENUS
 
@@ -87,5 +94,17 @@ public class AjustesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        // Configura el clic en el button_icon para entrar en Notificaciones
+        buttonIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AjustesActivity.this, RecyclerActivity.class);
+                startActivity(intent);
+                finish(); // Opcional: cerrar la actividad actual
+            }
+        });
     }
+
 }

@@ -41,6 +41,11 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil);
 
+
+        // para entrar en la página de notificaciones
+        ImageButton buttonIcon = findViewById(R.id.button_icon);
+
+
         nuevoNombre = findViewById(R.id.nuevoNombre2);
         nuevoCorreo = findViewById(R.id.nuevoCorreo);
         nuevaContraseña = findViewById(R.id.nuevaContraseña);
@@ -142,6 +147,16 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         /*FIN FUNCIONALIDAD BOTONES*/
+
+        // Configura el clic en el button_icon para entrar en Notificaciones
+        buttonIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, RecyclerActivity.class);
+                startActivity(intent);
+                finish(); // Opcional: cerrar la actividad actual
+            }
+        });
 
     }
 

@@ -7,6 +7,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/menu_acciones"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,16 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tituloPerfil"
-                style="@style/Heading1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Perfil"
-                app:layout_constraintEnd_toEndOf="@+id/view"
+
+            <View
+                android:id="@+id/seccion"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:elevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
@@ -41,12 +41,26 @@
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icono_campana_2"
-                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintBottom_toBottomOf="@+id/header_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintTop_toTopOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/header_title"
+                app:layout_constraintTop_toTopOf="@+id/header_title"
                 tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/header_title"
+                style="@style/Heading1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Perfil"
+                app:layout_constraintBottom_toBottomOf="@+id/seccion"
+                app:layout_constraintStart_toStartOf="@+id/seccion"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
 
             <Button
                 android:id="@+id/cerrar_sesion"
@@ -68,17 +82,15 @@
                 android:id="@+id/view"
                 style="@style/BoxBackground"
                 android:layout_width="0dp"
-                android:layout_height="600dp"
+                android:layout_height="550dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toTopOf="@+id/cerrar_sesion"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/seccion" />
 
             <Button
                 android:id="@+id/botonEditar"
@@ -106,11 +118,8 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintEnd_toEndOf="@+id/view"
-                app:layout_constraintStart_toStartOf="@+id/view" />
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/view"
-            app:layout_constraintTop_toBottomOf="@+id/botonActualizar"
-            app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintHorizontal_bias="1.0" />
 
             <Button
                 android:id="@+id/botonActualizar"
@@ -269,16 +278,6 @@
                 app:layout_constraintHorizontal_bias="0.093"
                 app:layout_constraintStart_toStartOf="@+id/view3"
                 app:layout_constraintTop_toTopOf="@+id/view8" />
-
-            <TextView
-                android:id="@+id/textView8"
-                style="@style/Heading1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Perfil"
-                app:layout_constraintStart_toStartOf="@+id/view"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

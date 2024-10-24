@@ -4,15 +4,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Heading3"
+    android:id="@+id/ajustes"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_editor_absoluteX="26dp"
-    tools:layout_editor_absoluteY="-3dp">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/menu_acciones"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +20,16 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/seccion"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:elevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/button_icon"
@@ -35,23 +44,22 @@
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icono_campana_2"
-                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintBottom_toBottomOf="@+id/header_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintTop_toTopOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/header_title"
+                app:layout_constraintTop_toTopOf="@+id/header_title"
                 tools:ignore="SpeakableTextPresentCheck" />
 
-
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/header_title"
                 style="@style/Heading1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"
                 android:text="Ajustes"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/seccion"
+                app:layout_constraintStart_toStartOf="@+id/seccion"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
@@ -59,25 +67,27 @@
                 style="@style/BoxBackground"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/view9"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.115" />
+                app:layout_constraintTop_toBottomOf="@+id/seccion" />
 
             <View
                 android:id="@+id/view9"
                 style="@style/BoxBackgroundblanco"
                 android:layout_width="0dp"
                 android:layout_height="110dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/box_background"
+                app:layout_constraintBottom_toTopOf="@+id/view11"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view6" />
 
@@ -86,12 +96,13 @@
                 style="@style/BoxBackgroundblanco"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/box_background"
+                app:layout_constraintBottom_toTopOf="@+id/view12"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view9" />
 
@@ -99,11 +110,13 @@
                 android:id="@+id/view12"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/box_background"
+                app:layout_constraintBottom_toTopOf="@+id/view13"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view11" />
 
@@ -111,12 +124,13 @@
                 android:id="@+id/view13"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/box_background"
+                app:layout_constraintBottom_toTopOf="@+id/view14"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view12" />
 
@@ -124,14 +138,13 @@
                 android:id="@+id/view14"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/box_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view13" />
 
@@ -169,28 +182,6 @@
                 app:layout_constraintStart_toStartOf="@+id/view6"
                 app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-            <Switch
-                android:id="@+id/switch1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="570dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/view6"
-                app:layout_constraintStart_toStartOf="@+id/view6"
-                app:layout_constraintTop_toTopOf="@+id/view6" />
-
-            <Switch
-                android:id="@+id/switch2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="570dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/view6"
-                app:layout_constraintStart_toStartOf="@+id/view6"
-                app:layout_constraintTop_toBottomOf="@+id/switch1" />
-
             <TextView
                 android:id="@+id/textView13"
                 style="@style/Heading3"
@@ -208,21 +199,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="Sensor de Temperatura"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/view6"
                 app:layout_constraintStart_toStartOf="@+id/view6"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-            <Switch
-                android:id="@+id/switch3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="570dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/view6"
-                app:layout_constraintStart_toStartOf="@+id/view6"
-                app:layout_constraintTop_toBottomOf="@+id/switch2" />
 
             <TextView
                 android:id="@+id/textView17"
@@ -230,22 +213,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="Desactivar"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/view9"
                 app:layout_constraintEnd_toStartOf="@+id/switch4"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/view9"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-            <Switch
-                android:id="@+id/switch4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="570dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/view9"
-                app:layout_constraintStart_toStartOf="@+id/view9"
-                tools:layout_editor_absoluteY="307dp" />
 
             <TextView
                 android:id="@+id/textView18"
@@ -303,7 +279,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Sobre nosotros"
                 app:layout_constraintStart_toStartOf="@+id/view12"
                 app:layout_constraintTop_toTopOf="@+id/view12" />
@@ -314,8 +290,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="Ver información sobre nosotros >"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/view12"
                 app:layout_constraintStart_toStartOf="@+id/view12"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -325,7 +303,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="FAQ"
                 app:layout_constraintStart_toStartOf="@+id/view13"
                 app:layout_constraintTop_toTopOf="@+id/view13" />
@@ -336,8 +314,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="Ver Preguntas frecuentes >"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/view13"
                 app:layout_constraintStart_toStartOf="@+id/view13"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -347,7 +327,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Politica de Privacidad"
                 app:layout_constraintStart_toStartOf="@+id/view14"
                 app:layout_constraintTop_toTopOf="@+id/view14" />
@@ -357,15 +337,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="Ver Política de Privacidad >"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/view14"
                 app:layout_constraintStart_toStartOf="@+id/view14"
                 app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </androidx.core.widget.NestedScrollView>
 
     <!-- FOOTER -->
@@ -374,7 +353,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="20dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="visible">
 
         <include
             layout="@layout/menu_acciones"

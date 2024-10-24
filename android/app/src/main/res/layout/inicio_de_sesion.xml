@@ -43,23 +43,23 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="260dp" />
 
-    <EditText
-        android:id="@+id/edtEmail"
-        style="@style/Inputs"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/Email"
-        android:inputType="textEmailAddress"
-        android:textColorHint="@color/negro"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"
-        tools:ignore="TextSizeCheck" />
+        <EditText
+            android:id="@+id/edtEmail"
+            style="@style/Inputs"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:hint="@string/Email"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/negro"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline5"
+            tools:ignore="TextSizeCheck" />
 
 
         <TextView

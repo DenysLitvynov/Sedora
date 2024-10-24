@@ -3,6 +3,7 @@ package com.example.sedora;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +22,12 @@ public class ProgresoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.pagina_progreso);
+
+
+        // para entrar en la página de notificaciones
+        ImageButton buttonIcon = findViewById(R.id.button_icon);
+
+
 
         View horasSentado =findViewById(R.id.HorasSentado);
 
@@ -115,7 +122,20 @@ public class ProgresoActivity extends AppCompatActivity {
 
         /*FIN FUNCIONALIDAD BOTONES*/
 
+
+        // Configura el clic en el button_icon para entrar en Notificaciones
+        buttonIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProgresoActivity.this, RecyclerActivity.class);
+                startActivity(intent);
+                finish(); // Opcional: cerrar la actividad actual
+            }
+        });
+
     }
+
+
     //================================FIN DE ON CREATE==============================================
 
     //METODO PARA ESTABLECER EL TITULO DE LA GRAFICA / DATOS A CARGAR
@@ -126,4 +146,5 @@ public class ProgresoActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
 }
