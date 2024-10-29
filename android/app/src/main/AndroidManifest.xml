@@ -15,52 +15,54 @@
         android:theme="@style/Theme.Sedora"
         tools:targetApi="31">
         <activity
-            android:name=".GraficaActivity"
+            android:name=".presentation.views.GraficaActivity"
             android:exported="false" />
         <activity
-            android:name=".ProgresoActivity"
+            android:name=".presentation.views.ProgresoActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.views.MainActivity"
             android:exported="true">
 
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".presentation.views.CargaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegistroActivity"
+            android:name=".presentation.views.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.views.RegistroActivity"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".RecyclerActivity"
+            android:name=".presentation.views.RecyclerActivity"
             android:exported="true">
         </activity>
 
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".presentation.views.ProfileActivity"></activity>
 
-        <activity android:name=".AjustesActivity"></activity>
+        <activity android:name=".presentation.views.AjustesActivity"></activity>
 
-        <activity android:name=".FAQ"></activity>
+        <activity android:name=".presentation.views.FAQ"></activity>
 
-        <activity android:name=".AcercaDe"></activity>
+        <activity android:name=".presentation.views.AcercaDe"></activity>
 
-        <activity android:name=".PoliticaDePrivacidad"></activity>
+        <activity android:name=".presentation.views.PoliticaDePrivacidad"></activity>
 
 
         <activity
-            android:name=".PantallaInicioActivity"
+            android:name=".presentation.views.PantallaInicioActivity"
             android:exported="true"/>
 
         <activity
-            android:name=".TusMetasActivity"
+            android:name=".presentation.views.TusMetasActivity"
             android:exported="true"/>
 
     </application>
