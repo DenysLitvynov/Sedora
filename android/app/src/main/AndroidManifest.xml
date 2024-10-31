@@ -48,7 +48,10 @@
 
         <activity android:name=".presentation.views.ProfileActivity"></activity>
 
-        <activity android:name=".presentation.views.AjustesActivity"></activity>
+        <activity
+            android:name=".presentation.views.AjustesActivity"
+            android:theme="@style/Theme.Sedora" />
+
 
         <activity android:name=".presentation.views.FAQ"></activity>
 
