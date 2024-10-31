@@ -18,7 +18,6 @@ public class AjustesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.ajustes);
 
 
@@ -66,7 +65,7 @@ public class AjustesActivity extends AppCompatActivity {
         // FUNCIONALIDAD TEXTVIEW PARA ABRIR OTRAS PÁGINAS
 
         // Ver Sobre Nosotros
-        TextView tvVerSobreNosotros = findViewById(R.id.tvVerSobreNosotros);
+        TextView tvVerSobreNosotros = findViewById(R.id.textView31);
         tvVerSobreNosotros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +75,7 @@ public class AjustesActivity extends AppCompatActivity {
         });
 
         // Ver Política de Privacidad
-        TextView tvVerPoliticaPrivacidad = findViewById(R.id.tvVerPoliticaPrivacidad);
+        TextView tvVerPoliticaPrivacidad = findViewById(R.id.textView35);
         tvVerPoliticaPrivacidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +85,7 @@ public class AjustesActivity extends AppCompatActivity {
         });
 
         // Ver Preguntas Frecuentes (FAQ)
-        TextView tvVerFAQ = findViewById(R.id.tvVerFAQ);
+        TextView tvVerFAQ = findViewById(R.id.textView33);
         tvVerFAQ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
