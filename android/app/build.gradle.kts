@@ -43,6 +43,11 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
 
+    implementation("com.jjoe64:graphview:4.2.2") {
+        exclude(group = "com.android.support")
+    }
+
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

@@ -1,6 +1,7 @@
 package com.example.sedora.presentation.fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 
 import com.example.sedora.R;
 import com.example.sedora.presentation.views.GraficaActivity;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class Grafica extends Fragment {
 
@@ -50,8 +54,28 @@ public class Grafica extends Fragment {
         GraficaActivity graficaMain = (GraficaActivity) getActivity();
         assert graficaMain != null;
 
+
         final View stopPoint = vista.findViewById(R.id.stopPoint);
 
+        GraphView grafica= vista.findViewById(R.id.Grafica);
+        GraphView grafica2=vista.findViewById(R.id.Grafica2F);
+
+        // Crea una serie de datos para el gráfico
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3),
+                new DataPoint(3, 2),
+                new DataPoint(4, 6)
+        });
+
+        // Agrega la serie al gráfico
+        grafica.addSeries(series);
+        grafica2.addSeries(series);
+
+        // Configuración adicional del gráfico
+        series.setColor(Color.BLUE); // Cambia el color de la línea
+        series.setThickness(8); // Cambia el grosor de la línea
 
         scrollView=vista.findViewById(R.id.scrollView);
 
@@ -82,11 +106,6 @@ public class Grafica extends Fragment {
         });
 
 
-
-
-
-
-
         // Dependiendo del tipo de gráfica, cargamos los datos correspondientes
         if ("semanal".equals(tipoGrafica)) {
             cargarDatosSemanales(vista, graficaMain.getGrafica_elegida());
@@ -97,6 +116,8 @@ public class Grafica extends Fragment {
         // Inflate the layout for this fragment
         return vista;
     }
+
+
 
 
     //Esta dependiendo que se elegio, carga los datos(POR AHORA SON FALSOS)
@@ -197,6 +218,7 @@ public class Grafica extends Fragment {
         grafica.setVisibility(View.VISIBLE);
         subtitulo1.setVisibility(View.VISIBLE);
         subtitulo2.setVisibility(View.VISIBLE);
+
 
 
         // Hacer visibles los valores asociados
