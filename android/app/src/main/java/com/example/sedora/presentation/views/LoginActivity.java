@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,9 +24,12 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GithubAuthProvider;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.OAuthCredential;
+
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -196,6 +200,31 @@ public class LoginActivity extends AppCompatActivity {
                     mensaje("Error de autenticación con Twitter: " + e.getLocalizedMessage());
                 });
     }
+
+    //Autenticación Mediante Github
+
+    public void autentificarGitHub(View v) {
+
+        OAuthProvider.Builder provider = OAuthProvider.newBuilder("github.com");
+
+        provider.addCustomParameter("allow_signup", "false");
+
+        auth.startActivityForSignInWithProvider(this, provider.build())
+                .addOnSuccessListener(
+                        authResult -> {
+
+                            OAuthCredential credential = (OAuthCredential) authResult.getCredential();
+                            String accessToken = credential.getAccessToken();
+
+                            verificaSiUsuarioValidado();
+                        })
+                .addOnFailureListener(e -> {
+
+                    mensaje2("Error de autenticación con GitHub: " + e.getLocalizedMessage());
+                });
+    }
+
+// Fin Autentificación mediante GitHub
 
 
     private void mensaje2(String mensaje) {
