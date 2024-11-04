@@ -209,19 +209,20 @@
         app:layout_constraintTop_toBottomOf="@+id/accedeCon"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
-        android:id="@+id/button2"
-        style="@style/BotonBlanco"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text=""
-        app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnGoogleLogin"
-        app:layout_constraintTop_toBottomOf="@+id/accedeCon"
-        tools:ignore="SpeakableTextPresentCheck" />
+        <Button
+            android:id="@+id/button2"
+            style="@style/BotonBlanco"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:onClick="autentificarGitHub"
+            android:text=""
+            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnGoogleLogin"
+            app:layout_constraintTop_toBottomOf="@+id/accedeCon"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/button3"
@@ -251,7 +252,7 @@
         app:srcCompat="@drawable/logo_google" />
 
     <ImageView
-        android:id="@+id/logoFacebook"
+        android:id="@+id/logoGitHub"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:elevation="5dp"
@@ -259,7 +260,7 @@
         app:layout_constraintEnd_toEndOf="@+id/button2"
         app:layout_constraintStart_toStartOf="@+id/button2"
         app:layout_constraintTop_toTopOf="@+id/button2"
-        app:srcCompat="@drawable/facebook" />
+        app:srcCompat="@drawable/github" />
 
     <ImageView
         android:id="@+id/logoX"
