@@ -63,6 +63,10 @@
             android:name=".TusMetasActivity"
             android:exported="true"/>
 
+        <activity
+            android:name=".TusMetas2Activity"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

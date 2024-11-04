@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="16dp"
+    tools:layout_editor_absoluteY="-9dp">
+
+    <View
+        android:id="@+id/boxExample27"
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.83"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/boxExample8"
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/box_background_blanco"
+        android:backgroundTint="#CDC8C8"
+        app:layout_constraintBottom_toTopOf="@+id/boxExample24"
+        app:layout_constraintEnd_toEndOf="@+id/heading7"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/volver_metas3"
+        app:layout_constraintTop_toBottomOf="@+id/heading7" />
+
+    <View
+        android:id="@+id/boxExample9"
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/box_background_blanco"
+        android:backgroundTint="#CDC8C8"
+        app:layout_constraintBottom_toTopOf="@+id/boxExample11"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample24"
+        app:layout_constraintStart_toStartOf="@+id/boxExample24"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample24" />
+
+    <View
+        android:id="@+id/boxExample24"
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/box_background_blanco"
+        android:backgroundTint="#CDC8C8"
+        app:layout_constraintBottom_toTopOf="@+id/boxExample9"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/boxExample8"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample8" />
+
+    <View
+        android:id="@+id/boxExample11"
+        style="@style/BoxBackground2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/box_background_blanco"
+        android:backgroundTint="#CDC8C8"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample27"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample9"
+        app:layout_constraintStart_toStartOf="@+id/boxExample9"
+        app:layout_constraintTop_toBottomOf="@+id/boxExample9" />
+
+    <ImageView
+        android:id="@+id/volver_metas3"
+        android:layout_width="56dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/heading7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/heading7"
+        app:srcCompat="@drawable/icono_flecha" />
+
+    <TextView
+        android:id="@+id/textView27"
+        style="@style/Heading3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:text="Menos de 2 horas en el móvil"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/paragraphNegro14"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample8"
+        app:layout_constraintStart_toStartOf="@+id/boxExample8"
+        app:layout_constraintTop_toTopOf="@+id/boxExample8" />
+
+    <TextView
+        android:id="@+id/textView30"
+        style="@style/Heading3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Finaliza tu meta anterior..."
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample8"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphNegro14"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/paragraphNegro14"
+        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro14" />
+
+    <TextView
+        android:id="@+id/paragraphNegro14"
+        style="@style/ParagraphNegro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Reduce el tiempo de uso de aplicaciones de entretenimiento a menos de 1 hora al día."
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView30"
+        app:layout_constraintEnd_toEndOf="@+id/textView27"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/textView27"
+        app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+    <TextView
+        android:id="@+id/paragraphNegro15"
+        style="@style/ParagraphNegro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Completa un mínimo de 5 días consecutivos caminando 5,000 pasos o más."
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView32"
+        app:layout_constraintEnd_toEndOf="@+id/textView31"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/textView31"
+        app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+    <TextView
+        android:id="@+id/paragraphNegro16"
+        style="@style/ParagraphNegro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Asegúrate de mantener la espalda recta durante el trabajo, y verifica tu postura cada hora."
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView35"
+        app:layout_constraintEnd_toEndOf="@+id/textView33"
+        app:layout_constraintStart_toStartOf="@+id/textView33"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+    <TextView
+        android:id="@+id/paragraphNegro17"
+        style="@style/ParagraphNegro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Completa 7 días consecutivos bebiendo al menos 2 litros de agua al día."
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView36"
+        app:layout_constraintEnd_toEndOf="@+id/textView34"
+        app:layout_constraintStart_toStartOf="@+id/textView34"
+        app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+    <TextView
+        android:id="@+id/textView31"
+        style="@style/Heading3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:text="Camina más de 5,000 pasos al día"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/paragraphNegro15"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample24"
+        app:layout_constraintStart_toStartOf="@+id/boxExample24"
+        app:layout_constraintTop_toTopOf="@+id/boxExample24" />
+
+    <TextView
+        android:id="@+id/textView33"
+        style="@style/Heading3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:text="Mantén una postura correcta"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/paragraphNegro16"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample9"
+        app:layout_constraintStart_toStartOf="@+id/boxExample9"
+        app:layout_constraintTop_toTopOf="@+id/boxExample9" />
+
+    <TextView
+        android:id="@+id/textView34"
+        style="@style/Heading3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:text="Bebe suficiente agua cada día"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/paragraphNegro17"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample11"
+        app:layout_constraintStart_toStartOf="@+id/boxExample11"
+        app:layout_constraintTop_toTopOf="@+id/boxExample11" />
+
+    <TextView
+        android:id="@+id/textView32"
+        style="@style/Heading3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Finaliza tu meta anterior..."
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample24"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphNegro15"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/paragraphNegro15"
+        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro15" />
+
+    <TextView
+        android:id="@+id/textView35"
+        style="@style/Heading3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Finaliza tu meta anterior..."
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample9"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphNegro16"
+        app:layout_constraintStart_toStartOf="@+id/paragraphNegro16"
+        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro16" />
+
+    <TextView
+        android:id="@+id/textView36"
+        style="@style/Heading3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Finaliza tu meta anterior..."
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample11"
+        app:layout_constraintEnd_toEndOf="@+id/paragraphNegro17"
+        app:layout_constraintStart_toStartOf="@+id/paragraphNegro17"
+        app:layout_constraintTop_toBottomOf="@id/paragraphNegro17" />
+
+    <TextView
+        android:id="@+id/heading7"
+        style="@style/Heading1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="50dp"
+        android:text="Próximas Metas"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/volver_metas3"
+        app:layout_constraintTop_toTopOf="@+id/boxExample27" />
+</androidx.constraintlayout.widget.ConstraintLayout>
