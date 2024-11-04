@@ -2,8 +2,11 @@ package com.example.sedora;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PantallaInicioActivity extends AppCompatActivity {
@@ -13,20 +16,15 @@ public class PantallaInicioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);  // Carga inicialmente pantalla_inicio
 
+        //TEXTO DEL HEADER
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Inicio");
+
         // Configurar el popup
         Popup_pantalla_inicio popupPantallaInicio = new Popup_pantalla_inicio(this, this);
         popupPantallaInicio.setupPopup();  // Configurar el popup para la imagen con el ID "popup_ambiente"
 
         configurarPantallaInicio();
-
-
-        //FUNCIONALIDAD HEADER
-        /*
-        HeaderManager headerManager = new HeaderManager();
-        View rootView = findViewById(android.R.id.content);
-        headerManager.setupHeader(this, rootView);
-         */
-        //FIN FUNIONALIDAD HEADER
 
         //FUNCIONALIDAD BOTONES MENU
 

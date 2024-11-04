@@ -4,26 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TusMetasActivity extends AppCompatActivity {
 
+    private ImageView botonProximasMetas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tus_metas);  // Carga el layout de "tus metas"
+        setContentView(R.layout.tus_metas);
 
-        // Encuentra el botón volver_metas en el layout tus_metas
-        ImageView volverMetas = findViewById(R.id.volver_metas);
+        // Configura el texto del header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Tus Metas");
 
-        // Configura el OnClickListener para volver a PantallaInicioActivity
-        volverMetas.setOnClickListener(new View.OnClickListener() {
+        // Inicializa y configura el botón para abrir la actividad TusMetas2Activity
+        botonProximasMetas = findViewById(R.id.boton_proximas_metas);
+        botonProximasMetas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Regresa a PantallaInicioActivity usando un Intent
-                Intent intent = new Intent(TusMetasActivity.this, PantallaInicioActivity.class);
+                Intent intent = new Intent(TusMetasActivity.this, TusMetas2Activity.class);
                 startActivity(intent);
-                finish(); // Finaliza esta actividad para que no esté en la pila de backstack
             }
         });
     }
