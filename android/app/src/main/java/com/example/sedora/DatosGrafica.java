@@ -69,7 +69,7 @@ public class DatosGrafica {
         this.valoresY.add(valornuevoY);
     }
 
-    public  void añadir_varios_datos_Nuevos(List<Double> valores_nuevosX,List<Double> valores_nuevosY) {
+    public  void añadir_una_lista_de_datos_Nuevos(List<Double> valores_nuevosX,List<Double> valores_nuevosY) {
 
         for (int i = 0; i < valores_nuevosX.size(); i++) {
                 this.valoresX.add(valores_nuevosX.get(i));

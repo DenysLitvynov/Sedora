@@ -100,7 +100,7 @@ public class Grafica extends Fragment {
 
 
 //    //Esta dependiendo que se elegio, carga los datos(POR AHORA SON FALSOS)
-    public void crearGrafica(DatosGrafica grafica_a_Construir,GraphView vista_Grafica){
+    public void crearGrafica(DatosGrafica grafica_a_Construir,GraphView vista_Grafica,String yTitulo, String xTitulo){
 
         List<Double> yValues=grafica_a_Construir.getValoresY();
         List<Double> xValues=grafica_a_Construir.getValoresX();
@@ -113,19 +113,20 @@ public class Grafica extends Fragment {
         }
 
         vista_Grafica.addSeries(series);
-        vista_Grafica.getGridLabelRenderer().setVerticalAxisTitle("Avisos");
-        vista_Grafica.getGridLabelRenderer().setHorizontalAxisTitle("Horas");
+        vista_Grafica.getGridLabelRenderer().setVerticalAxisTitle(yTitulo);
+        vista_Grafica.getGridLabelRenderer().setHorizontalAxisTitle(xTitulo);
         series.setDrawDataPoints(true);
 
         series.setColor(color); // Cambia el color de la línea
         series.setThickness(8); // Cambia el grosor de la línea
     }
 
-
+    //Nota: Una vez veamos como sirve el firebase con las graqficas, cambair esta funcion para cargue datos basado en el usuario
     public void cargarDatos(View vista_graficas, String grafica_elegida,String mensual_o_semanal,GraphView vistaGrafica){
         TextView vmin = vista_graficas.findViewById(R.id.Valor_min);
         TextView vprom = vista_graficas.findViewById(R.id.Valor_promedio);
         TextView vmax = vista_graficas.findViewById(R.id.Valor_max);
+
 
         ImageView grafica = vista_graficas.findViewById(R.id.grafica1);
 
@@ -138,7 +139,7 @@ public class Grafica extends Fragment {
                     List<Double>y= Arrays.asList(5.0, 3.0, 8.0, 20.0, 4.0);
 
                     DatosGrafica horasSentado= new DatosGrafica("Horas Sentado",x,y);
-                    crearGrafica(horasSentado,vistaGrafica);
+                    crearGrafica(horasSentado,vistaGrafica,"Avisos","Horas");
 
                     vmin.setText("5hrs");
                     vprom.setText("12hrs");
@@ -149,7 +150,7 @@ public class Grafica extends Fragment {
                     List<Double> xSensibles = Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
                     List<Double> ySensibles = Arrays.asList(6.0, 11.0, 16.0, 21.0, 26.0);
                     DatosGrafica horasSensibles = new DatosGrafica("Horas Sensibles", xSensibles, ySensibles);
-                    crearGrafica(horasSensibles,vistaGrafica);
+                    crearGrafica(horasSensibles,vistaGrafica,"Avisos","Horas");
 
                     vmin.setText("5:00");
                     vprom.setText("15:00");
@@ -160,7 +161,7 @@ public class Grafica extends Fragment {
                     List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
                     List<Double> yAvisos = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
                     DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
-                    crearGrafica(progresoAvisos,vistaGrafica);
+                    crearGrafica(progresoAvisos,vistaGrafica,"Avisos","Dias");
 
                     vmin.setText("5");
                     vprom.setText("10");
@@ -178,7 +179,7 @@ public class Grafica extends Fragment {
                     List<Double> yIgnorados = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
                     DatosGrafica avisosIgnorados = new DatosGrafica("AvisosIgnorados", xIgnorados, yIgnorados);
 
-                    crearGrafica(avisosIgnorados,vistaGrafica);
+                    crearGrafica(avisosIgnorados,vistaGrafica,"Avisos Ignoras","Dias");
 
                     vmin.setText("1");
                     vprom.setText("7");
@@ -195,7 +196,7 @@ public class Grafica extends Fragment {
                     List<Double>y= Arrays.asList(5.0, 10.0, 15.0, 20.0, 25.0);
 
                     DatosGrafica horasSentado= new DatosGrafica("Horas Sentado",x,y);
-                    crearGrafica(horasSentado,vistaGrafica);
+                    crearGrafica(horasSentado,vistaGrafica,"Avisos","Horas");
 
                     vmin.setText("12hrs");
                     vprom.setText("20hrs");
@@ -207,7 +208,7 @@ public class Grafica extends Fragment {
                     List<Double> xSensibles = Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
                     List<Double> ySensibles = Arrays.asList(6.0, 11.0, 16.0, 21.0, 26.0);
                     DatosGrafica horasSensibles = new DatosGrafica("Horas Sensibles", xSensibles, ySensibles);
-                    crearGrafica(horasSensibles,vistaGrafica);
+                    crearGrafica(horasSensibles,vistaGrafica,"Avisos","Dias");
 
                     vmin.setText("9:00");
                     vprom.setText("18:00");
@@ -218,7 +219,7 @@ public class Grafica extends Fragment {
                     List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
                     List<Double> yAvisos = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
                     DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
-                    crearGrafica(progresoAvisos,vistaGrafica);
+                    crearGrafica(progresoAvisos,vistaGrafica,"Avisos","Horas");
 
                     vmin.setText("12");
                     vprom.setText("25");
@@ -234,7 +235,7 @@ public class Grafica extends Fragment {
                     List<Double> yIgnorados = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
                     DatosGrafica avisosIgnorados = new DatosGrafica("AvisosIgnorados", xIgnorados, yIgnorados);
 
-                    crearGrafica(avisosIgnorados,vistaGrafica);
+                    crearGrafica(avisosIgnorados,vistaGrafica,"Avisos","Horas");
 
 
                     vmin.setText("5");
@@ -250,15 +251,20 @@ public class Grafica extends Fragment {
     public void hacerVisible_Grafica2(View vista_graficas) {
 
 
-        // Hacer visible la gráfica
-        ImageView grafica = vista_graficas.findViewById(R.id.Grafica2);
+
         TextView subtitulo1=vista_graficas.findViewById(R.id.textView5);
         TextView subtitulo2=vista_graficas.findViewById(R.id.subtitulo);
 
-        grafica.setVisibility(View.VISIBLE);
+        GraphView grafica2= vista_graficas.findViewById(R.id.Grafica2F);
         subtitulo1.setVisibility(View.VISIBLE);
         subtitulo2.setVisibility(View.VISIBLE);
 
+
+        grafica2.setVisibility(View.VISIBLE);
+        List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
+        List<Double> yAvisos = Arrays.asList(6.0, 1.0, 20.0, 10.0, 9.0);
+        DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
+        crearGrafica(progresoAvisos,grafica2,"Avisos","Horas");
 
 
         // Hacer visibles los valores asociados
@@ -303,7 +309,7 @@ public class Grafica extends Fragment {
         vmin.setText("4");
         vprom.setText("9");
         vmax.setText("18");
-        scrollView.setOnTouchListener(null);
+//        scrollView.setOnTouchListener(null);
 
 
     }
