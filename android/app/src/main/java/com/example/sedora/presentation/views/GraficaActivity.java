@@ -34,7 +34,6 @@ public class GraficaActivity extends AppCompatActivity {
     private String nombres[]= new String[]{"Esta Semana","Este Mes"};
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
