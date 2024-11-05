@@ -3,6 +3,7 @@
 #include "WiFi.h"
 #include "AsyncUDP.h"
 #include <ArduinoJson.h>
+#include "sedora1_map.h"
 
 // Definiciones
 #define DHTPIN 26
@@ -12,163 +13,255 @@ int micPin = 35;
 int ldrPin = 36;
 
 int thresholdHigh = 800;
-int thresholdLow = 200;   // Umbral bajo para sonido adecuado
-int prevSoundState = -1;  // Para controlar el cambio de estado del sonido
-int prevLightState = -1;  // Para controlar el cambio de estado de la luminosidad
+int thresholdLow = 200;
+int prevSoundState = -1;
+int prevLightState = -1;  
+
 
 #define BLANCO 0xFFFF
 #define NEGRO 0
 #define ROJO 0xF800
 #define VERDE 0x009774
 #define AZUL 0x001F
-
-const char* ssid = "********";
-const char* password = "******";
+const char* ssid = "*******";
+const char* password = "********";
 
 char texto[200];
-boolean recibido = 0;
+boolean recibido = false;
 AsyncUDP udp;
+int currentScreen = 0;
 
 // Función para mostrar el estado de la conexión WiFi
+//------------------------------------------------
 void conectarWiFi() {
-  M5.Lcd.setTextSize(2);
-  M5.Lcd.setCursor(50, 100);
-  M5.Lcd.setTextColor(VERDE);
-  M5.Lcd.println("[Servidor] Arrancando...");
+    M5.Lcd.setTextSize(2);
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
 
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
+    if (WiFi.waitForConnectResult() != WL_CONNECTED) {
+        M5.Lcd.fillScreen(NEGRO);
+        M5.Lcd.setTextColor(ROJO);
+        M5.Lcd.println("[Servidor] Error al conectar a WiFi!");
+        while (true) delay(1000);
+    }
 
-  if (WiFi.waitForConnectResult() != WL_CONNECTED) {
     M5.Lcd.fillScreen(NEGRO);
-    M5.Lcd.setTextColor(ROJO);
-    M5.Lcd.println("[Servidor] Error al conectar a WiFi!");
-    while (1) {
-      delay(1000);
-    }
-  }
-
-  M5.Lcd.fillScreen(NEGRO);
-  M5.Lcd.setTextColor(VERDE);
-  M5.Lcd.println("[Servidor] Conexion OK.");
+    M5.Lcd.setTextColor(VERDE);
+    M5.Lcd.println("[Servidor] Conexion OK.");
 }
 
-// Función para escuchar paquetes UDP
+//------------------------------------------------
 void iniciarUDP() {
-  if (udp.listen(1234)) {
-    udp.onPacket([](AsyncUDPPacket packet) {
-      int i = 200;
-      while (i--) {
-        *(texto + i) = *(packet.data() + i);
-      }
-      recibido = 1;
-    });
-  }
-}
-
-// Función para mostrar los datos de temperatura y humedad
-void mostrarHumedadYTemperatura() {
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
-
-  M5.Lcd.setCursor(0, 0);
-  M5.Lcd.print(F("Humedad: "));
-  M5.Lcd.print(h);
-  M5.Lcd.print(F("%"));
-
-  M5.Lcd.setCursor(0, 30);
-  M5.Lcd.print(F("Temperatura: "));
-  M5.Lcd.print(t);
-  M5.Lcd.print(F("°C"));
-}
-
-// Función para procesar los datos recibidos por UDP
-void procesarPaqueteUDP() {
-  if (recibido) {
-    recibido = 0;
-    StaticJsonDocument<200> jsonBufferRecv;
-    DeserializationError error = deserializeJson(jsonBufferRecv, texto);
-    if (error) return;
-
-    int distancia = jsonBufferRecv["Distancia"];
-    bool alerta = jsonBufferRecv["Alerta"];
-
-    M5.Lcd.setCursor(0, 60);
-    M5.Lcd.setTextColor(BLANCO);
-    M5.Lcd.print("[Servidor] Distancia: ");
-    M5.Lcd.printf("%d cm", distancia);
-
-    if (alerta) {
-      M5.Lcd.println(" - ¡ALERTA! Distancia crítica.");
-      M5.Speaker.tone(500, 200);
-      delay(500);
-      M5.Speaker.mute();
-      M5.Lcd.fillCircle(160, 150, 20, ROJO);
-    } else {
-      M5.Lcd.println(" - Distancia segura.");
-      M5.Speaker.mute();
+    if (udp.listen(1234)) {
+        udp.onPacket([](AsyncUDPPacket packet) {
+            int i = 200;
+            while (i--) *(texto + i) = *(packet.data() + i);
+            recibido = true;
+        });
     }
-  }
 }
 
-void mostrarNivelDeSonido() {
-  int micValue = analogRead(micPin);  // Lee el valor analógico del micrófono
-  int currentState;
-  M5.Lcd.setCursor(0, 160);
+//------------------------------------------------
+void mostrarDatosUDP() {
+    if (recibido) {
+        recibido = false;
+        DynamicJsonDocument jsonBufferRecv(200);
+        DeserializationError error = deserializeJson(jsonBufferRecv, texto);
+        if (error) return;
 
-  // Aplica histeresis para evitar cambios rápidos
-  if (micValue > thresholdHigh) {
-    currentState = 1;  // Nivel de sonido inadecuado
-  } else if (micValue < thresholdLow) {
-    currentState = 0;  // Nivel de sonido adecuado
-  } else {
-    currentState = prevSoundState;  // Mantén el estado anterior si está en el margen intermedio
-  }
+        int distancia = jsonBufferRecv["Distancia"];
+        bool alerta = jsonBufferRecv["Alerta"];
 
-  if (currentState == 1) {
-    M5.Lcd.println("Nivel de sonido inadecuado");
-    Serial.println("Estado: Nivel de sonido inadecuado");
-  } else {
-    M5.Lcd.println("Nivel de sonido adecuado");  
-    Serial.println("Estado: Nivel de sonido adecuado");
-  }
-  prevSoundState = currentState;  
+        M5.Lcd.setCursor(10, 150);
+        M5.Lcd.print("Distancia: ");
+        M5.Lcd.printf("%d cm", distancia);
+
+        M5.Lcd.setCursor(10, 130);
+        if (alerta) {
+            M5.Lcd.println("¡ALERTA!");
+            M5.Speaker.tone(500, 200);
+            delay(500);
+            M5.Speaker.mute();
+        } else {
+            M5.Lcd.println("Distancia segura.");
+            M5.Speaker.mute();
+        }
+    }
 }
 
-
-void mostrarLuminosidad() {
-  M5.Lcd.setCursor(0, 120);
-
-  int ldrValue = analogRead(ldrPin);
-  int currentState = (ldrValue < 800) ? 0 : 1;
-
-  if (currentState == 0) {
-    M5.Lcd.println("Luminosidad adecuada");
-    Serial.println("Estado: Luminosidad adecuada");
-  }
-   else {
-    M5.Lcd.println("Luminosidad inadecuada");
-    Serial.println("Estado: Luminosidad inadecuada");
-  }
-
-  delay(500);
+//------------------------------------------------
+void mostrarHumedad(int x, int y) {
+    float h = dht.readHumidity();
+    M5.Lcd.setCursor(x, y);
+    M5.Lcd.print("Humedad: ");
+    M5.Lcd.print(h);
+    M5.Lcd.print("%");
 }
 
+//------------------------------------------------
+void mostrarTemperatura(int x, int y) {
+    float t = dht.readTemperature();
+    M5.Lcd.setCursor(x, y);
+    M5.Lcd.print("Temperatura: ");
+    M5.Lcd.print(t);
+    M5.Lcd.print("°C");
+}
 
+//------------------------------------------------
+void mostrarNivelDeSonido(int x, int y) {
+    int micValue = analogRead(micPin);
+    int currentState;
+
+    if (micValue > thresholdHigh) {
+        currentState = 1;
+    } else if (micValue < thresholdLow) {
+        currentState = 0;
+    } else {
+        currentState = prevSoundState;
+    }
+    M5.Lcd.setCursor(x, y);
+    if (currentState == 1) {
+        M5.Lcd.println("Sonido: Inadecuado");
+    } else {
+        M5.Lcd.println("Sonido: Adecuado");
+    }
+    prevSoundState = currentState;
+}
+
+//------------------------------------------------
+void mostrarLuminosidad(int x, int y) {
+    int ldrValue = analogRead(ldrPin);
+    M5.Lcd.setCursor(x, y);
+    if (ldrValue < 800) {
+        M5.Lcd.println("Luminosidad: Adecuada");
+    } else {
+        M5.Lcd.println("Luminosidad: Inadecuada");
+    }
+}
+
+//------------------------------------------------
+void verPantallaPrincipal() {
+    M5.Lcd.clear(BLANCO);
+    M5.Lcd.setTextColor(NEGRO);
+    M5.Lcd.setCursor(10, 10);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.println("Pantalla Principal");
+
+    mostrarHumedad(10, 110);
+    mostrarTemperatura(10, 90);
+    mostrarNivelDeSonido(10, 50);
+    mostrarLuminosidad(10, 70);
+    mostrarDatosUDP();
+}
+
+//------------------------------------------------
+void verPantallaTemp() {
+    M5.Lcd.clear(AZUL);
+    M5.Lcd.setTextColor(BLANCO);
+    M5.Lcd.setTextSize(2);
+
+    M5.Lcd.setCursor(10, 20);
+    M5.Lcd.println("Temperatura");
+
+    mostrarTemperatura(10, 70);
+}
+
+//------------------------------------------------
+void verPantallaHum() {
+    M5.Lcd.clear(AZUL);
+    M5.Lcd.setTextColor(BLANCO);
+    M5.Lcd.setTextSize(2);
+
+    M5.Lcd.setCursor(10, 20);
+    M5.Lcd.println("Humedad");
+
+    mostrarHumedad(10, 70);
+}
+
+//------------------------------------------------
+void verPantallaSon() {
+    M5.Lcd.clear(ROJO);
+    M5.Lcd.setTextColor(BLANCO);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(10, 20);
+    M5.Lcd.println("Nivel de Sonido");
+
+    mostrarNivelDeSonido(10, 70);
+}
+
+//------------------------------------------------
+void verPantallaLuz() {
+    M5.Lcd.clear(VERDE);
+    M5.Lcd.setTextColor(NEGRO);
+    M5.Lcd.setTextSize(2);
+
+    M5.Lcd.setCursor(10, 20);
+    M5.Lcd.println("Luminosidad");
+
+    mostrarLuminosidad(10, 70);
+}
+
+//------------------------------------------------
+void verPantallaDist() {
+    M5.Lcd.clear(NEGRO);
+    M5.Lcd.setTextColor(BLANCO);
+    M5.Lcd.setTextSize(2);
+
+    M5.Lcd.setCursor(10, 20);
+    M5.Lcd.println("Distancia");
+
+    mostrarDatosUDP(); 
+}
+
+//------------------------------------------------
 void setup() {
-  M5.begin();
-  conectarWiFi();
-  delay(2000);
-  M5.Lcd.fillScreen(NEGRO);
-  iniciarUDP();
-  dht.begin();
+    M5.begin();
+    M5.Lcd.drawBitmap(0, 0, SEDORA1_COPY_SMALL_WIDTH, SEDORA1_COPY_SMALL_HEIGHT, sedora1_copy_Small);
+    delay(3000);
+    conectarWiFi();
+    delay(2000);
+    iniciarUDP();
+    dht.begin();
+    verPantallaPrincipal();
 }
 
+//------------------------------------------------
 void loop() {
-  M5.Lcd.clear();
-  mostrarHumedadYTemperatura();
-  procesarPaqueteUDP();
-  mostrarNivelDeSonido();
-  mostrarLuminosidad();
-  delay(3000);
+    M5.update();
+
+    if (M5.BtnB.wasPressed()) {
+        currentScreen++;
+        if (currentScreen > 5) {
+            currentScreen = 0;
+        }
+    }
+
+    if (M5.BtnC.wasPressed()) {
+        currentScreen--;
+        if (currentScreen < 0) {
+            currentScreen = 5;
+        }
+    }
+
+    switch (currentScreen) {
+        case 0:
+            verPantallaPrincipal();
+            break;
+        case 1:
+            verPantallaTemp();
+            break;
+        case 2:
+            verPantallaSon();
+            break;
+        case 3:
+            verPantallaLuz();
+            break;
+        case 4:
+            verPantallaDist();
+            break;
+        case 5:
+            verPantallaHum();
+            break;
+    }
+    delay(2000);
 }
