@@ -19,6 +19,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.sedora.presentation.fragments.Grafica;
 import com.example.sedora.R;
+import com.example.sedora.presentation.managers.NotificacionManagerSedora;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -29,6 +30,8 @@ public class GraficaActivity extends AppCompatActivity {
     public String getGrafica_elegida() {
         return grafica_elegida;
     }
+
+    private NotificacionManagerSedora noti =new NotificacionManagerSedora(this);
 
     private String  grafica_elegida;
     private String nombres[]= new String[]{"Esta Semana","Este Mes"};
@@ -48,6 +51,9 @@ public class GraficaActivity extends AppCompatActivity {
         titulo_Grafica=findViewById(R.id.Titulo);
 
         titulo_Grafica.setText(grafica_elegida);
+
+        noti.configurar_canal_Noti();
+        noti.lanzarNotificacion(grafica_elegida,"estas viendo"+grafica_elegida);
 
 
         button.setOnClickListener(new View.OnClickListener() {

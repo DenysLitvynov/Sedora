@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sedora.presentation.adapters.Adaptador;
-import com.example.sedora.presentation.managers.NotificacionManager;
+import com.example.sedora.presentation.managers.NotificacionManagerSedora;
 import com.example.sedora.R;
 
 public class RecyclerActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Adaptador adaptador;
-    private NotificacionManager notificacionManager;
+    private NotificacionManagerSedora notificacionManagerSedora;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +25,12 @@ public class RecyclerActivity extends AppCompatActivity {
 
         ImageButton buttonIcon = findViewById(R.id.button_icon);
 
-        notificacionManager = new NotificacionManager();
+        notificacionManagerSedora = new NotificacionManagerSedora();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Pasa el NotificacionManager al adaptador
-        adaptador = new Adaptador(notificacionManager);
+        // Pasa el NotificacionManagerSedora al adaptador
+        adaptador = new Adaptador(notificacionManagerSedora);
         recyclerView.setAdapter(adaptador);
 
         // Configura el clic en el button_icon para regresar a la ProfileActivity
