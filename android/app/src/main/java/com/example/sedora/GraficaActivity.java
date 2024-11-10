@@ -39,6 +39,7 @@ public class GraficaActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.main_grafica);
 
+
         ImageView button=findViewById(R.id.botonRegreso);
 
         //Recuperamos el string establecido en ProgresoActividado al elegir una grafica.
@@ -57,6 +58,7 @@ public class GraficaActivity extends AppCompatActivity {
 
             }
         });
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

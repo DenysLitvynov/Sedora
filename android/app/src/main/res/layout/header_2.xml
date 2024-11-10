@@ -5,45 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="70dp">
 
-    <!-- HEADER CON SOLO LA FLECHA -->
-
     <!-- Fondo del header -->
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#FFFFFF"
-        android:elevation="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Flecha de vuelta -->
     <ImageView
         android:id="@+id/flechavuelta"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:clickable="true"
-        android:focusable="true"
         android:contentDescription="@string/flecha_vuelta_desc"
-        android:elevation="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/view3"
+        android:focusable="true"
+        android:src="@drawable/flecha_vuelta"
         app:layout_constraintBottom_toBottomOf="@id/view3"
-        app:srcCompat="@drawable/flecha_vuelta" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/view3" />
 
     <!-- Título en el centro -->
     <TextView
-        android:id="@+id/headerTitle"
+        android:id="@+id/headerTitleTextView"
+        style="@style/Heading1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="50dp"
         android:gravity="center"
         android:text="Título de la Página"
         android:textColor="#000000"
-        android:textSize="20sp"
-        android:elevation="11dp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@id/view3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

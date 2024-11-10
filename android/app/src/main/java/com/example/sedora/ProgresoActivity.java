@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,9 +24,13 @@ public class ProgresoActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.pagina_progreso);
 
+        // Configura el texto del header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Progreso");
+
 
         // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.button_icon);
+        //ImageButton buttonIcon = findViewById(R.id.button_icon);
 
 
 
@@ -124,14 +129,14 @@ public class ProgresoActivity extends AppCompatActivity {
 
 
         // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
+        /*buttonIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProgresoActivity.this, RecyclerActivity.class);
                 startActivity(intent);
                 finish(); // Opcional: cerrar la actividad actual
             }
-        });
+        });*/
 
     }
 

@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         app:headerLayout="@layout/header_4"
         app:layout_constraintTop_toTopOf="parent" />
-
     <!-- FIN DEL HEADER -->
 
 
