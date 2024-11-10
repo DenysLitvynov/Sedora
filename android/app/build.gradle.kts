@@ -43,6 +43,14 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation ("androidx.appcompat:appcompat:1.2.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation ("com.google.firebase:firebase-auth:21.0.1")
+
+    implementation("com.jjoe64:graphview:4.2.2") {
+        exclude(group = "com.android.support")
+    }
+
 
     implementation(libs.appcompat)
     implementation(libs.material)

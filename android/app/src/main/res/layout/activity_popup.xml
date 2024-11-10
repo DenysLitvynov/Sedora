@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".PopupActivity">
+    tools:context=".presentation.views.PopupActivity">
 
     <Toolbar
         android:id="@+id/toolbar"
