@@ -18,12 +18,13 @@
 
     <TextView
         android:id="@+id/headerTitleTextView"
+        style="@style/Heading1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Texto por defecto"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,13 +32,13 @@
 
     <!-- Imagen derecha -->
     <ImageView
-        android:id="@+id/imageDerecha"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:id="@+id/campananotificaciones"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/campananotificado" />
 
     <!-- Título en el centro -->

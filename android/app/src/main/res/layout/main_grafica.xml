@@ -7,12 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".GraficaActivity">
 
+
     <ImageButton
         android:id="@+id/botonRegreso"
-        android:layout_width="55dp"
-        android:layout_height="56dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="10dp"
         android:background="@color/blanco"
         android:contentDescription="botonFlecha"
         android:scaleX="2"
@@ -26,8 +27,8 @@
 
     <ImageView
         android:id="@+id/campananoti"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,9 +43,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="10dp"
         android:text="Titulo"
         android:textAlignment="center"
+        android:textSize="22sp"
         app:layout_constraintEnd_toStartOf="@+id/campananoti"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/botonRegreso"

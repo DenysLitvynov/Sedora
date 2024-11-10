@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,12 @@ public class PoliticaDePrivacidad extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.politica_de_privacidad);
 
+        // Configura el texto del header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Política de privacidad");
+
         // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesPoliticaDePrivacidad);
+        //ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesPoliticaDePrivacidad);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewPoliticaDePrivacidad);
@@ -77,7 +82,7 @@ public class PoliticaDePrivacidad extends AppCompatActivity {
         FAQAdapter faqAdapter = new FAQAdapter(PoliticaDePrivacidadItemList);
         recyclerView.setAdapter(faqAdapter);
 
-        // Funcionalidad al botón de flecha
+        /* Funcionalidad al botón de flecha
         ImageButton flechaRetroceso = findViewById(R.id.FlechaRetrocesoPoliticaDePrivacidad);
         flechaRetroceso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +101,6 @@ public class PoliticaDePrivacidad extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // Opcional: cerrar la actividad actual
             }
-        });
+        });*/
     }
 }

@@ -21,9 +21,13 @@ public class AjustesActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.ajustes);
 
+        // Configura el texto del header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Ajustes");
+
 
         // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.button_icon);
+        //ImageButton buttonIcon = findViewById(R.id.button_icon);
 
 
 
@@ -95,7 +99,7 @@ public class AjustesActivity extends AppCompatActivity {
             }
         });
 
-
+        /*
         // Configura el clic en el button_icon para entrar en Notificaciones
         buttonIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +108,7 @@ public class AjustesActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // Opcional: cerrar la actividad actual
             }
-        });
+        });*/
     }
 
 }

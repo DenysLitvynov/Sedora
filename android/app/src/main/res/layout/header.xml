@@ -20,15 +20,16 @@
     <!-- Título en el centro -->
     <TextView
         android:id="@+id/headerTitle"
+        style="@style/Heading1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:elevation="11dp"
         android:gravity="center"
         android:text="Título de la Página"
         android:textColor="#000000"
-        android:textSize="20sp"
-        android:elevation="11dp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@id/view3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/view3"

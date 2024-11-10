@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,8 +19,9 @@ public class AcercaDe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acercade);
 
-        // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesAcercaDe);
+        // Configura el texto del header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Acerca de");
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewAcercaDe);
@@ -41,25 +44,5 @@ public class AcercaDe extends AppCompatActivity {
         AcercaDeAdapter acercaDeAdapter = new AcercaDeAdapter(AcercaDeItemList);
         recyclerView.setAdapter(acercaDeAdapter);
 
-        // Funcionalidad al botón de flecha
-        ImageButton flechaRetroceso = findViewById(R.id.FlechaRetrocesoAcercaDe);
-        flechaRetroceso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Crear un Intent para redirigir a la actividad de ajustes
-                Intent intent = new Intent(AcercaDe.this, AjustesActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AcercaDe.this, RecyclerActivity.class);
-                startActivity(intent);
-                finish(); // Opcional: cerrar la actividad actual
-            }
-        });
     }
 }
