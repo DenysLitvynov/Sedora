@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sedora.Header;
 import com.example.sedora.presentation.managers.MenuManager;
+import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.presentation.managers.Popup_pantalla_inicio;
 import com.example.sedora.R;
 
@@ -20,9 +22,18 @@ public class PantallaInicioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);  // Carga inicialmente pantalla_inicio
 
-        //TEXTO DEL HEADER
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
+
+        // Configura el título del Header
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("Inicio");
+
+        // Comprueba las notificaciones
+        NotificacionManager notificacionManager = new NotificacionManager();
+        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        header.updateNotificationIcon(hasNotifications);
+
 
         // Configurar el popup
         Popup_pantalla_inicio popupPantallaInicio = new Popup_pantalla_inicio(this, this);
