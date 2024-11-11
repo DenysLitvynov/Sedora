@@ -13,8 +13,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.sedora.Header;
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.R;
+import com.example.sedora.presentation.managers.NotificacionManager;
 
 public class ProgresoActivity extends AppCompatActivity {
 
@@ -27,9 +29,17 @@ public class ProgresoActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.pagina_progreso);
 
-        // Configura el texto del header
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
+
+        // Configura el título del Header
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("Progreso");
+
+        // Comprueba las notificaciones
+        NotificacionManager notificacionManager = new NotificacionManager();
+        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        header.updateNotificationIcon(hasNotifications);
 
 
         // para entrar en la página de notificaciones

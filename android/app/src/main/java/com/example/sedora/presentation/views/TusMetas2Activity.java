@@ -1,10 +1,12 @@
-package com.example.sedora;
+package com.example.sedora.presentation.views;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.sedora.R;
 
 public class TusMetas2Activity extends AppCompatActivity {
 

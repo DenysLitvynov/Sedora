@@ -10,8 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sedora.Header;
 import com.example.sedora.R;
 import com.example.sedora.model.RecyclerViewItem;
+import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.presentation.managers.SpaceItemDecoration;
 import com.example.sedora.presentation.adapters.AcercaDeAdapter;
 
@@ -25,9 +27,17 @@ public class AcercaDe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acercade);
 
-        // Configura el texto del header
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
+
+        // Configura el título del Header
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
-        headerTitle.setText("Acerca de");
+        headerTitle.setText("Acerca De");
+
+        // Comprueba las notificaciones
+        NotificacionManager notificacionManager = new NotificacionManager();
+        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        header.updateNotificationIcon(hasNotifications);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewAcercaDe);

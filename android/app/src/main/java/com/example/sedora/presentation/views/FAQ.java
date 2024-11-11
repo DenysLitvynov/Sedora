@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.sedora.Header;
 import com.example.sedora.R;
 import com.example.sedora.model.RecyclerViewItem;
+import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.presentation.managers.SpaceItemDecoration;
 import com.example.sedora.presentation.adapters.FAQAdapter;
 
@@ -25,9 +27,17 @@ public class FAQ extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.faq);
 
-        // Configura el texto del header
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
+
+        // Configura el título del Header
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("FAQ");
+
+        // Comprueba las notificaciones
+        NotificacionManager notificacionManager = new NotificacionManager();
+        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        header.updateNotificationIcon(hasNotifications);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewFAQ);
