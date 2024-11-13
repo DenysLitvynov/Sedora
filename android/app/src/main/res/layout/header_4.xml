@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/header_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FF6200EE">
+    android:layout_height="70dp">
 
     <!-- Fondo del header -->
+
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#FFFFFF"
-        android:elevation="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Título en el centro -->
+
     <TextView
-        android:id="@+id/headerTitle"
+        android:id="@+id/headerTitleTextView"
         style="@style/Heading1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:elevation="11dp"
         android:gravity="center"
-        android:text="Título de la Página"
+        android:text="Texto por defecto"
         android:textColor="#000000"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@id/view3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@id/view3" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Imagen derecha -->
+    <ImageView
+        android:id="@+id/campananotificaciones"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/campana" />
+
+
+    <!-- Título en el centro -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

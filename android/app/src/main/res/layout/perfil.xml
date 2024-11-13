@@ -4,6 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- HEADER personalizado con el layout especificado -->
+    <com.example.sedora.presentation.views.Header
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headerLayout="@layout/header_4"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!-- FIN DEL HEADER -->
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -27,39 +36,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/button_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="16dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:contentDescription="TODO"
-                android:elevation="4dp"
-                android:focusable="true"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icono_campana_2"
-                app:layout_constraintBottom_toBottomOf="@+id/header_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/header_title"
-                app:layout_constraintTop_toTopOf="@+id/header_title"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/header_title"
-                style="@style/Heading1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Perfil"
-                app:layout_constraintBottom_toBottomOf="@+id/seccion"
-                app:layout_constraintStart_toStartOf="@+id/seccion"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
             <Button
@@ -90,7 +66,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seccion" />
+                app:layout_constraintTop_toBottomOf="@+id/header" />
 
             <Button
                 android:id="@+id/botonEditar"

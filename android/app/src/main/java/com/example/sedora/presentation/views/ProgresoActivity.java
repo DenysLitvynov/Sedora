@@ -3,8 +3,8 @@ package com.example.sedora.presentation.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.R;
+import com.example.sedora.presentation.managers.NotificacionManager;
 
 public class ProgresoActivity extends AppCompatActivity {
 
@@ -26,9 +27,21 @@ public class ProgresoActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.pagina_progreso);
 
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
+
+        // Configura el título del Header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Progreso");
+
+        // Comprueba las notificaciones
+        NotificacionManager notificacionManager = new NotificacionManager();
+        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        header.updateNotificationIcon(hasNotifications);
+
 
         // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.button_icon);
+        //ImageButton buttonIcon = findViewById(R.id.button_icon);
 
 
 
@@ -127,14 +140,14 @@ public class ProgresoActivity extends AppCompatActivity {
 
 
         // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
+        /*buttonIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProgresoActivity.this, RecyclerActivity.class);
                 startActivity(intent);
                 finish(); // Opcional: cerrar la actividad actual
             }
-        });
+        });*/
 
     }
 

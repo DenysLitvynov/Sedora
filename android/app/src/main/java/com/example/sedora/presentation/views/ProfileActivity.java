@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.sedora.R;
+import com.example.sedora.presentation.managers.NotificacionManager;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,9 +43,21 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil);
 
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
+
+        // Configura el título del Header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Perfil");
+
+        // Comprueba las notificaciones
+        NotificacionManager notificacionManager = new NotificacionManager();
+        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        header.updateNotificationIcon(hasNotifications);
+
 
         // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.button_icon);
+        //ImageButton buttonIcon = findViewById(R.id.button_icon);
 
 
         nuevoNombre = findViewById(R.id.nuevoNombre2);
@@ -149,6 +162,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         /*FIN FUNCIONALIDAD BOTONES*/
 
+        /*
         // Configura el clic en el button_icon para entrar en Notificaciones
         buttonIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +171,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // Opcional: cerrar la actividad actual
             }
-        });
+        });*/
 
     }
 

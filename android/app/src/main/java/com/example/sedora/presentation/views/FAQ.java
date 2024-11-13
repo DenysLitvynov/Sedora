@@ -1,16 +1,15 @@
 package com.example.sedora.presentation.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.sedora.R;
 import com.example.sedora.model.RecyclerViewItem;
+import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.presentation.managers.SpaceItemDecoration;
 import com.example.sedora.presentation.adapters.FAQAdapter;
 
@@ -24,8 +23,17 @@ public class FAQ extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.faq);
 
-        // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesFAQ);
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
+
+        // Configura el título del Header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("FAQ");
+
+        // Comprueba las notificaciones
+        NotificacionManager notificacionManager = new NotificacionManager();
+        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        header.updateNotificationIcon(hasNotifications);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewFAQ);
@@ -57,25 +65,5 @@ public class FAQ extends AppCompatActivity {
         FAQAdapter faqAdapter = new FAQAdapter(faqItemList);
         recyclerView.setAdapter(faqAdapter);
 
-        // Funcionalidad al botón de flecha
-        ImageButton flechaRetroceso = findViewById(R.id.FlechaRetrocesoFAQ);
-        flechaRetroceso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Crear un Intent para redirigir a la actividad de ajustes
-                Intent intent = new Intent(FAQ.this, AjustesActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FAQ.this, RecyclerActivity.class);
-                startActivity(intent);
-                finish(); // Opcional: cerrar la actividad actual
-            }
-        });
     }
 }

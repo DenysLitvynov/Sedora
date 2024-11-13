@@ -6,6 +6,7 @@
     android:layout_height="70dp">
 
     <!-- Fondo del header -->
+
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
@@ -15,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Flecha de vuelta -->
+
     <ImageView
         android:id="@+id/flechavuelta"
         android:layout_width="40dp"
@@ -23,26 +25,36 @@
         android:clickable="true"
         android:contentDescription="@string/flecha_vuelta_desc"
         android:focusable="true"
-        android:src="@drawable/flecha_vuelta"
         app:layout_constraintBottom_toBottomOf="@id/view3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/view3" />
+        app:layout_constraintTop_toTopOf="@id/view3"
+        app:srcCompat="@drawable/flecha_vuelta" />
 
-    <!-- Título en el centro -->
     <TextView
         android:id="@+id/headerTitleTextView"
         style="@style/Heading1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
         android:gravity="center"
-        android:text="Título de la Página"
+        android:text="Texto por defecto"
         android:textColor="#000000"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@id/view3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/flechavuelta"
-        app:layout_constraintTop_toTopOf="@id/view3" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Imagen derecha -->
+    <ImageView
+        android:id="@+id/campananotificaciones"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/campananotificado" />
+
+    <!-- Título en el centro -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,37 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- HEADER CON EL TÍTULO "AJUSTES" Y EL BOTÓN DE NOTIFICACIONES -->
-    <TextView
-        android:id="@+id/textView8"
-        style="@style/Heading1"
-        android:layout_width="wrap_content"
+
+    <!-- HEADER personalizado con el layout especificado -->
+    <com.example.sedora.presentation.views.Header
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:text="Ajustes"
+        app:headerLayout="@layout/header_4"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/button_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:contentDescription="Notificaciones"
-        android:elevation="4dp"
-        android:focusable="true"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icono_campana_2"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView8"
-        tools:ignore="SpeakableTextPresentCheck" />
+    <!-- FIN DEL HEADER -->
 
-    <!-- SCROLLVIEW PARA CONTENIDO DESPLAZABLE -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -43,21 +25,24 @@
         app:layout_constraintBottom_toTopOf="@id/menu_acciones"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView8">
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
-        <!-- CONTENIDO PRINCIPAL EN EL SCROLLVIEW -->
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- BLOQUE SILENCIAR SENSORES -->
+
             <View
                 android:id="@+id/view6"
                 style="@style/BoxBackground"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/view9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

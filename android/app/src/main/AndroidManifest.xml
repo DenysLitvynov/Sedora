@@ -62,12 +62,17 @@
         <activity android:name=".presentation.views.PoliticaDePrivacidad"></activity>
 
 
+
         <activity
             android:name=".presentation.views.PantallaInicioActivity"
             android:exported="true"/>
 
         <activity
             android:name=".presentation.views.TusMetasActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".presentation.views.TusMetas2Activity"
             android:exported="true"/>
 
     </application>

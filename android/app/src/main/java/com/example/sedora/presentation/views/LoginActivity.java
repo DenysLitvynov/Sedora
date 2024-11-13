@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sedora.R;
+import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,8 +30,6 @@ import com.google.firebase.auth.GithubAuthProvider;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.OAuthCredential;
-
-
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -58,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         // Inicializar FirebaseAuth y GoogleSignInClient
         auth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)) // Asegúrate de que este ID esté configurado en tu proyecto de Firebase
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -89,6 +88,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    //---------------------------------------------------------------
+    // Metodo para iniciar sesión con correo
+    //---------------------------------------------------------------
+
     public void inicioSesionCorreo(View v) {
         if (verificaCampos()) {
             dialogo.show();
@@ -96,7 +99,19 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         dialogo.dismiss();
                         if (task.isSuccessful()) {
-                            if (auth.getCurrentUser().isEmailVerified()) {
+                            FirebaseUser usuario = auth.getCurrentUser();
+                            if (usuario != null && usuario.isEmailVerified()) {
+                                // Guardar la información del usuario en Firebase Firestore
+                                FirebaseHelper.guardarUsuario(usuario);
+
+
+                                //---------------------------------------------------------------
+                                // Agregar datos simulados de sensores en la subcolección "Data"
+                                FirebaseHelper firebaseHelper = new FirebaseHelper();
+                                firebaseHelper.guardarDatosSensores(usuario);
+                                //---------------------------------------------------------------
+
+
                                 Intent i = new Intent(LoginActivity.this, PantallaInicioActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                         | Intent.FLAG_ACTIVITY_NEW_TASK
@@ -114,10 +129,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    //---------------------------------------------------------------
+    //---------------------------------------------------------------
+
     public void autentificarGoogle(View v) {
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, RC_GOOGLE_SIGN_IN);
     }
+
+    //---------------------------------------------------------------
+    //---------------------------------------------------------------
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,6 +154,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    //---------------------------------------------------------------
+    // Metodo para iniciar sesión con Google
+    //---------------------------------------------------------------
+
     private void googleAuth(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
@@ -140,6 +165,20 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            FirebaseUser usuario = auth.getCurrentUser();
+                            if (usuario != null) {
+                                // Guardar la información del usuario en Firebase Firestore
+                                FirebaseHelper.guardarUsuario(usuario);
+
+
+                                //---------------------------------------------------------------
+                                // Agregar datos simulados de sensores en la subcolección "Data"
+                                FirebaseHelper firebaseHelper = new FirebaseHelper();
+                                firebaseHelper.guardarDatosSensores(usuario);
+                                //---------------------------------------------------------------
+
+
+                            }
                             verificaSiUsuarioValidado();
                         } else {
                             mensaje(task.getException().getLocalizedMessage());
@@ -148,9 +187,15 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    //---------------------------------------------------------------
+    //---------------------------------------------------------------
+
     private void mensaje(String mensaje) {
         Snackbar.make(contenedor, mensaje, Snackbar.LENGTH_LONG).show();
     }
+
+    //---------------------------------------------------------------
+    //---------------------------------------------------------------
 
     private boolean verificaCampos() {
         correo = etCorreo.getText().toString();
@@ -181,51 +226,66 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
+    //---------------------------------------------------------------
+    // Autenticación Mediante Twitter
+    //---------------------------------------------------------------
+
     public void autentificarTwitter(View v) {
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
-
         provider.addCustomParameter("lang", "es"); // Localizar a español
 
-        auth.startActivityForSignInWithProvider(/*activity=*/ this, provider.build())
-                .addOnSuccessListener(
-                        authResult -> {
+        auth.startActivityForSignInWithProvider(this, provider.build())
+                .addOnSuccessListener(authResult -> {
+                    FirebaseUser usuario = auth.getCurrentUser();
+                    if (usuario != null) {
+                        // Guardar la información del usuario en Firebase Firestore
+                        FirebaseHelper.guardarUsuario(usuario);
 
-                            OAuthCredential credential = (OAuthCredential) authResult.getCredential();
-                            String accessToken = credential.getAccessToken();
-                            String secret = credential.getSecret();
-                            verificaSiUsuarioValidado();
-                        })
-                .addOnFailureListener(e -> {
 
-                    mensaje("Error de autenticación con Twitter: " + e.getLocalizedMessage());
-                });
+                        //---------------------------------------------------------------
+                        // Agregar datos simulados de sensores en la subcolección "Data"
+                        FirebaseHelper firebaseHelper = new FirebaseHelper();
+                        firebaseHelper.guardarDatosSensores(usuario);
+                        //---------------------------------------------------------------
+
+
+                    }
+                    verificaSiUsuarioValidado();
+                })
+                .addOnFailureListener(e -> mensaje("Error de autenticación con Twitter: " + e.getLocalizedMessage()));
     }
 
-    //Autenticación Mediante Github
+    //---------------------------------------------------------------
+    // Autenticación Mediante Github
+    //---------------------------------------------------------------
 
     public void autentificarGitHub(View v) {
-
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("github.com");
-
         provider.addCustomParameter("allow_signup", "false");
 
         auth.startActivityForSignInWithProvider(this, provider.build())
-                .addOnSuccessListener(
-                        authResult -> {
+                .addOnSuccessListener(authResult -> {
+                    FirebaseUser usuario = auth.getCurrentUser();
+                    if (usuario != null) {
+                        // Guardar la información del usuario en Firebase Firestore
+                        FirebaseHelper.guardarUsuario(usuario);
 
-                            OAuthCredential credential = (OAuthCredential) authResult.getCredential();
-                            String accessToken = credential.getAccessToken();
 
-                            verificaSiUsuarioValidado();
-                        })
-                .addOnFailureListener(e -> {
+                        //---------------------------------------------------------------
+                        // Agregar datos simulados de sensores en la subcolección "Data"
+                        FirebaseHelper firebaseHelper = new FirebaseHelper();
+                        firebaseHelper.guardarDatosSensores(usuario);
+                        //---------------------------------------------------------------
 
-                    mensaje2("Error de autenticación con GitHub: " + e.getLocalizedMessage());
-                });
+
+                    }
+                    verificaSiUsuarioValidado();
+                })
+                .addOnFailureListener(e -> mensaje2("Error de autenticación con GitHub: " + e.getLocalizedMessage()));
     }
 
-// Fin Autentificación mediante GitHub
-
+    //---------------------------------------------------------------
+    //---------------------------------------------------------------
 
     private void mensaje2(String mensaje) {
         Snackbar.make(findViewById(R.id.inicioLayout), mensaje, Snackbar.LENGTH_LONG).show();

@@ -1,15 +1,15 @@
 package com.example.sedora.presentation.views;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sedora.R;
 import com.example.sedora.model.RecyclerViewItem;
+import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.presentation.managers.SpaceItemDecoration;
 import com.example.sedora.presentation.adapters.AcercaDeAdapter;
 
@@ -23,8 +23,17 @@ public class AcercaDe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acercade);
 
-        // para entrar en la página de notificaciones
-        ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesAcercaDe);
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
+
+        // Configura el título del Header
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
+        headerTitle.setText("Acerca De");
+
+        // Comprueba las notificaciones
+        NotificacionManager notificacionManager = new NotificacionManager();
+        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        header.updateNotificationIcon(hasNotifications);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewAcercaDe);
@@ -47,25 +56,5 @@ public class AcercaDe extends AppCompatActivity {
         AcercaDeAdapter acercaDeAdapter = new AcercaDeAdapter(AcercaDeItemList);
         recyclerView.setAdapter(acercaDeAdapter);
 
-        // Funcionalidad al botón de flecha
-        ImageButton flechaRetroceso = findViewById(R.id.FlechaRetrocesoAcercaDe);
-        flechaRetroceso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Crear un Intent para redirigir a la actividad de ajustes
-                Intent intent = new Intent(AcercaDe.this, AjustesActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AcercaDe.this, RecyclerActivity.class);
-                startActivity(intent);
-                finish(); // Opcional: cerrar la actividad actual
-            }
-        });
     }
 }

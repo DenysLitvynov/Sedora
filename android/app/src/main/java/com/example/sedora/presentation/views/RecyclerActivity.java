@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +24,7 @@ public class RecyclerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notificaciones);
 
-        ImageButton buttonIcon = findViewById(R.id.button_icon);
+        //ImageButton buttonIcon = findViewById(R.id.button_icon);
 
         notificacionManagerSedora = new NotificacionManagerSedora();
         recyclerView = findViewById(R.id.recyclerView);
@@ -33,6 +34,7 @@ public class RecyclerActivity extends AppCompatActivity {
         adaptador = new Adaptador(notificacionManagerSedora);
         recyclerView.setAdapter(adaptador);
 
+        /*
         // Configura el clic en el button_icon para regresar a la ProfileActivity
         buttonIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +43,16 @@ public class RecyclerActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // Opcional: cerrar la actividad actual
             }
-        });
+        });*/
+
+        // Configura el texto del header
+        View headerView = findViewById(R.id.header);
+        TextView headerTitle = headerView.findViewById(R.id.headerTitleTextView);
+        if (headerTitle != null) {
+            headerTitle.setText("Notificaciones");
+        }
+
+
 
     }
 
