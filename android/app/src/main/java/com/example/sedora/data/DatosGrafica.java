@@ -1,7 +1,5 @@
-package com.example.sedora;
+package com.example.sedora.data;
 
-
-import com.jjoe64.graphview.GraphView;
 
 import java.util.ArrayList;
 import java.util.List;

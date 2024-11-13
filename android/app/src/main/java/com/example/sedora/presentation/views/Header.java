@@ -1,16 +1,16 @@
-package com.example.sedora;
+package com.example.sedora.presentation.views;
 
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.sedora.R;
 
 public class Header extends LinearLayout {
 
