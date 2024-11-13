@@ -13,18 +13,14 @@ import com.example.sedora.model.Notificacion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificacionManagerSedora {
+public class NotificacionManager {
 
     private List<Notificacion> notificaciones;
     private NotificationManager notificationManager;//Notification manager de android
-    static final String CANAL_ID = "Canal_sedora";
-    static final int NOTIFICACION_ID = 1;
-    private  Context context; // Contexto necesario para acceder a recursos del sistema
 
 
 
-
-    public NotificacionManagerSedora() {
+    public NotificacionManager() {
         // Inicializamos la lista de notificaciones
         notificaciones = new ArrayList<>();
 
@@ -41,12 +37,6 @@ public class NotificacionManagerSedora {
 
     }
 
-    public NotificacionManagerSedora(Context context){
-        this.context=context;
-    }
-
-
-
     public List<Notificacion> getNotificaciones() {
         return notificaciones;
     }
@@ -54,33 +44,6 @@ public class NotificacionManagerSedora {
     // Método para añadir una nueva notificación
     public void addNotificacion(Notificacion notificacion) {
         notificaciones.add(notificacion);
-    }
-
-    public void configurar_canal_Noti() {
-        if (notificationManager == null) {
-            notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    CANAL_ID, "Mis Notificaciones",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-
-            notificationChannel.setDescription("Descripcion del canal");
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-
-    }
-
-
-    public void lanzarNotificacion(String titulo,String texto_de_la_noti){
-        NotificationCompat.Builder notificacion =
-                new NotificationCompat.Builder(context, CANAL_ID)
-                        .setContentTitle(titulo)
-                        .setContentText(texto_de_la_noti)
-                        .setSmallIcon(R.drawable.sedora_logo);
-        notificationManager.notify(NOTIFICACION_ID, notificacion.build());
-
     }
 
 

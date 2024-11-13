@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sedora.model.Notificacion;
-import com.example.sedora.presentation.managers.NotificacionManagerSedora;
+import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.R;
 
 public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
-    private NotificacionManagerSedora notificacionManagerSedora; // Cambiamos a NotificacionManagerSedora
+    private NotificacionManager notificacionManager; // Cambiamos a NotificacionManagerSedora
 
-    public Adaptador(NotificacionManagerSedora notificacionManagerSedora) {
-        this.notificacionManagerSedora = notificacionManagerSedora; // Guardamos la referencia
+    public Adaptador(NotificacionManager notificacionManager) {
+        this.notificacionManager = notificacionManager; // Guardamos la referencia
     }
 
     @NonNull
@@ -28,7 +28,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Notificacion notificacion = notificacionManagerSedora.getNotificaciones().get(position); // Obtenemos notificación de NotificacionManagerSedora
+        Notificacion notificacion = notificacionManager.getNotificaciones().get(position); // Obtenemos notificación de NotificacionManagerSedora
 
         holder.icono.setImageResource(notificacion.getIcono());
         holder.titulo.setText(notificacion.getTitulo());
@@ -51,7 +51,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return notificacionManagerSedora.getNotificaciones().size();
+        return notificacionManager.getNotificaciones().size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
