@@ -1,16 +1,12 @@
 package com.example.sedora.presentation.views;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.sedora.Header;
 import com.example.sedora.R;
 import com.example.sedora.model.RecyclerViewItem;
 import com.example.sedora.presentation.managers.NotificacionManager;
