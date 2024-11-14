@@ -4,14 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- HEADER personalizado con el layout especificado -->
-    <com.example.sedora.Header
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:headerLayout="@layout/header_4"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!-- FIN DEL HEADER -->
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
@@ -27,17 +20,14 @@
             android:layout_height="wrap_content">
 
 
-            <View
-                android:id="@+id/seccion"
+            <!-- HEADER personalizado con el layout especificado -->
+            <com.example.sedora.Header
+                android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:elevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="wrap_content"
+                app:headerLayout="@layout/header_4"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
+            <!-- FIN DEL HEADER -->
             <Button
                 android:id="@+id/cerrar_sesion"
                 style="@style/BotonVerde"
