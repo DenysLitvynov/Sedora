@@ -272,7 +272,7 @@ public class ProfileActivity extends AppCompatActivity {
         PopUpCerrarSesion cerrarSesionPopUp = new PopUpCerrarSesion(ProfileActivity.this);
         cerrarSesionPopUp.mostrarDialogo(new PopUpCerrarSesion.LogoutListener() {
             @Override
-            public void onLogoutConfirmed() {
+            public void confirmar() {
                 AuthUI.getInstance().signOut(ProfileActivity.this)
                         .addOnCompleteListener(task -> {
                             Intent i = new Intent(ProfileActivity.this, LoginActivity.class);

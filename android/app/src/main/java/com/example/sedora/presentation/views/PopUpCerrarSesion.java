@@ -40,7 +40,7 @@ public class PopUpCerrarSesion {
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onLogoutConfirmed();
+                listener.confirmar();
                 dialog.dismiss();
             }
         });
@@ -49,6 +49,6 @@ public class PopUpCerrarSesion {
     }
 
     public interface LogoutListener {
-        void onLogoutConfirmed();
+        void confirmar();
     }
 }
