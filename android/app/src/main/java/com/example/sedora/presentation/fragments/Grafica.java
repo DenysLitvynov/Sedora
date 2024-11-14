@@ -1,7 +1,6 @@
 package com.example.sedora.presentation.fragments;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -15,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.sedora.DatosGrafica;
+import com.example.sedora.data.DatosGrafica;
 import com.example.sedora.R;
 import com.example.sedora.presentation.views.GraficaActivity;
 import com.jjoe64.graphview.GraphView;

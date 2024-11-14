@@ -36,6 +36,7 @@ android {
 
 dependencies {
 
+    implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
@@ -50,7 +51,6 @@ dependencies {
     implementation("com.jjoe64:graphview:4.2.2") {
         exclude(group = "com.android.support")
     }
-
 
     implementation(libs.appcompat)
     implementation(libs.material)
