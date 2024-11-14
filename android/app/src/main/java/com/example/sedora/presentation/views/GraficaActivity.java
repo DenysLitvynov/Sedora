@@ -51,22 +51,6 @@ public class GraficaActivity extends AppCompatActivity {
         titulo_Grafica=findViewById(R.id.Titulo);
 
         titulo_Grafica.setText(grafica_elegida);
-        //-----------------------------------
-        //PRUEBA NOTI
-        //-----------------------------------
-
-        NotificacionesFirebase notiHoras= new NotificacionesFirebase(this,"Horas Sentado","LEVANTATE",PopupActivity.class);
-        NotificacionesFirebase notiPostura=new NotificacionesFirebase(this,"POSTURA ","ARREGLA LA POSTURA",PopupActivity.class);
-
-        notiHoras.lanzarNotificacionFirebase("Prueba__BORRAR_DESPUES",
-                "PRUEBITA","Horas",1);
-
-        notiPostura.lanzarNotificacionFirebase("Prueba__BORRAR_DESPUES",
-                "PRUEBITA","POSTURA",1);
-
-        //-----------------------------------
-        //PRUEBA NOTI
-        //-----------------------------------
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

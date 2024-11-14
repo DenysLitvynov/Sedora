@@ -1,30 +1,40 @@
 package com.example.sedora.presentation.managers;
-
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.sedora.R;
-import com.example.sedora.model.Notificacion;
-import com.google.firebase.Firebase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.lang.reflect.Field;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Objects;
+
+////-----------------------------------
+////EJEMPLO DE USO
+////-----------------------------------
+//Si no tiene o necesita algun elemento, asignarle null o 0 si es un int.
+
+//NotificacionesFirebase notiHoras= new NotificacionesFirebase(this,"Horas Sentado","LEVANTATE",null,R.drawable.icono_silla, PantallaInicioActivity.class);
+//NotificacionesFirebase notiPostura=new NotificacionesFirebase(this,"POSTURA ","ARREGLA LA POSTURA",null,R.drawable.icono_sentado2, RecyclerActivity.class);
+//
+//      notiHoras.lanzarNotificacionFirebase("Prueba__BORRAR_DESPUES",
+//                                                     "PRUEBITA","Horas",1);
+//
+//    notiPostura.lanzarNotificacionFirebase("Prueba__BORRAR_DESPUES",
+//                                                       "PRUEBITA","POSTURA",1);
+//
+////-----------------------------------
+////EJEMPLO DE USO
+////-----------------------------------
 
 public class NotificacionesFirebase {
 
@@ -33,19 +43,22 @@ public class NotificacionesFirebase {
     private Context context; // Contexto necesario para acceder a recursos del sistema
     private String titulo;
     private String descripcion;
+    private String descripcion_larga;
+    private int icono_grande;
     private NotificationCompat.Builder notificacion;
-    private Class actividad;
+    private Class<?> actividad_de_destino;
 
 
-
-
-    public NotificacionesFirebase(Context context, String titulo, String descripcion,Class actividad) {
+    public NotificacionesFirebase(Context context, String titulo, String descripcion_corta,String descripcion_larga,int icono_grande ,Class<?> actividad_de_destino) {
         this.context = context;
         this.titulo = titulo;
         this.descripcion = descripcion;
-        this.actividad=actividad;
+        this.actividad_de_destino=actividad_de_destino;
+        this.descripcion_larga=descripcion_larga;
+        this.icono_grande=icono_grande;
+
         configurar_canal_Noti();
-        configurarNoti(titulo, descripcion,actividad);
+        configurarNoti(titulo, descripcion,descripcion_corta,icono_grande,actividad_de_destino);
     }
 
     public NotificacionesFirebase(Context context){
@@ -74,13 +87,14 @@ public class NotificacionesFirebase {
 
     }
 
+
     //-------------------------------------------------------------------
     //Configura la notificacion
     //-------------------------------------------------------------------
-    private NotificationCompat.Builder configurarNoti(String titulo, String texto_de_la_noti, Class Actividad_al_abrir) {
+    private NotificationCompat.Builder configurarNoti(String titulo, String texto_de_la_noti,String parrafo_noti,int icono_grande, Class<?> actividad_de_destino) {
 
         // Crear un Intent que apunte a la actividad que se quiere abrir
-        Intent intent = new Intent(context, Actividad_al_abrir);
+        Intent intent = new Intent(context, actividad_de_destino);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Configuración para limpiar la pila de actividades
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -95,6 +109,10 @@ public class NotificacionesFirebase {
                 .setContentTitle(titulo)
                 .setContentText(texto_de_la_noti)
                 .setSmallIcon(R.drawable.sedora_logo)
+                .setColor(ContextCompat.getColor(context, R.color.verde_primario))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(parrafo_noti))
+                .setColorized(true)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), icono_grande))
                 .setContentIntent(pendingIntent) // Establecer el PendingIntent en la notificación
                 .setAutoCancel(true); // Auto-cancelar la notificación al tocarla
         return notificacion;
@@ -149,8 +167,8 @@ public class NotificacionesFirebase {
         return false;
     }
 
-    //_________________________________________________________________________________________
 
+    //_________________________________________________________________________________________
     //GETTERS Y SETTERS
 
     public NotificationCompat.Builder getNotificacion() {
@@ -185,12 +203,19 @@ public class NotificacionesFirebase {
         this.context = context;
     }
 
-    public NotificationManager getNotificationManager() {
-        return notificationManager;
+    public int getIcono_grande() {
+        return icono_grande;
     }
 
-    public void setNotificationManager(NotificationManager notificationManager) {
-        this.notificationManager = notificationManager;
+    public void setIcono_grande(int icono_grande) {
+        this.icono_grande = icono_grande;
     }
 
+    public String getDescripcion_larga() {
+        return descripcion_larga;
+    }
+
+    public void setDescripcion_larga(String descripcion_larga) {
+        this.descripcion_larga = descripcion_larga;
+    }
 }
