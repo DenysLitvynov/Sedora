@@ -13,7 +13,7 @@ import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.R;
 
 public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
-    private NotificacionManager notificacionManager; // Cambiamos a NotificacionManager
+    private NotificacionManager notificacionManager; // Cambiamos a NotificacionManagerSedora
 
     public Adaptador(NotificacionManager notificacionManager) {
         this.notificacionManager = notificacionManager; // Guardamos la referencia
@@ -28,7 +28,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Notificacion notificacion = notificacionManager.getNotificaciones().get(position); // Obtenemos notificación de NotificacionManager
+        Notificacion notificacion = notificacionManager.getNotificaciones().get(position); // Obtenemos notificación de NotificacionManagerSedora
 
         holder.icono.setImageResource(notificacion.getIcono());
         holder.titulo.setText(notificacion.getTitulo());
