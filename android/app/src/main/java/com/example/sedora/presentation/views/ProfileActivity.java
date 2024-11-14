@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -268,17 +269,20 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void cerrarSesion(View view) {
-        AuthUI.getInstance().signOut(getApplicationContext())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                | Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                        finish();
-                    }
-                });
+        PopUpCerrarSesion cerrarSesionPopUp = new PopUpCerrarSesion(ProfileActivity.this);
+        cerrarSesionPopUp.mostrarDialogo(new PopUpCerrarSesion.LogoutListener() {
+            @Override
+            public void confirmar() {
+                AuthUI.getInstance().signOut(ProfileActivity.this)
+                        .addOnCompleteListener(task -> {
+                            Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    | Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            finish();
+                        });
+            }
+        });
     }
 }
