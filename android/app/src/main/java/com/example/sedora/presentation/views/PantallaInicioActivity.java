@@ -1,5 +1,7 @@
 package com.example.sedora.presentation.views;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,9 +25,11 @@ public class PantallaInicioActivity extends AppCompatActivity {
         setContentView(R.layout.pantalla_inicio);  // Carga inicialmente pantalla_inicio
 
         //INICIO DE SERVICIO
-        Intent intent = new Intent(this, miServicio.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
+        if (!foregroundServiceRunning()) {
+            Intent intent = new Intent(this, miServicio.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            }
         }
         //INICIO DE SERVICIO
 
@@ -107,6 +111,22 @@ public class PantallaInicioActivity extends AppCompatActivity {
     public void irARecyclerActivity(View view) {
         Intent intent = new Intent(this, RecyclerActivity.class);
         startActivity(intent);
+    }
+
+
+    //TODO
+    //Originalmente esto era metodo de miServicio pero no lo puedo llamar desde ahi porque luego tengo que cambiar la clase entera
+    //el TODO es hacer que el serviico se inicie despues que el usuario hace login, lo puse aqui porque aqui me cuadra, como ustedes vean
+    //pero donde se inice el servicio, tiene que ir esta funcion que ve si se esta ejecutando ya un servicio
+    public  boolean foregroundServiceRunning() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)){
+            if (miServicio.class.getName().equals(service.service.getClassName())){
+                return true;
+            }
+
+        }
+        return false;
     }
 
 }

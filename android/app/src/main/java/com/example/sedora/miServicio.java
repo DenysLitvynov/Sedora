@@ -1,15 +1,34 @@
 package com.example.sedora;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
+import com.example.sedora.presentation.managers.NotificacionesFirebase;
+import com.example.sedora.presentation.views.PantallaInicioActivity;
+import com.example.sedora.presentation.views.RecyclerActivity;
+
+//Para empezar el servicio, meter esto en el on create de la actividad;
+
+//INICIO DE SERVICIO
+//Intent intent = new Intent(this, miServicio.class);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//          startForegroundService(intent);
+//        }
+
+////INICIO DE SERVICIO
+
+//ESTE SERVICIO ES SOLO PARA CORRER COSAS DE FONDO FUERA Y DENTRO DE LA APP.
 
 public class miServicio extends Service {
 
@@ -22,15 +41,23 @@ public class miServicio extends Service {
         createNotificationChannel();
     }
 
+    //TODO LO QUE QUIERAN CORRER DE FONDO LLAMARLO AQUI:
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         // Crear la notificación para el servicio en primer plano
+        //Esta solo existe porque te pide una noti para empezar el servicio
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Servicio en ejecución")
-                .setContentText("El servicio está funcionando en segundo plano.")
-                .setSmallIcon(R.drawable.sedora_logo) // Usar un ícono válido
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT) // Asegurarse de que sea visible
-                .build();
+                .setPriority(NotificationCompat.PRIORITY_MIN).build();
+
+        NotificacionesFirebase notiHoras= new NotificacionesFirebase(this,"Horas Sentado","LEVANTATE",null,R.drawable.icono_silla, PantallaInicioActivity.class);
+        NotificacionesFirebase notiPostura=new NotificacionesFirebase(this,"POSTURA ","ARREGLA LA POSTURA",null, R.drawable.boton_verde, RecyclerActivity.class);
+
+        notiHoras.lanzarNotificacionFirebase("Prueba__BORRAR_DESPUES",
+                "PRUEBITA","Horas",1);
+        notiPostura.lanzarNotificacionFirebase("Prueba__BORRAR_DESPUES",
+                "PRUEBITA","POSTURA",1);
+
 
         // Iniciar el servicio en primer plano
         startForeground(NOTIFICATION_ID, notification);
@@ -41,11 +68,6 @@ public class miServicio extends Service {
         return START_STICKY; // Reiniciar servicio automáticamente si el sistema lo detiene
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // Detener tareas o listeners cuando el servicio sea destruido
-    }
 
     @Nullable
     @Override
