@@ -1,6 +1,7 @@
 package com.example.sedora.presentation.views;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sedora.miServicio;
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.presentation.managers.Popup_pantalla_inicio;
@@ -19,6 +21,14 @@ public class PantallaInicioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);  // Carga inicialmente pantalla_inicio
+
+        //INICIO DE SERVICIO
+        Intent intent = new Intent(this, miServicio.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        }
+        //INICIO DE SERVICIO
+
 
         // Obtén el Header
         Header header = findViewById(R.id.header);
