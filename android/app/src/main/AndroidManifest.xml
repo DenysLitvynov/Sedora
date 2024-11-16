@@ -5,7 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sedora"
         tools:targetApi="31">
+
         <activity
             android:name=".presentation.views.GraficaActivity"
             android:exported="false" />
@@ -74,6 +78,18 @@
         <activity
             android:name=".presentation.views.TusMetas2Activity"
             android:exported="true"/>
+
+        <service
+            android:name=".miServicio"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <receiver android:name=".miBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
 
     </application>
 
