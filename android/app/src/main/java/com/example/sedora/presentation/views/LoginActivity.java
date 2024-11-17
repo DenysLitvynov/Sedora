@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sedora.R;
+import com.example.sedora.data.SensorDataList;
+import com.example.sedora.model.SensorData;
 import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -106,11 +108,17 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                 //---------------------------------------------------------------
-                                // Agregar datos simulados de sensores en la subcolección "Data"
                                 FirebaseHelper firebaseHelper = new FirebaseHelper();
-                                firebaseHelper.guardarDatosSensores(usuario);
-                                //---------------------------------------------------------------
 
+                                // Crear una instancia de SensorDataList para obtener los datos simulados
+                                SensorDataList sensorDataList = new SensorDataList();
+
+                                // Iterar sobre los datos y guardarlos en Firestore
+                                for (SensorData data : sensorDataList.getListaDatos()) {
+                                    // Guardar cada toma de datos de sensores para el usuario
+                                    firebaseHelper.guardarToma(usuario, data);
+                                }
+                                //---------------------------------------------------------------
 
                                 Intent i = new Intent(LoginActivity.this, PantallaInicioActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -172,9 +180,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                 //---------------------------------------------------------------
-                                // Agregar datos simulados de sensores en la subcolección "Data"
                                 FirebaseHelper firebaseHelper = new FirebaseHelper();
-                                firebaseHelper.guardarDatosSensores(usuario);
+
+                                // Crear una instancia de SensorDataList para obtener los datos simulados
+                                SensorDataList sensorDataList = new SensorDataList();
+
+                                // Iterar sobre los datos y guardarlos en Firestore
+                                for (SensorData data : sensorDataList.getListaDatos()) {
+                                    // Guardar cada toma de datos de sensores para el usuario
+                                    firebaseHelper.guardarToma(usuario, data);
+                                }
                                 //---------------------------------------------------------------
 
 
@@ -243,9 +258,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
                         //---------------------------------------------------------------
-                        // Agregar datos simulados de sensores en la subcolección "Data"
                         FirebaseHelper firebaseHelper = new FirebaseHelper();
-                        firebaseHelper.guardarDatosSensores(usuario);
+
+                        // Crear una instancia de SensorDataList para obtener los datos simulados
+                        SensorDataList sensorDataList = new SensorDataList();
+
+                        // Iterar sobre los datos y guardarlos en Firestore
+                        for (SensorData data : sensorDataList.getListaDatos()) {
+                            // Guardar cada toma de datos de sensores para el usuario
+                            firebaseHelper.guardarToma(usuario, data);
+                        }
                         //---------------------------------------------------------------
 
 
@@ -272,11 +294,17 @@ public class LoginActivity extends AppCompatActivity {
 
 
                         //---------------------------------------------------------------
-                        // Agregar datos simulados de sensores en la subcolección "Data"
                         FirebaseHelper firebaseHelper = new FirebaseHelper();
-                        firebaseHelper.guardarDatosSensores(usuario);
-                        //---------------------------------------------------------------
 
+                        // Crear una instancia de SensorDataList para obtener los datos simulados
+                        SensorDataList sensorDataList = new SensorDataList();
+
+                        // Iterar sobre los datos y guardarlos en Firestore
+                        for (SensorData data : sensorDataList.getListaDatos()) {
+                            // Guardar cada toma de datos de sensores para el usuario
+                            firebaseHelper.guardarToma(usuario, data);
+                        }
+                        //---------------------------------------------------------------
 
                     }
                     verificaSiUsuarioValidado();
