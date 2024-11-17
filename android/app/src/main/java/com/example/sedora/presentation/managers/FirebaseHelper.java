@@ -53,14 +53,22 @@ public class FirebaseHelper {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        double luminosidadPromedio = documentSnapshot.getDouble("luminosidadPromedio");
-                        double ruidoPromedio = documentSnapshot.getDouble("ruidoPromedio");
-                        double presion1Promedio = documentSnapshot.getDouble("presion1Promedio");
-                        double presion2Promedio = documentSnapshot.getDouble("presion2Promedio");
-                        double temperaturaPromedio = documentSnapshot.getDouble("temperaturaPromedio");
-                        double humedadPromedio = documentSnapshot.getDouble("humedadPromedio");
-                        double proximidadPromedio = documentSnapshot.getDouble("proximidadPromedio");
+                        Double luminosidadPromedio = documentSnapshot.getDouble("luminosidadPromedio");
+                        Double ruidoPromedio = documentSnapshot.getDouble("ruidoPromedio");
+                        Double presion1Promedio = documentSnapshot.getDouble("presion1Promedio");
+                        Double presion2Promedio = documentSnapshot.getDouble("presion2Promedio");
+                        Double temperaturaPromedio = documentSnapshot.getDouble("temperaturaPromedio");
+                        Double humedadPromedio = documentSnapshot.getDouble("humedadPromedio");
+                        Double proximidadPromedio = documentSnapshot.getDouble("proximidadPromedio");
                         int count = documentSnapshot.getLong("count").intValue();
+
+                        if (luminosidadPromedio == null) luminosidadPromedio = 0.0;
+                        if (ruidoPromedio == null) ruidoPromedio = 0.0;
+                        if (presion1Promedio == null) presion1Promedio = 0.0;
+                        if (presion2Promedio == null) presion2Promedio = 0.0;
+                        if (temperaturaPromedio == null) temperaturaPromedio = 0.0;
+                        if (humedadPromedio == null) humedadPromedio = 0.0;
+                        if (proximidadPromedio == null) proximidadPromedio = 0.0;
 
                         luminosidadPromedio = (luminosidadPromedio * count + nuevaToma.getLuminosidad()) / (count + 1);
                         ruidoPromedio = (ruidoPromedio * count + nuevaToma.getRuido()) / (count + 1);
@@ -105,6 +113,7 @@ public class FirebaseHelper {
                     }
                 });
     }
+
 
 
     public void eliminarTomasDelDia(FirebaseUser user) {

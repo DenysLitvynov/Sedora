@@ -245,7 +245,6 @@ public class PantallaInicioActivity extends AppCompatActivity {
                 });
     }
     
-
     private void mostrarConsejoDelDia() {
         String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
@@ -262,6 +261,7 @@ public class PantallaInicioActivity extends AppCompatActivity {
                         textView29.setText(consejo);
                     } else {
                         // Manejar el caso en que no hay datos para el día actual
+                        System.err.println("No hay datos disponibles para hoy.");
                         TextView textView29 = findViewById(R.id.textView29);
                         textView29.setText("No hay datos disponibles para el día de hoy.");
                     }
