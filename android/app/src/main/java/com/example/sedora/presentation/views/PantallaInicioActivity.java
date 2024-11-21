@@ -86,9 +86,9 @@ public class PantallaInicioActivity extends AppCompatActivity {
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("Inicio");
 
-        NotificacionManager notificacionManager = new NotificacionManager();
-        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
-        header.updateNotificationIcon(hasNotifications);
+//        NotificacionManager notificacionManager = new NotificacionManager();
+//        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+//        header.updateNotificationIcon(hasNotifications);
 
         Popup_pantalla_inicio popupPantallaInicio = new Popup_pantalla_inicio(this, this);
         popupPantallaInicio.setupPopup();

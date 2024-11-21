@@ -9,6 +9,9 @@ public class Notificacion {
     private int numeroAvisos;
     private int icono;
 
+    // Constructor sin argumentos (necesario para Firestore)
+    public Notificacion() { }
+
     // Constructor de la notificación
     public Notificacion(String titulo, String mensaje, String tipo, String hora, int numeroAvisos, int icono) {
         this.titulo = titulo;

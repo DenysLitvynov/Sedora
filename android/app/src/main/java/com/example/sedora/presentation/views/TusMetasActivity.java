@@ -27,10 +27,10 @@ public class TusMetasActivity extends AppCompatActivity {
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("Tus Metas");
 
-        // Comprueba las notificaciones
-        NotificacionManager notificacionManager = new NotificacionManager();
-        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
-        header.updateNotificationIcon(hasNotifications);
+//        // Comprueba las notificaciones
+//        NotificacionManager notificacionManager = new NotificacionManager();
+//        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+//        header.updateNotificationIcon(hasNotifications);
 
         // Inicializa y configura el botón para abrir la actividad TusMetas2Activity
         botonProximasMetas = findViewById(R.id.boton_proximas_metas);

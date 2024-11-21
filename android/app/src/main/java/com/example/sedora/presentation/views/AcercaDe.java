@@ -30,10 +30,10 @@ public class AcercaDe extends AppCompatActivity {
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("Acerca De");
 
-        // Comprueba las notificaciones
-        NotificacionManager notificacionManager = new NotificacionManager();
-        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
-        header.updateNotificationIcon(hasNotifications);
+//        // Comprueba las notificaciones
+//        NotificacionManager notificacionManager = new NotificacionManager();
+//        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+//        header.updateNotificationIcon(hasNotifications);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewAcercaDe);

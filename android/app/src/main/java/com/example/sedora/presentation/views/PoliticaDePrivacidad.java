@@ -30,10 +30,10 @@ public class PoliticaDePrivacidad extends AppCompatActivity {
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("Política de Privacidad");
 
-        // Comprueba las notificaciones
-        NotificacionManager notificacionManager = new NotificacionManager();
-        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
-        header.updateNotificationIcon(hasNotifications);
+//        // Comprueba las notificaciones
+//        NotificacionManager notificacionManager = new NotificacionManager();
+//        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+//        header.updateNotificationIcon(hasNotifications);
 
         // para entrar en la página de notificaciones
         //ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesPoliticaDePrivacidad);
