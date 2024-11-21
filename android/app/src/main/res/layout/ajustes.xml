@@ -20,26 +20,29 @@
             android:layout_height="wrap_content">
 
             <!-- HEADER personalizado con el layout especificado -->
+
+            <!-- FIN DEL HEADER -->
+
+
             <com.example.sedora.presentation.views.Header
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:headerLayout="@layout/header_4"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- FIN DEL HEADER -->
-
 
             <View
                 android:id="@+id/view6"
                 style="@style/BoxBackground"
                 android:layout_width="0dp"
-                android:layout_height="150dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/view9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,8 +88,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
                 android:text="Sensor de Temperatura"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/view6"
                 app:layout_constraintStart_toStartOf="@+id/view6"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -107,6 +112,7 @@
                 android:id="@+id/switch2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView6"
                 app:layout_constraintEnd_toEndOf="@+id/switch1"
                 app:layout_constraintHorizontal_bias="0.756"
@@ -129,11 +135,13 @@
                 android:id="@+id/view9"
                 style="@style/BoxBackgroundblanco"
                 android:layout_width="0dp"
-                android:layout_height="110dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/box_background"
+                app:layout_constraintBottom_toTopOf="@+id/view11"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view6" />
@@ -165,21 +173,22 @@
                 android:id="@+id/switch4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="52dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView17"
-                app:layout_constraintEnd_toEndOf="@+id/view9"
-                app:layout_constraintTop_toTopOf="@+id/textView17"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintEnd_toEndOf="@+id/switch5"
+                app:layout_constraintStart_toStartOf="@+id/switch5"
+                app:layout_constraintTop_toTopOf="@+id/textView17" />
 
             <View
                 android:id="@+id/view11"
                 style="@style/BoxBackgroundblanco"
                 android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/box_background"
+                app:layout_constraintBottom_toTopOf="@+id/view4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view9" />
@@ -230,9 +239,11 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/box_background"
+                app:layout_constraintBottom_toTopOf="@+id/view5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view11" />
@@ -242,9 +253,11 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/box_background"
+                app:layout_constraintBottom_toTopOf="@+id/view10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view4" />
@@ -254,7 +267,7 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/box_background"
@@ -327,6 +340,13 @@
                 android:text="Ver Políticas de Privacidad >"
                 app:layout_constraintStart_toStartOf="@+id/view10"
                 app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
