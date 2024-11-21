@@ -7,6 +7,7 @@ import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sedora.miServicio;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.FirebaseHelper;
-import com.example.sedora.Header;
+import com.example.sedora.presentation.views.Header;
+
 import android.Manifest;
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.presentation.managers.NotificacionManager;
