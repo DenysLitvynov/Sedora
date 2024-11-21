@@ -1,5 +1,12 @@
 package com.example.sedora.presentation.managers;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
+
+import androidx.core.app.NotificationCompat;
+
 import com.example.sedora.R;
 import com.example.sedora.model.Notificacion;
 
@@ -9,6 +16,8 @@ import java.util.List;
 public class NotificacionManager {
 
     private List<Notificacion> notificaciones;
+    private NotificationManager notificationManager;//Notification manager de android
+
 
 
     public NotificacionManager() {
@@ -27,8 +36,6 @@ public class NotificacionManager {
         notificaciones.add(new Notificacion("Hidratación", "Es recomendable que tomes un momento para beber agua y asegurarte de que estás bien hidratado.", "Recordatorio", "14:15 19/09/2024", 2, R.drawable.icono_hidratacion));
 
     }
-
-
 
     public List<Notificacion> getNotificaciones() {
         return notificaciones;
