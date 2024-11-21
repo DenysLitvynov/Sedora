@@ -7,10 +7,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.sedora.Header;
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.NotificacionManager;
@@ -34,79 +32,54 @@ public class AjustesActivity extends AppCompatActivity {
         boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
         header.updateNotificationIcon(hasNotifications);
 
-
-        // para entrar en la página de notificaciones
-        //ImageButton buttonIcon = findViewById(R.id.button_icon);
-
-
-
-        //FUNCIONALIDAD BOTONES MENUS
-
+        // FUNCIONALIDAD BOTONES MENUS
         MenuManager funcionMenu = new MenuManager();
 
         ImageView btnPantallaPrincipal = findViewById(R.id.btnHome);
-        btnPantallaPrincipal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                funcionMenu.abrirPantallaInicio(AjustesActivity.this);
-            }
-        });
+        btnPantallaPrincipal.setOnClickListener(v -> funcionMenu.abrirPantallaInicio(AjustesActivity.this));
 
         ImageView btnPantallaProgreso = findViewById(R.id.btnProgreso);
-        btnPantallaProgreso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                funcionMenu.abrirPantallaProgreso(AjustesActivity.this);
-            }
-        });
+        btnPantallaProgreso.setOnClickListener(v -> funcionMenu.abrirPantallaProgreso(AjustesActivity.this));
 
         ImageView btnAjustes = findViewById(R.id.btnAjustes);
-        btnAjustes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                funcionMenu.abrirPantallaAjustes(AjustesActivity.this);
-            }
-        });
+        btnAjustes.setOnClickListener(v -> funcionMenu.abrirPantallaAjustes(AjustesActivity.this));
 
         ImageView btnPantallaPerfil = findViewById(R.id.Perfil);
-        btnPantallaPerfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                funcionMenu.abrirPantallaPerfil(AjustesActivity.this);
-            }
-        });
+        btnPantallaPerfil.setOnClickListener(v -> funcionMenu.abrirPantallaPerfil(AjustesActivity.this));
 
-        // FUNCIONALIDAD TEXTVIEW PARA ABRIR OTRAS PÁGINAS
+        // FUNCIONALIDAD TEXTVIEW Y RECUADROS PARA ABRIR OTRAS PÁGINAS
 
         // Ver Sobre Nosotros
-        TextView tvVerSobreNosotros = findViewById(R.id.textView31);
-        tvVerSobreNosotros.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AjustesActivity.this, AcercaDe.class);
-                startActivity(intent);
-            }
-        });
-
-        // Ver Política de Privacidad
-        TextView tvVerPoliticaPrivacidad = findViewById(R.id.textView35);
-        tvVerPoliticaPrivacidad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AjustesActivity.this, PoliticaDePrivacidad.class);
-                startActivity(intent);
-            }
-        });
+        View viewSobreNosotros = findViewById(R.id.view4); // Recuadro
+        TextView tvVerSobreNosotros = findViewById(R.id.textView31); // Texto
+        View.OnClickListener sobreNosotrosListener = v -> {
+            Intent intent = new Intent(AjustesActivity.this, AcercaDe.class);
+            startActivity(intent);
+        };
+        viewSobreNosotros.setOnClickListener(sobreNosotrosListener);
+        tvVerSobreNosotros.setOnClickListener(sobreNosotrosListener);
 
         // Ver Preguntas Frecuentes (FAQ)
-        TextView tvVerFAQ = findViewById(R.id.textView33);
-        tvVerFAQ.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AjustesActivity.this, FAQ.class);
-                startActivity(intent);
-            }
-        });
+        View viewFAQ = findViewById(R.id.view5); // Recuadro
+        TextView tvVerFAQ = findViewById(R.id.textView33); // Texto
+        View.OnClickListener faqListener = v -> {
+            Intent intent = new Intent(AjustesActivity.this, FAQ.class);
+            startActivity(intent);
+        };
+        viewFAQ.setOnClickListener(faqListener);
+        tvVerFAQ.setOnClickListener(faqListener);
+
+        // Ver Política de Privacidad
+        View viewPoliticaPrivacidad = findViewById(R.id.view10); // Recuadro
+        TextView tvVerPoliticaPrivacidad = findViewById(R.id.textView35); // Texto
+        View.OnClickListener politicaPrivacidadListener = v -> {
+            Intent intent = new Intent(AjustesActivity.this, PoliticaDePrivacidad.class);
+            startActivity(intent);
+        };
+        viewPoliticaPrivacidad.setOnClickListener(politicaPrivacidadListener);
+        tvVerPoliticaPrivacidad.setOnClickListener(politicaPrivacidadListener);
+    }
+
 
         /*
         // Configura el clic en el button_icon para entrar en Notificaciones
@@ -120,4 +93,4 @@ public class AjustesActivity extends AppCompatActivity {
         });*/
     }
 
-}
+

@@ -19,6 +19,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.sedora.presentation.fragments.Grafica;
 import com.example.sedora.R;
+import com.example.sedora.presentation.managers.NotificacionManager;
+import com.example.sedora.presentation.managers.NotificacionesFirebase;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -49,7 +51,6 @@ public class GraficaActivity extends AppCompatActivity {
         titulo_Grafica=findViewById(R.id.Titulo);
 
         titulo_Grafica.setText(grafica_elegida);
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,24 +1,16 @@
 package com.example.sedora.presentation.views;
 
-import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.View;
-import android.widget.ImageButton;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.graphics.Typeface;
 import android.widget.TextView;
 
-import com.example.sedora.Header;
-import com.example.sedora.R;
-import com.example.sedora.model.RecyclerViewItem;
-import com.example.sedora.presentation.managers.NotificacionManager;
-import com.example.sedora.presentation.managers.SpaceItemDecoration;
-import com.example.sedora.presentation.adapters.FAQAdapter;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.sedora.R;
+import com.example.sedora.presentation.managers.NotificacionManager;
 
 public class PoliticaDePrivacidad extends AppCompatActivity {
 
@@ -27,49 +19,29 @@ public class PoliticaDePrivacidad extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.politica_de_privacidad);
 
-        // Obtén el Header
-        Header header = findViewById(R.id.header);
-
-        // Configura el título del Header
+        // Configurar el título del Header
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("Política de Privacidad");
 
-        // Comprueba las notificaciones
+        // Configuración de notificaciones
         NotificacionManager notificacionManager = new NotificacionManager();
         boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+        Header header = findViewById(R.id.header);
         header.updateNotificationIcon(hasNotifications);
 
-        // para entrar en la página de notificaciones
-        //ImageButton buttonIcon = findViewById(R.id.CamapanaNotificacionesPoliticaDePrivacidad);
-
-        // Inicializar RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewPoliticaDePrivacidad);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Agregar espaciado entre elementos
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.recycler_item_space); // Define el espaciado en `dimens.xml`
-        recyclerView.addItemDecoration(new SpaceItemDecoration(spacingInPixels));
-
-        // Cargar datos de ejemplo
-        List<RecyclerViewItem> PoliticaDePrivacidadItemList = new ArrayList<>();
-        PoliticaDePrivacidadItemList.add(new RecyclerViewItem("¿Qué servicios ofrecemos?", "Fecha de entrada en vigor: 19/10/2024\n" +
-                "\n" +
-                "En Sedora, respetamos su privacidad y estamos comprometidos a proteger los datos personales que usted comparte con nosotros. Esta Política de Privacidad describe cómo recopilamos, utilizamos, protegemos y compartimos su información, así como los derechos que usted tiene sobre ella.\n" +
-                "\n" +
-                "1. Información que recopilamos\n" +
-                "Al utilizar nuestra aplicación, podemos recopilar los siguientes tipos de información:\n" +
-                "\n" +
-                "Información personal: como su nombre, dirección de correo electrónico, y otros datos que usted proporciona al registrarse o interactuar con nuestra app.\n" +
-                "Datos de uso: como hábitos de postura, tiempos de uso, y patrones de comportamiento, con el fin de proporcionarle alertas y recomendaciones personalizadas.\n" +
-                "Información de dispositivo: como la dirección IP, tipo de dispositivo, sistema operativo y datos de diagnóstico.\n" +
-                "2. Cómo utilizamos su información\n" +
-                "Utilizamos los datos que recopilamos para:\n" +
-                "\n" +
-                "Proporcionar y mejorar la funcionalidad de la aplicación.\n" +
-                "Personalizar la experiencia del usuario y ofrecer recomendaciones de ergonomía.\n" +
-                "Monitorear y analizar el uso de la aplicación para mejorar su rendimiento.\n" +
-                "Comunicar novedades, actualizaciones y otras notificaciones relacionadas con el servicio.\n" +
-                "3. Cómo compartimos su información\n" +
+        // Cargar el contenido estático en el TextView
+        TextView textViewContent = findViewById(R.id.textViewPoliticaDePrivacidadContent);
+        String politicaDePrivacidadContent = "¿Qué servicios ofrecemos?\n" + "Fecha de entrada en vigor: 19/10/2024\n\n"
+                + "En Sedora, respetamos su privacidad y estamos comprometidos a proteger los datos personales "
+                + "que usted comparte con nosotros. Esta Política de Privacidad describe cómo recopilamos, utilizamos, "
+                + "protegemos y compartimos su información, así como los derechos que usted tiene sobre ella.\n\n"
+                + "1. Información que recopilamos\n"
+                + "- Información personal: como su nombre, dirección de correo electrónico, y otros datos que usted proporciona.\n"
+                + "- Datos de uso: como hábitos de postura, tiempos de uso, y patrones de comportamiento.\n"
+                + "- Información de dispositivo: como la dirección IP, tipo de dispositivo, sistema operativo y datos de diagnóstico.\n\n"
+                + "2. Cómo utilizamos su información\n"
+                + "Utilizamos los datos que recopilamos para proporcionar y mejorar la funcionalidad de la aplicación.\n\n"
+                + "3. Cómo compartimos su información\n" +
                 "No vendemos ni compartimos su información personal con terceros sin su consentimiento, excepto en los siguientes casos:\n" +
                 "\n" +
                 "Proveedores de servicios: Podemos compartir datos con terceros que proporcionan servicios en nuestro nombre, como análisis de datos o soporte técnico.\n" +
@@ -90,32 +62,23 @@ public class PoliticaDePrivacidad extends AppCompatActivity {
                 "7. Contacto\n" +
                 "Si tiene alguna pregunta o inquietud sobre esta Política de Privacidad, puede contactarnos en:\n" +
                 "Correo electrónico: atencion-al-cliente@sedora.es\n" +
-                "Teléfono: 666666666"));
-        // Log.d("PoliticaDePrivacidad", "Número de ítems: " + PoliticaDePrivacidadItemList.size());
+                "Teléfono: 666666666";
 
-        // Configurar el adapter
-        FAQAdapter faqAdapter = new FAQAdapter(PoliticaDePrivacidadItemList);
-        recyclerView.setAdapter(faqAdapter);
+        // Crear SpannableString
+        SpannableString spannableString = new SpannableString(politicaDePrivacidadContent);
 
-        /* Funcionalidad al botón de flecha
-        ImageButton flechaRetroceso = findViewById(R.id.FlechaRetrocesoPoliticaDePrivacidad);
-        flechaRetroceso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Crear un Intent para redirigir a la actividad de ajustes
-                Intent intent = new Intent(PoliticaDePrivacidad.this, AjustesActivity.class);
-                startActivity(intent);
-            }
-        });
+// Resaltar las frases específicas
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 25, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // "¿Qué servicios ofrecemos?"
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 348, 380, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // "1. Información que recopilamos"
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 692, 727, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // "2. Cómo utilizamos su información"
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 828, 862, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // "3. Cómo compartimos su información"
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 1341, 1372, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // "4. Seguridad de su información"
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 1624, 1640, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // "5. Sus derechos"
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 2010, 2038, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // "6. Cambios en esta política"
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 2246, 2259, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // "7. Contacto"
 
-        // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PoliticaDePrivacidad.this, RecyclerActivity.class);
-                startActivity(intent);
-                finish(); // Opcional: cerrar la actividad actual
-            }
-        });*/
+// Asigna el texto al TextView
+        textViewContent.setText(spannableString);
+
     }
 }

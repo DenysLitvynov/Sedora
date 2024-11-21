@@ -10,7 +10,7 @@
     android:padding="8dp">
 
     <!-- HEADER personalizado con el layout especificado -->
-    <com.example.sedora.Header
+    <com.example.sedora.presentation.views.Header
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,20 +22,27 @@
     <!-- FIN DEL HEADER -->
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewPoliticaDePrivacidad"
-        android:layout_width="0dp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:background="@drawable/box_background"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.753"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        app:layout_constraintVertical_bias="0.041"
-        tools:listitem="@layout/recycler_view_item" />
+        app:layout_constraintTop_toBottomOf="@+id/header">
+
+        <TextView
+            android:id="@+id/textViewPoliticaDePrivacidadContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#050000"
+            android:textSize="16sp"
+            tools:text="Tu texto de ejemplo aquí..." />
+
+    </ScrollView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

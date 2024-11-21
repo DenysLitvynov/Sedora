@@ -3,7 +3,6 @@ package com.example.sedora.presentation.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +12,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.sedora.Header;
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.NotificacionManager;

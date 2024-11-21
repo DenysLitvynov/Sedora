@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +19,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
-import com.example.sedora.Header;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.NotificacionManager;
 import com.firebase.ui.auth.AuthUI;
@@ -270,17 +269,20 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void cerrarSesion(View view) {
-        AuthUI.getInstance().signOut(getApplicationContext())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                | Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                        finish();
-                    }
-                });
+        PopUpCerrarSesion cerrarSesionPopUp = new PopUpCerrarSesion(ProfileActivity.this);
+        cerrarSesionPopUp.mostrarDialogo(new PopUpCerrarSesion.LogoutListener() {
+            @Override
+            public void confirmar() {
+                AuthUI.getInstance().signOut(ProfileActivity.this)
+                        .addOnCompleteListener(task -> {
+                            Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    | Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            finish();
+                        });
+            }
+        });
     }
 }

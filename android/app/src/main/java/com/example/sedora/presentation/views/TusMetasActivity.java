@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.sedora.Header;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.NotificacionManager;
 

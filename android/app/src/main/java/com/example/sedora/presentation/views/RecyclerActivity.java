@@ -1,9 +1,7 @@
 package com.example.sedora.presentation.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +28,7 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Pasa el NotificacionManager al adaptador
+        // Pasa el NotificacionManagerSedora al adaptador
         adaptador = new Adaptador(notificacionManager);
         recyclerView.setAdapter(adaptador);
 
