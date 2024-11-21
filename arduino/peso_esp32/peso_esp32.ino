@@ -1,79 +1,96 @@
-#include <M5Stack.h>
 #include "HX711.h"
 #include "WiFi.h"
 #include "AsyncUDP.h"
 #include <ArduinoJson.h>
 
 // Configuración WiFi
-const char* ssid = "**************";
-const char* password = "*********";
+const char* ssid = "MiFibra-3078";
+const char* password = "V5AQboPQ";
 
-#define DT_PIN 26
-#define SCK_PIN 25
+// Pines para el sensor del asiento
+#define DT_PIN_ASIENTO 26
+#define SCK_PIN_ASIENTO 25
+
+// Pines para el sensor del respaldo
+#define DT_PIN_RESPALDO 19
+#define SCK_PIN_RESPALDO 18
+
+HX711 scaleAsiento;
+HX711 scaleRespaldo;
 
 AsyncUDP udp;
 StaticJsonDocument<200> jsonBuffer;
-
-HX711 scale;
 
 // Función para configurar el WiFi
 void setupWiFi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
-  if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-    Serial.println("Error al conectar a la WiFi");
-    while (1) { delay(1000); }
+  Serial.println("Conectando a WiFi...");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
   }
 
-  Serial.print("Conectado a la IP: ");
+  Serial.println("\nWiFi conectado");
+  Serial.print("Dirección IP: ");
   Serial.println(WiFi.localIP());
 }
 
-// Función para medir el peso
-long medirPeso() {
-  scale.begin(DT_PIN, SCK_PIN);
-
-  scale.set_scale(2280.f);
-  scale.tare();
-  float peso = scale.get_units(10);
-
-  M5.Lcd.clear();
-  M5.Lcd.setCursor(10, 10);
-  M5.Lcd.print("Peso: ");
-  M5.Lcd.print(peso, 2);
-  M5.Lcd.print(" g");
-
-  if (peso > 20) {
-    jsonBuffer["Estado"] = "Sentado correctamente";
-  } else {
-    jsonBuffer["Estado"] = "Sentado incorrectamente";
+float medirPeso(HX711& scale) {
+  if (!scale.is_ready()) {
+    Serial.println("Sensor no está listo");
+    return 0.0;
   }
 
-  enviarDatos(peso);
-
-  delay(500);
+  float peso = scale.get_units(10); 
   return peso;
 }
 
 // Función para enviar los datos por UDP
-void enviarDatos(long peso) {
-  jsonBuffer["Peso"] = peso;
+void enviarDatos(float pesoAsiento, float pesoRespaldo) {
+  jsonBuffer["PesoAsiento"] = pesoAsiento;
+  jsonBuffer["PesoRespaldo"] = pesoRespaldo;
+
+  String estado;
+  if (pesoAsiento > 20 && pesoRespaldo > 20) {
+    estado = "Sentado correctamente";
+  } else {
+    estado = "Sentado incorrectamente";
+  }
+  jsonBuffer["Estado"] = estado;
+
   char textoEnvio[200];
   serializeJson(jsonBuffer, textoEnvio);
+
   udp.broadcastTo(textoEnvio, 1234);
+
+  Serial.println("Datos enviados por UDP:");
+  Serial.println(textoEnvio);
 }
 
 void setup() {
   Serial.begin(115200);
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-  pinMode(ledPin, OUTPUT);
+
+  scaleAsiento.begin(DT_PIN_ASIENTO, SCK_PIN_ASIENTO);
+  scaleRespaldo.begin(DT_PIN_RESPALDO, SCK_PIN_RESPALDO);
+
+  scaleAsiento.set_scale(2280.f);  
+  scaleAsiento.tare();             
+  scaleRespaldo.set_scale(2280.f); 
+  scaleRespaldo.tare();          
 
   setupWiFi();
 }
 
 void loop() {
-  long peso = medirPeso();
+  float pesoAsiento = medirPeso(scaleAsiento);
+  float pesoRespaldo = medirPeso(scaleRespaldo);
+
+  Serial.printf("Peso Asiento: %.2f g\n", pesoAsiento);
+  Serial.printf("Peso Respaldo: %.2f g\n", pesoRespaldo);
+
+  enviarDatos(pesoAsiento, pesoRespaldo);
+
   delay(1000);
 }
