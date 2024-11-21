@@ -14,7 +14,8 @@ import com.example.sedora.model.RecyclerViewItem;
 
 import java.util.List;
 
-public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.FAQViewHolder> {
+public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.AcercaDeViewHolder> {
+
 
     private final List<RecyclerViewItem> AcercaDeItems;
 
@@ -24,14 +25,14 @@ public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.FAQVie
 
     @NonNull
     @Override
-    public FAQViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AcercaDeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_item, parent, false);
-        return new FAQViewHolder(view);
+        return new AcercaDeViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FAQViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AcercaDeViewHolder holder, int position) {
         RecyclerViewItem faqItem = AcercaDeItems.get(position);
         holder.bind(faqItem);
     }
@@ -41,13 +42,13 @@ public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.FAQVie
         return AcercaDeItems.size();
     }
 
-    public class FAQViewHolder extends RecyclerView.ViewHolder {
+    public class AcercaDeViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView textViewHeader;
         private final TextView textViewContent;
         private final ImageButton buttonToggle;
 
-        public FAQViewHolder(@NonNull View itemView) {
+        public AcercaDeViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewHeader = itemView.findViewById(R.id.textViewFAQHeader);
             textViewContent = itemView.findViewById(R.id.textViewFAQContent);
