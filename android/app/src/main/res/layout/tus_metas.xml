@@ -104,9 +104,9 @@
         android:background="@drawable/box_background_blanco"
         android:backgroundTint="#CDC8C8"
         app:layout_constraintBottom_toTopOf="@+id/boxExample18"
-        app:layout_constraintEnd_toEndOf="@+id/heading15"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample16"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/heading15"
+        app:layout_constraintStart_toStartOf="@+id/boxExample16"
         app:layout_constraintTop_toBottomOf="@+id/heading15" />
 
     <TextView
@@ -184,16 +184,17 @@
     <TextView
         android:id="@+id/textView26"
         style="@style/Heading3"
-        android:layout_width="75dp"
-        android:layout_height="27dp"
-        android:layout_marginEnd="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
         android:text="3/10"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/heading4"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/heading14"
+        app:layout_constraintEnd_toEndOf="@+id/heading14"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/heading4"
-        app:layout_constraintTop_toTopOf="@+id/heading4"
+        app:layout_constraintTop_toBottomOf="@+id/header"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
@@ -247,39 +248,41 @@
         style="@style/Heading1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
         android:text="Metas conseguidas:"
         android:textSize="17sp"
         app:layout_constraintBottom_toTopOf="@+id/heading14"
         app:layout_constraintEnd_toStartOf="@+id/textView26"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/boxExample15" />
+        app:layout_constraintStart_toStartOf="@+id/heading14"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintVertical_bias="1.0" />
+
 
     <TextView
         android:id="@+id/heading15"
         style="@style/Heading1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Próximas Metas"
         app:layout_constraintBottom_toTopOf="@+id/boxExample19"
         app:layout_constraintEnd_toEndOf="@+id/boxExample16"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/boxExample16"
         app:layout_constraintTop_toBottomOf="@+id/boxExample16" />
 
-
     <ImageView
         android:id="@+id/boton_proximas_metas"
-        android:layout_width="40dp"
-        android:layout_height="34dp"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/heading15"
-        app:layout_constraintEnd_toEndOf="@+id/heading15"
-        app:layout_constraintHorizontal_bias="0.781"
-        app:layout_constraintStart_toStartOf="@+id/heading15"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample15"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/heading15"
         app:layout_constraintTop_toTopOf="@+id/heading15"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/icono_mas" />
 
     <ImageView

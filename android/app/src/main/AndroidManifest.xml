@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permiso para internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Permiso para notificaciones -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -58,8 +62,6 @@
         <activity android:name=".presentation.views.AcercaDe"></activity>
 
         <activity android:name=".presentation.views.PoliticaDePrivacidad"></activity>
-
-
 
         <activity
             android:name=".presentation.views.PantallaInicioActivity"
