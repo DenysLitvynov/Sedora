@@ -4,6 +4,7 @@
 #include "AsyncUDP.h"
 #include <ArduinoJson.h>
 #include "sedora1_map.h"
+#include <PubSubClient.h>
 
 // Definiciones
 #define DHTPIN 26
@@ -15,7 +16,8 @@ int ldrPin = 36;
 int thresholdHigh = 800;
 int thresholdLow = 200;
 int prevSoundState = -1;
-int prevLightState = -1;  
+int prevLightState = -1;
+int distancia = 0;
 
 
 #define BLANCO 0xFFFF
@@ -23,245 +25,330 @@ int prevLightState = -1;
 #define ROJO 0xF800
 #define VERDE 0x009774
 #define AZUL 0x001F
-const char* ssid = "*******";
-const char* password = "********";
+
+const char* ssid = "MiFibra-3078";
+const char* password = "V5AQboPQ";
 
 char texto[200];
-boolean recibido = false;
+boolean recibidoDist = false;
+boolean recibidoPes = false;
+
 AsyncUDP udp;
 int currentScreen = 0;
+
+WiFiClient espClient;
+
+PubSubClient client(espClient);
+const char* mqtt_server = "test.mosquitto.org";
+const int mqtt_port = 1883;
+const char* mqtt_client_name = "Sedora1";
+unsigned long lastPublishTime = 0;
 
 // Función para mostrar el estado de la conexión WiFi
 //------------------------------------------------
 void conectarWiFi() {
-    M5.Lcd.setTextSize(2);
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+  M5.Lcd.setTextSize(2);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
 
-    if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-        M5.Lcd.fillScreen(NEGRO);
-        M5.Lcd.setTextColor(ROJO);
-        M5.Lcd.println("[Servidor] Error al conectar a WiFi!");
-        while (true) delay(1000);
-    }
-
+  if (WiFi.waitForConnectResult() != WL_CONNECTED) {
     M5.Lcd.fillScreen(NEGRO);
+    M5.Lcd.setTextColor(ROJO);
+    M5.Lcd.println("[Servidor] Error al conectar a WiFi!");
+    while (true) delay(1000);
+  }
+
+  M5.Lcd.fillScreen(NEGRO);
+  M5.Lcd.setTextColor(VERDE);
+  M5.Lcd.println("[Servidor] Conexion OK.");
+}
+
+//------------------------------------------------
+void conectarMQTT() {
+  while (!client.connected()) {
     M5.Lcd.setTextColor(VERDE);
-    M5.Lcd.println("[Servidor] Conexion OK.");
+    Serial.print("Conectando a MQTT...");
+
+    if (client.connect(mqtt_client_name)) {
+      Serial.print("MQTT conectado.");
+    } else {
+      Serial.print("Error MQTT, reintentando...");
+      delay(5000);
+    }
+  }
 }
 
 //------------------------------------------------
 void iniciarUDP() {
-    if (udp.listen(1234)) {
-        udp.onPacket([](AsyncUDPPacket packet) {
-            int i = 200;
-            while (i--) *(texto + i) = *(packet.data() + i);
-            recibido = true;
-        });
-    }
+  if (udp.listen(1234)) {
+    udp.onPacket([](AsyncUDPPacket packet) {
+      int i = 200;
+      while (i--) *(texto + i) = *(packet.data() + i);
+      recibido = true;
+    });
+  }
 }
 
 //------------------------------------------------
-void mostrarDatosUDP() {
-    if (recibido) {
-        recibido = false;
-        DynamicJsonDocument jsonBufferRecv(200);
-        DeserializationError error = deserializeJson(jsonBufferRecv, texto);
-        if (error) return;
+void mostrarDatosUDP_DISTANCIA() {
+  if (recibidoDist) {
+    recibidoDist = false;
+    DynamicJsonDocument jsonBufferRecv(200);
+    DeserializationError error = deserializeJson(jsonBufferRecv, texto);
+    if (error) return;
 
-        int distancia = jsonBufferRecv["Distancia"];
-        bool alerta = jsonBufferRecv["Alerta"];
+    distancia = jsonBufferRecv["Distancia"];
+    bool alerta = jsonBufferRecv["Alerta"];
 
-        M5.Lcd.setCursor(10, 150);
-        M5.Lcd.print("Distancia: ");
-        M5.Lcd.printf("%d cm", distancia);
+    M5.Lcd.setCursor(10, 150);
+    M5.Lcd.print("Distancia: ");
+    M5.Lcd.printf("%d cm", distancia);
 
-        M5.Lcd.setCursor(10, 130);
-        if (alerta) {
-            M5.Lcd.println("¡ALERTA!");
-            M5.Speaker.tone(500, 200);
-            delay(500);
-            M5.Speaker.mute();
-        } else {
-            M5.Lcd.println("Distancia segura.");
-            M5.Speaker.mute();
-        }
-    }
-}
-
-//------------------------------------------------
-void mostrarHumedad(int x, int y) {
-    float h = dht.readHumidity();
-    M5.Lcd.setCursor(x, y);
-    M5.Lcd.print("Humedad: ");
-    M5.Lcd.print(h);
-    M5.Lcd.print("%");
-}
-
-//------------------------------------------------
-void mostrarTemperatura(int x, int y) {
-    float t = dht.readTemperature();
-    M5.Lcd.setCursor(x, y);
-    M5.Lcd.print("Temperatura: ");
-    M5.Lcd.print(t);
-    M5.Lcd.print("°C");
-}
-
-//------------------------------------------------
-void mostrarNivelDeSonido(int x, int y) {
-    int micValue = analogRead(micPin);
-    int currentState;
-
-    if (micValue > thresholdHigh) {
-        currentState = 1;
-    } else if (micValue < thresholdLow) {
-        currentState = 0;
+    M5.Lcd.setCursor(10, 130);
+    if (alerta) {
+      M5.Lcd.println("¡ALERTA!");
+      M5.Speaker.tone(500, 200);
+      delay(500);
+      M5.Speaker.mute();
     } else {
-        currentState = prevSoundState;
+      M5.Lcd.println("Distancia segura.");
+      M5.Speaker.mute();
     }
-    M5.Lcd.setCursor(x, y);
-    if (currentState == 1) {
-        M5.Lcd.println("Sonido: Inadecuado");
-    } else {
-        M5.Lcd.println("Sonido: Adecuado");
-    }
-    prevSoundState = currentState;
+  }
+}
+
+void mostrarDatosUDP_PESO() {
+  if (recibidoPes) {
+    recibidoPes = false;
+    DynamicJsonDocument jsonBufferRecv(200);
+    DeserializationError error = deserializeJson(jsonBufferRecv, texto);
+    if (error) return;
+
+    float pesoAsiento = jsonBufferRecv["PesoAsiento"];
+    float pesoRespaldo = jsonBufferRecv["PesoRespaldo"];
+
+    M5.Lcd.setCursor(10, 170);
+    M5.Lcd.print("Peso Asiento: ");
+    M5.Lcd.printf("%.2f kg", pesoAsiento);
+
+    M5.Lcd.setCursor(10, 190);
+    M5.Lcd.print("Peso Respaldo: ");
+    M5.Lcd.printf("%.2f kg", pesoRespaldo);
+
+  }
 }
 
 //------------------------------------------------
-void mostrarLuminosidad(int x, int y) {
-    int ldrValue = analogRead(ldrPin);
-    M5.Lcd.setCursor(x, y);
-    if (ldrValue < 800) {
-        M5.Lcd.println("Luminosidad: Adecuada");
-    } else {
-        M5.Lcd.println("Luminosidad: Inadecuada");
-    }
+void mostrarHumedad(int x, int y, float h) {
+  M5.Lcd.setCursor(x, y);
+  M5.Lcd.print("Humedad: ");
+  M5.Lcd.print(h);
+  M5.Lcd.print("%");
 }
 
 //------------------------------------------------
-void verPantallaPrincipal() {
-    M5.Lcd.clear(BLANCO);
-    M5.Lcd.setTextColor(NEGRO);
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.setTextSize(2);
-    M5.Lcd.println("Pantalla Principal");
-
-    mostrarHumedad(10, 110);
-    mostrarTemperatura(10, 90);
-    mostrarNivelDeSonido(10, 50);
-    mostrarLuminosidad(10, 70);
-    mostrarDatosUDP();
+void mostrarTemperatura(int x, int y, float t) {
+  M5.Lcd.setCursor(x, y);
+  M5.Lcd.print("Temperatura: ");
+  M5.Lcd.print(t);
+  M5.Lcd.print("°C");
 }
 
 //------------------------------------------------
-void verPantallaTemp() {
-    M5.Lcd.clear(AZUL);
-    M5.Lcd.setTextColor(BLANCO);
-    M5.Lcd.setTextSize(2);
+void mostrarNivelDeSonido(int x, int y, int micValue) {
+  int currentState;
 
-    M5.Lcd.setCursor(10, 20);
-    M5.Lcd.println("Temperatura");
+  if (micValue > thresholdHigh) {
+    currentState = 1;
+  } else if (micValue < thresholdLow) {
+    currentState = 0;
+  } else {
+    currentState = prevSoundState;
+  }
 
-    mostrarTemperatura(10, 70);
+  M5.Lcd.setCursor(x, y);
+  if (currentState == 1) {
+    M5.Lcd.println("Sonido: Inadecuado");
+  } else {
+    M5.Lcd.println("Sonido: Adecuado");
+  }
+  prevSoundState = currentState;
 }
 
 //------------------------------------------------
-void verPantallaHum() {
-    M5.Lcd.clear(AZUL);
-    M5.Lcd.setTextColor(BLANCO);
-    M5.Lcd.setTextSize(2);
-
-    M5.Lcd.setCursor(10, 20);
-    M5.Lcd.println("Humedad");
-
-    mostrarHumedad(10, 70);
+void mostrarLuminosidad(int x, int y, int ldrValue) {
+  M5.Lcd.setCursor(x, y);
+  if (ldrValue < 800) {
+    M5.Lcd.println("Luminosidad: Adecuada");
+  } else {
+    M5.Lcd.println("Luminosidad: Inadecuada");
+  }
 }
 
 //------------------------------------------------
-void verPantallaSon() {
-    M5.Lcd.clear(ROJO);
-    M5.Lcd.setTextColor(BLANCO);
-    M5.Lcd.setTextSize(2);
-    M5.Lcd.setCursor(10, 20);
-    M5.Lcd.println("Nivel de Sonido");
+void verPantallaPrincipal(float hum, float temp, int micValue, int ldrValue) {
+  M5.Lcd.clear(BLANCO);
+  M5.Lcd.setTextColor(NEGRO);
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.println("Pantalla Principal");
 
-    mostrarNivelDeSonido(10, 70);
+  mostrarHumedad(10, 110, hum);
+  mostrarTemperatura(10, 90, temp);
+  mostrarNivelDeSonido(10, 50, micValue);
+  mostrarLuminosidad(10, 70, ldrValue);
+  mostrarDatosUDP_DISTANCIA();
+  mostrarDatosUDP_PESO();
 }
 
 //------------------------------------------------
-void verPantallaLuz() {
-    M5.Lcd.clear(VERDE);
-    M5.Lcd.setTextColor(NEGRO);
-    M5.Lcd.setTextSize(2);
+void verPantallaTemp(float temp) {
+  M5.Lcd.clear(AZUL);
+  M5.Lcd.setTextColor(BLANCO);
+  M5.Lcd.setTextSize(2);
 
-    M5.Lcd.setCursor(10, 20);
-    M5.Lcd.println("Luminosidad");
+  M5.Lcd.setCursor(10, 20);
+  M5.Lcd.println("Temperatura");
 
-    mostrarLuminosidad(10, 70);
+  mostrarTemperatura(10, 70, temp);
+}
+
+//------------------------------------------------
+void verPantallaHum(float hum) {
+  M5.Lcd.clear(AZUL);
+  M5.Lcd.setTextColor(BLANCO);
+  M5.Lcd.setTextSize(2);
+
+  M5.Lcd.setCursor(10, 20);
+  M5.Lcd.println("Humedad");
+
+  mostrarHumedad(10, 70, hum);
+}
+
+//------------------------------------------------
+void verPantallaSon(int micValue) {
+  M5.Lcd.clear(ROJO);
+  M5.Lcd.setTextColor(BLANCO);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(10, 20);
+  M5.Lcd.println("Nivel de Sonido");
+
+  mostrarNivelDeSonido(10, 70, micValue);
+}
+
+//------------------------------------------------
+void verPantallaLuz(int ldrValue) {
+  M5.Lcd.clear(VERDE);
+  M5.Lcd.setTextColor(NEGRO);
+  M5.Lcd.setTextSize(2);
+
+  M5.Lcd.setCursor(10, 20);
+  M5.Lcd.println("Luminosidad");
+
+  mostrarLuminosidad(10, 70, ldrValue);
 }
 
 //------------------------------------------------
 void verPantallaDist() {
-    M5.Lcd.clear(NEGRO);
-    M5.Lcd.setTextColor(BLANCO);
-    M5.Lcd.setTextSize(2);
+  M5.Lcd.clear(NEGRO);
+  M5.Lcd.setTextColor(BLANCO);
+  M5.Lcd.setTextSize(2);
 
-    M5.Lcd.setCursor(10, 20);
-    M5.Lcd.println("Distancia");
+  M5.Lcd.setCursor(10, 20);
+  M5.Lcd.println("Distancia");
 
-    mostrarDatosUDP(); 
+  mostrarDatosUDP();
+}
+
+//------------------------------------------------
+// Publicar datos al broker
+void publicarDatos(float temp, float hum, int micValue, int ldrValue, int distancia) {
+  if (!client.connected()) {
+    conectarMQTT();
+  }
+
+  char tempStr[10];
+  dtostrf(temp, 6, 2, tempStr);
+  client.publish("Sedora/sensores/temperatura", tempStr);
+
+  char humStr[10];
+  dtostrf(hum, 6, 2, humStr);
+  client.publish("Sedora/sensores/humedad", humStr);
+
+  // Publicar sonido: Adecuado/Inadecuado
+  String soundMessage = (micValue > thresholdHigh) ? "Inadecuado" : "Adecuado";
+  client.publish("Sedora/sensores/sonido", soundMessage.c_str());
+
+  // Publicar luz: Adecuada/Inadecuada
+  String lightMessage = (ldrValue < 800) ? "Adecuada" : "Inadecuada";
+  client.publish("Sedora/sensores/luz", lightMessage.c_str());
+
+  char distStr[10];
+  itoa(distancia, distStr, 10);
+  client.publish("Sedora/sensores/distancia", distStr);
 }
 
 //------------------------------------------------
 void setup() {
-    M5.begin();
-    M5.Lcd.drawBitmap(0, 0, SEDORA1_COPY_SMALL_WIDTH, SEDORA1_COPY_SMALL_HEIGHT, sedora1_copy_Small);
-    delay(3000);
-    conectarWiFi();
-    delay(2000);
-    iniciarUDP();
-    dht.begin();
-    verPantallaPrincipal();
+  M5.begin();
+  M5.Lcd.drawBitmap(0, 0, SEDORA1_COPY_SMALL_WIDTH, SEDORA1_COPY_SMALL_HEIGHT, sedora1_copy_Small);
+  delay(3000);
+  conectarWiFi();
+  client.setServer(mqtt_server, mqtt_port);
+  iniciarUDP();
+  dht.begin();
+  verPantallaPrincipal(0, 0, 0, 0);
 }
 
 //------------------------------------------------
 void loop() {
-    M5.update();
+  M5.update();
+  client.loop();
+  unsigned long currentMillis = millis();
 
-    if (M5.BtnB.wasPressed()) {
-        currentScreen++;
-        if (currentScreen > 5) {
-            currentScreen = 0;
-        }
-    }
+  float temp = dht.readTemperature();
+  float hum = dht.readHumidity();
+  int micValue = analogRead(micPin);
+  int ldrValue = analogRead(ldrPin);
 
-    if (M5.BtnC.wasPressed()) {
-        currentScreen--;
-        if (currentScreen < 0) {
-            currentScreen = 5;
-        }
-    }
+  if (currentMillis - lastPublishTime >= 5000) {
+    lastPublishTime = currentMillis;
+    publicarDatos(temp, hum, micValue, ldrValue, distancia);
+  }
 
-    switch (currentScreen) {
-        case 0:
-            verPantallaPrincipal();
-            break;
-        case 1:
-            verPantallaTemp();
-            break;
-        case 2:
-            verPantallaSon();
-            break;
-        case 3:
-            verPantallaLuz();
-            break;
-        case 4:
-            verPantallaDist();
-            break;
-        case 5:
-            verPantallaHum();
-            break;
+  if (M5.BtnB.wasPressed()) {
+    currentScreen++;
+    if (currentScreen > 5) {
+      currentScreen = 0;
     }
-    delay(2000);
+  }
+
+  if (M5.BtnC.wasPressed()) {
+    currentScreen--;
+    if (currentScreen < 0) {
+      currentScreen = 5;
+    }
+  }
+
+  switch (currentScreen) {
+    case 0:
+      verPantallaPrincipal(hum, temp, micValue, ldrValue);
+      break;
+    case 1:
+      verPantallaTemp(temp);
+      break;
+    case 2:
+      verPantallaSon(micValue);
+      break;
+    case 3:
+      verPantallaLuz(ldrValue);
+      break;
+    case 4:
+      verPantallaDist();
+      break;
+    case 5:
+      verPantallaHum(hum);
+      break;
+  }
+  delay(2000);
 }
