@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.example.sedora.data.DatosGrafica;
 import com.example.sedora.R;
+import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.example.sedora.presentation.views.GraficaActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -29,6 +31,11 @@ public class Grafica extends Fragment {
     private static final String ARG_SEM_MENS = "semanal_mensual"; // Para diferenciar entre semanal y mensual
     private String tipoGrafica; // "semanal" o "mensual"
     private ScrollView scrollView;
+    private DatosGrafica puntosHorasSentado=new DatosGrafica("Horas Sentado",null,null);
+    private DatosGrafica puntosHorasSensibles=new DatosGrafica("Horas Sensibles",null,null);
+    private DatosGrafica puntosAvisosIgnorados=new DatosGrafica("Avisos Ignorados",null,null);
+    private DatosGrafica puntosProgresoAvisos=new DatosGrafica("Progreso Avisos",null,null);
+
 
     public static Grafica newInstance(String tipo) {
         Grafica fragment = new Grafica();
@@ -98,7 +105,7 @@ public class Grafica extends Fragment {
     }
 
 
-//    //Esta dependiendo que se elegio, carga los datos(POR AHORA SON FALSOS)
+//  //Esta dependiendo que se elegio, carga los datos(POR AHORA SON FALSOS)
     public void crearGrafica(DatosGrafica grafica_a_Construir,GraphView vista_Grafica,String yTitulo, String xTitulo){
 
         List<Double> yValues=grafica_a_Construir.getValoresY();
@@ -249,8 +256,6 @@ public class Grafica extends Fragment {
 
     public void hacerVisible_Grafica2(View vista_graficas) {
 
-
-
         TextView subtitulo1=vista_graficas.findViewById(R.id.textView5);
         TextView subtitulo2=vista_graficas.findViewById(R.id.subtitulo);
 
@@ -309,8 +314,6 @@ public class Grafica extends Fragment {
         vprom.setText("9");
         vmax.setText("18");
 //        scrollView.setOnTouchListener(null);
-
-
     }
 
 }
