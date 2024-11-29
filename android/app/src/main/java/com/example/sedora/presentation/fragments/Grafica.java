@@ -17,23 +17,15 @@ import android.widget.TextView;
 
 import com.example.sedora.data.DatosGrafica;
 import com.example.sedora.R;
-import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.example.sedora.presentation.views.GraficaActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Grafica extends Fragment {
@@ -127,19 +119,11 @@ public class Grafica extends Fragment {
         grafica.setImageResource(R.drawable.graficadiatemp);
 
         if (mensual_o_semanal.equals("semanal")){
+
             switch (grafica_elegida) {
                 case "Horas Sentado":
-//                    List<Double>x= Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
-//                    List<Double>y= Arrays.asList(5.0, 3.0, 8.0, 20.0, 4.0);
-//
-//                    DatosGrafica horasSentado= new DatosGrafica("Horas Sentado",x,y);
-//                    crearGrafica(horasSentado,vistaGrafica,"Avisos","Horas");
 
-
-//                    puntosHorasSentado.añadir_nuevo_Dato("1", 5.0);
-//                    puntosHorasSentado.añadir_nuevo_Dato("2", 10.0);
-                    getDatos_de_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica);
-
+                    crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias");
 
                     vmin.setText("5hrs");
                     vprom.setText("12hrs");
@@ -147,10 +131,8 @@ public class Grafica extends Fragment {
                     break;
 
                 case "Horas Sensibles":
-//                    List<Double> xSensibles = Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
-//                    List<Double> ySensibles = Arrays.asList(6.0, 11.0, 16.0, 21.0, 26.0);
-//                    DatosGrafica horasSensibles = new DatosGrafica("Horas Sensibles", xSensibles, ySensibles);
-//                    crearGrafica(horasSensibles,vistaGrafica,"Avisos","Horas");
+
+                    crearGrafica_Firebase("proximidadPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias");
 
                     vmin.setText("5:00");
                     vprom.setText("15:00");
@@ -158,10 +140,9 @@ public class Grafica extends Fragment {
                     break;
 
                 case "Progreso Avisos":
-//                    List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
-//                    List<Double> yAvisos = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
-//                    DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
-//                    crearGrafica(progresoAvisos,vistaGrafica,"Avisos","Dias");
+
+                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias");
+
 
                     vmin.setText("5");
                     vprom.setText("10");
@@ -175,11 +156,7 @@ public class Grafica extends Fragment {
 
                     //LOS VALORES DE X TIENEN QUE ESTAR EN ORDEN ASCENTDE O DA ERROR
 
-//                    List<Double> xIgnorados = Arrays.asList(3.0, 4.5, 5.0, 9.0, 10.0);
-//                    List<Double> yIgnorados = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
-//                    DatosGrafica avisosIgnorados = new DatosGrafica("AvisosIgnorados", xIgnorados, yIgnorados);
-
-//                    crearGrafica(avisosIgnorados,vistaGrafica,"Avisos Ignoras","Dias");
+                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias");
 
                     vmin.setText("1");
                     vprom.setText("7");
@@ -192,11 +169,8 @@ public class Grafica extends Fragment {
 
             switch (grafica_elegida) {
                 case "Horas Sentado":
-//                    List<Double>x= Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
-//                    List<Double>y= Arrays.asList(5.0, 10.0, 15.0, 20.0, 25.0);
-//
-//                    DatosGrafica horasSentado= new DatosGrafica("Horas Sentado",x,y);
-//                    crearGrafica(horasSentado,vistaGrafica,"Avisos","Horas");
+
+                    crearGrafica_Firebase("ruidoPromedio",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias");
 
                     vmin.setText("12hrs");
                     vprom.setText("20hrs");
@@ -205,10 +179,8 @@ public class Grafica extends Fragment {
 
                 case "Horas Sensibles":
 
-//                    List<Double> xSensibles = Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
-//                    List<Double> ySensibles = Arrays.asList(6.0, 11.0, 16.0, 21.0, 26.0);
-//                    DatosGrafica horasSensibles = new DatosGrafica("Horas Sensibles", xSensibles, ySensibles);
-//                    crearGrafica(horasSensibles,vistaGrafica,"Avisos","Dias");
+                    crearGrafica_Firebase("temperaturaPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias");
+
 
                     vmin.setText("9:00");
                     vprom.setText("18:00");
@@ -216,32 +188,23 @@ public class Grafica extends Fragment {
                     break;
 
                 case "Progreso Avisos":
-//                    List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
-//                    List<Double> yAvisos = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
-//                    DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
-//                    crearGrafica(progresoAvisos,vistaGrafica,"Avisos","Horas");
+
+                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias");
 
                     vmin.setText("12");
                     vprom.setText("25");
                     vmax.setText("30");
                     hacerVisible_Grafica2(vista_graficas);
-                    grafica.setImageResource(R.drawable.avisosmensuales);
 
                     break;
 
                 case "Avisos Ignorados":
 
-//                    List<Double> xIgnorados = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
-//                    List<Double> yIgnorados = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
-//                    DatosGrafica avisosIgnorados = new DatosGrafica("AvisosIgnorados", xIgnorados, yIgnorados);
-//
-//                    crearGrafica(avisosIgnorados,vistaGrafica,"Avisos","Horas");
-
+                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias");
 
                     vmin.setText("5");
                     vprom.setText("15");
                     vmax.setText("35");
-                    grafica.setImageResource(R.drawable.avisosmensuales);
                     break;
             }
         }
@@ -249,11 +212,11 @@ public class Grafica extends Fragment {
 
 
 
-    //Recibe el campo que quiers evaaluar y lo añade a lista que quieres
+    //En base que el campo que quieres hacerle una grafica, rellena la lista y llama a crearGrafica dentro de la funcion
     //Ejemplo: quiero los datos de presion el dia de ayer,
     // graficaPresion.(presion)
-    //Mete la presion en su lista Y y el dia en su lista X (esto dentro de la funcion)
-    private void getDatos_de_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade,GraphView vistaGrafica) {
+    //Mete la presion en su lista Y y el dia en su lista X  y crea la grafica(esto dentro de la funcion)
+    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo) {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         database.collection("usuarios")
@@ -269,7 +232,7 @@ public class Grafica extends Fragment {
                             }
                         }
                         // Llama a crearGrafica aquí, cuando los datos ya estén listos
-                        crearGrafica(grafica_a_cual_se_añade, vistaGrafica, "Horas", "Dias");
+                        crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
                         //ESTO SE PODRIA HACER EN UN CALLBACK pa no meter to.do en la funcion,
                         // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
                     }
@@ -277,7 +240,7 @@ public class Grafica extends Fragment {
     }
 
 
-    public void crearGrafica(DatosGrafica grafica_a_Construir, GraphView vista_Grafica, String yTitulo, String xTitulo) {
+    private void crearGrafica(DatosGrafica grafica_a_Construir, GraphView vista_Grafica, String yTitulo, String xTitulo) {
 
         List<Double> yValues = grafica_a_Construir.getValoresY();
         List<String> xValues = grafica_a_Construir.getValoresX();
@@ -358,11 +321,8 @@ public class Grafica extends Fragment {
         subtitulo2.setVisibility(View.VISIBLE);
 
 
-//        grafica2.setVisibility(View.VISIBLE);
-//        List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
-//        List<Double> yAvisos = Arrays.asList(6.0, 1.0, 20.0, 10.0, 9.0);
-//        DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
-//        crearGrafica(progresoAvisos,grafica2,"Avisos","Horas");
+        grafica2.setVisibility(View.VISIBLE);
+        crearGrafica_Firebase("count",puntosProgresoAvisos,grafica2,"Avisos","Dias");
 
 
         // Hacer visibles los valores asociados
