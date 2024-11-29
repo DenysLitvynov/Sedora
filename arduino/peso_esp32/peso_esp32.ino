@@ -2,6 +2,7 @@
 #include "WiFi.h"
 #include "AsyncUDP.h"
 #include <ArduinoJson.h>
+#include <esp_sleep.h>
 
 // Configuración WiFi
 const char* ssid = "MiFibra-3078";
@@ -20,6 +21,8 @@ HX711 scaleRespaldo;
 
 AsyncUDP udp;
 StaticJsonDocument<200> jsonBuffer;
+
+#define SLEEP_TIME 50000000UL
 
 // Función para configurar el WiFi
 void setupWiFi() {
@@ -92,5 +95,11 @@ void loop() {
 
   enviarDatos(pesoAsiento, pesoRespaldo);
 
-  delay(1000);
+  Serial.println("Entrando en deep sleep...");
+  delay(100); 
+
+  WiFi.disconnect(true);
+  WiFi.mode(WIFI_OFF);
+  esp_sleep_enable_timer_wakeup(SLEEP_TIME);
+  esp_deep_sleep_start();
 }
