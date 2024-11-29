@@ -33,6 +33,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Grafica extends Fragment {
@@ -284,41 +285,20 @@ public class Grafica extends Fragment {
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
 
-        Log.d("DEBUG", "Y Values: " + yValues.toString());
-        Log.d("DEBUG", "X Values: " + xValues.toString());
-
-        // Usar índices como valores X para graficar
+        // Crear puntos de datos usando índices para X
         for (int i = 0; i < yValues.size(); i++) {
             series.appendData(new DataPoint(i, yValues.get(i)), true, yValues.size());
         }
-        vista_Grafica.addSeries(series);
 
-       // vista_Grafica.getGridLabelRenderer().setVerticalAxisTitle(yTitulo);
-        vista_Grafica.getGridLabelRenderer().setHorizontalAxisTitle(xTitulo);
-
-        vista_Grafica.getGridLabelRenderer().setNumHorizontalLabels(xValues.size());// Limita el número de etiquetas visibles a 4
-
-        vista_Grafica.getViewport().setScalable(false);
-        vista_Grafica.getViewport().setScrollable(false);
-
-        //vista_Grafica.getGridLabelRenderer().setHumanRounding(true); // Evita redondeos para mostrar los valores originales
-//        // Rotar etiquetas para evitar superposición
-//        vista_Grafica.getGridLabelRenderer().setHorizontalLabelsAngle(45); // Rota las etiquetas 45 grados
-        series.setDrawDataPoints(true);
-
-        series.setColor(color); // Cambia el color de la línea
-        series.setThickness(8); // Cambia el grosor de la línea
-
-
-        // Formatear etiquetas del eje X para mostrar las fechas, pa que sirva con strings
+        // *** FORMATEAR ETIQUETAS DEL EJE X ***
         vista_Grafica.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
-                    int index = (int) value;
+                    int index = (int) value; // Convertir valor X a índice
                     if (index >= 0 && index < xValues.size()) {
                         String fullDate = xValues.get(index);
-                        return fullDate.substring(5); // Muestra solo "11-21"
+                        return fullDate.substring(5); // Muestra solo "MM-DD"
                     }
                     return "";
                 } else {
@@ -326,6 +306,43 @@ public class Grafica extends Fragment {
                 }
             }
         });
+
+        vista_Grafica.addSeries(series);
+
+        // Configurar título de los ejes
+        vista_Grafica.getGridLabelRenderer().setVerticalAxisTitle(yTitulo);
+
+        vista_Grafica.getGridLabelRenderer().setHorizontalAxisTitle(xTitulo);
+
+        vista_Grafica.getGridLabelRenderer().setPadding(25);
+        vista_Grafica.getGridLabelRenderer().setTextSize(30);
+        vista_Grafica.getGridLabelRenderer().setVerticalLabelsVisible(false);
+
+
+        // Configurar el estilo de la línea
+        series.setDrawDataPoints(true);  // Puntos visibles
+        series.setColor(color);          // Cambia color
+        series.setThickness(8);          // Grosor de la línea
+
+        // *** CONFIGURAR ESCALA MANUAL ***
+        // Ajusta los límites del eje X e Y manualmente
+        vista_Grafica.getViewport().setXAxisBoundsManual(true);
+//       vista_Grafica.getViewport().setYAxisBoundsManual(true);
+
+            vista_Grafica.getViewport().setMinX(0);                        // Inicio del eje X
+            vista_Grafica.getViewport().setMaxX(xValues.size());          // Fin del eje X
+//        vista_Grafica.getViewport().setMinY(Collections.min(yValues));   // Mínimo del eje Y
+//        vista_Grafica.getViewport().setMaxY(Collections.max(yValues));   // Máximo del eje Y
+
+        // *** CONFIGURAR NÚMERO DE ETIQUETAS EN EL EJE X ***
+        vista_Grafica.getGridLabelRenderer().setNumHorizontalLabels(xValues.size()+1);
+
+        // *** OPCIONAL: Rotar etiquetas del eje X si es necesario ***
+        vista_Grafica.getGridLabelRenderer().setHorizontalLabelsAngle(0);
+
+        // 2. Deshabilitar espacio automático
+        vista_Grafica.getViewport().setScrollable(false); // No permite mover
+        vista_Grafica.getViewport().setScalable(false);   // No permite zoom automático
 
     }
 
