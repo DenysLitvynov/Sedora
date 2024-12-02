@@ -18,7 +18,8 @@ int thresholdLow = 200;
 int prevSoundState = -1;
 int prevLightState = -1;
 int distancia = 0;
-
+float pesoAsiento = 0.0;
+float pesoRespaldo = 0.0;
 
 #define BLANCO 0xFFFF
 #define NEGRO 0
@@ -26,6 +27,7 @@ int distancia = 0;
 #define VERDE 0x009774
 #define AZUL 0x001F
 
+//Cambiar a la red wifi que se vaya a usar cada vez
 const char* ssid = "MiFibra-3078";
 const char* password = "V5AQboPQ";
 
@@ -44,7 +46,11 @@ const int mqtt_port = 1883;
 const char* mqtt_client_name = "Sedora1";
 unsigned long lastPublishTime = 0;
 
-// Función para mostrar el estado de la conexión WiFi
+//------------------------------------------------
+// Funciones que tienen que ver con la conexion por WIFI UDP y MQTT
+//------------------------------------------------
+
+//------------------------------------------------
 //------------------------------------------------
 void conectarWiFi() {
   M5.Lcd.setTextSize(2);
@@ -62,7 +68,7 @@ void conectarWiFi() {
   M5.Lcd.setTextColor(VERDE);
   M5.Lcd.println("[Servidor] Conexion OK.");
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void conectarMQTT() {
   while (!client.connected()) {
@@ -77,18 +83,28 @@ void conectarMQTT() {
     }
   }
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void iniciarUDP() {
   if (udp.listen(1234)) {
     udp.onPacket([](AsyncUDPPacket packet) {
-      int i = 200;
-      while (i--) *(texto + i) = *(packet.data() + i);
-      recibido = true;
+      strncpy(texto, (char*)packet.data(), sizeof(texto));
+      texto[sizeof(texto) - 1] = '\0';
+
+      JsonDocument doc;
+      DeserializationError error = deserializeJson(doc, texto);
+
+      if (!error) {
+        if (doc["Distancia"] != NULL) {
+          recibidoDist = true;
+        } else if (doc["PesoAsiento"] != NULL && doc["PesoRespaldo"] != NULL) {
+          recibidoPes = true;
+        }
+      }
     });
   }
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void mostrarDatosUDP_DISTANCIA() {
   if (recibidoDist) {
@@ -116,16 +132,17 @@ void mostrarDatosUDP_DISTANCIA() {
     }
   }
 }
-
+//------------------------------------------------
+//------------------------------------------------
 void mostrarDatosUDP_PESO() {
-  if (recibidoPes) {
+if (recibidoPes) {
     recibidoPes = false;
     DynamicJsonDocument jsonBufferRecv(200);
     DeserializationError error = deserializeJson(jsonBufferRecv, texto);
     if (error) return;
 
-    float pesoAsiento = jsonBufferRecv["PesoAsiento"];
-    float pesoRespaldo = jsonBufferRecv["PesoRespaldo"];
+    pesoAsiento = jsonBufferRecv["PesoAsiento"];
+    pesoRespaldo = jsonBufferRecv["PesoRespaldo"];
 
     M5.Lcd.setCursor(10, 170);
     M5.Lcd.print("Peso Asiento: ");
@@ -134,10 +151,10 @@ void mostrarDatosUDP_PESO() {
     M5.Lcd.setCursor(10, 190);
     M5.Lcd.print("Peso Respaldo: ");
     M5.Lcd.printf("%.2f kg", pesoRespaldo);
-
   }
 }
-
+//------------------------------------------------
+//Funciones que tiene que ver con los sensores
 //------------------------------------------------
 void mostrarHumedad(int x, int y, float h) {
   M5.Lcd.setCursor(x, y);
@@ -145,7 +162,7 @@ void mostrarHumedad(int x, int y, float h) {
   M5.Lcd.print(h);
   M5.Lcd.print("%");
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void mostrarTemperatura(int x, int y, float t) {
   M5.Lcd.setCursor(x, y);
@@ -153,7 +170,7 @@ void mostrarTemperatura(int x, int y, float t) {
   M5.Lcd.print(t);
   M5.Lcd.print("°C");
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void mostrarNivelDeSonido(int x, int y, int micValue) {
   int currentState;
@@ -174,7 +191,7 @@ void mostrarNivelDeSonido(int x, int y, int micValue) {
   }
   prevSoundState = currentState;
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void mostrarLuminosidad(int x, int y, int ldrValue) {
   M5.Lcd.setCursor(x, y);
@@ -184,7 +201,8 @@ void mostrarLuminosidad(int x, int y, int ldrValue) {
     M5.Lcd.println("Luminosidad: Inadecuada");
   }
 }
-
+//------------------------------------------------
+//Funiocnes para las pantallas del M5
 //------------------------------------------------
 void verPantallaPrincipal(float hum, float temp, int micValue, int ldrValue) {
   M5.Lcd.clear(BLANCO);
@@ -200,7 +218,7 @@ void verPantallaPrincipal(float hum, float temp, int micValue, int ldrValue) {
   mostrarDatosUDP_DISTANCIA();
   mostrarDatosUDP_PESO();
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void verPantallaTemp(float temp) {
   M5.Lcd.clear(AZUL);
@@ -212,7 +230,7 @@ void verPantallaTemp(float temp) {
 
   mostrarTemperatura(10, 70, temp);
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void verPantallaHum(float hum) {
   M5.Lcd.clear(AZUL);
@@ -224,7 +242,7 @@ void verPantallaHum(float hum) {
 
   mostrarHumedad(10, 70, hum);
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void verPantallaSon(int micValue) {
   M5.Lcd.clear(ROJO);
@@ -235,7 +253,7 @@ void verPantallaSon(int micValue) {
 
   mostrarNivelDeSonido(10, 70, micValue);
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void verPantallaLuz(int ldrValue) {
   M5.Lcd.clear(VERDE);
@@ -247,22 +265,20 @@ void verPantallaLuz(int ldrValue) {
 
   mostrarLuminosidad(10, 70, ldrValue);
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void verPantallaDist() {
   M5.Lcd.clear(NEGRO);
   M5.Lcd.setTextColor(BLANCO);
   M5.Lcd.setTextSize(2);
-
   M5.Lcd.setCursor(10, 20);
   M5.Lcd.println("Distancia");
-
-  mostrarDatosUDP();
+  mostrarDatosUDP_DISTANCIA();
 }
-
 //------------------------------------------------
-// Publicar datos al broker
-void publicarDatos(float temp, float hum, int micValue, int ldrValue, int distancia) {
+//Funcion para publicar los datos al Boker MQTT
+//------------------------------------------------
+void publicarDatos(float temp, float hum, int micValue, int ldrValue, int distancia, float pesoAsiento, float pesoRespaldo) {
   if (!client.connected()) {
     conectarMQTT();
   }
@@ -286,8 +302,24 @@ void publicarDatos(float temp, float hum, int micValue, int ldrValue, int distan
   char distStr[10];
   itoa(distancia, distStr, 10);
   client.publish("Sedora/sensores/distancia", distStr);
-}
 
+  char pesoAsientoStr[10], pesoRespaldoStr[10];
+  dtostrf(pesoAsiento, 6, 2, pesoAsientoStr);
+  dtostrf(pesoRespaldo, 6, 2, pesoRespaldoStr);
+
+  client.publish("Sedora/sensores/pesoAsiento", pesoAsientoStr);
+  client.publish("Sedora/sensores/pesoRespaldo", pesoRespaldoStr);
+
+  // Publicar Postura: correcto/Incorrecto
+  String posicionMessage;
+  if (pesoAsiento >= 9 && pesoRespaldo >= 9) {
+    posicionMessage = "Correcto";
+  } else {
+    posicionMessage = "Incorrecto";
+  }
+  client.publish("Sedora/sensores/posicion", posicionMessage.c_str());
+}
+//------------------------------------------------
 //------------------------------------------------
 void setup() {
   M5.begin();
@@ -299,7 +331,7 @@ void setup() {
   dht.begin();
   verPantallaPrincipal(0, 0, 0, 0);
 }
-
+//------------------------------------------------
 //------------------------------------------------
 void loop() {
   M5.update();
@@ -313,7 +345,7 @@ void loop() {
 
   if (currentMillis - lastPublishTime >= 5000) {
     lastPublishTime = currentMillis;
-    publicarDatos(temp, hum, micValue, ldrValue, distancia);
+    publicarDatos(temp, hum, micValue, ldrValue, distancia, pesoAsiento, pesoRespaldo);
   }
 
   if (M5.BtnB.wasPressed()) {
