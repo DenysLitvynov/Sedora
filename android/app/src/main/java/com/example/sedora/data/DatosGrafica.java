@@ -1,6 +1,7 @@
 package com.example.sedora.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 //EN ESTA CLASE SE CONSTRUYEN TODOS LOS DATOS NECESARIOS PARA CREAR UNA GRAFICA
@@ -51,16 +52,32 @@ public class DatosGrafica {
     //=============================================================================================
     //=============================================================================================
 
-    public double calcular_valor_Promedio(){
-        return 0;
+public String get_promedio_AsString(){
+    if (valoresY.isEmpty()) {
+        return "0"; // Mensaje si la lista está vacía
+    }
+    double suma = 0;
+    for (double valor : valoresY) {
+        suma += valor;
+    }
+    double promedio = suma / valoresY.size();
+    return String.valueOf(promedio);
+}
+
+    public String getValorMaximo_asString(){
+
+        if (valoresY.isEmpty()) {
+            return "0"; // Mensaje si la lista está vacía
+        }
+        return String.valueOf(Collections.max(valoresY));
     }
 
-    public double getValorMaximo(){
-        return 0;
-    }
+    public String getValorMinimo_asString(){
+        if (valoresY.isEmpty()) {
+            return "0"; // Mensaje si la lista está vacía
+        }
+        return String.valueOf(Collections.min(valoresY));
 
-    public double getValorMinimo(){
-        return 0;
     }
 
     public  void añadir_nuevo_Dato(String valornuevoX,double valornuevoY){

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.sedora.data.DatosGrafica;
 import com.example.sedora.R;
 import com.example.sedora.presentation.views.GraficaActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -37,6 +38,7 @@ public class Grafica extends Fragment {
     private DatosGrafica puntosHorasSensibles=new DatosGrafica("Horas Sensibles",new ArrayList<>(),new ArrayList<>());
     private DatosGrafica puntosAvisosIgnorados=new DatosGrafica("Avisos Ignorados",new ArrayList<>(),new ArrayList<>());
     private DatosGrafica puntosProgresoAvisos=new DatosGrafica("Progreso Avisos",new ArrayList<>(),new ArrayList<>());
+    private DatosGrafica puntosProgresoAvisos2=new DatosGrafica("Progreso Avisos",new ArrayList<>(),new ArrayList<>());
 
 
     public static Grafica newInstance(String tipo) {
@@ -109,14 +111,6 @@ public class Grafica extends Fragment {
 
     //Nota: Una vez veamos como sirve el firebase con las graqficas, cambair esta funcion para cargue datos basado en el usuario
     public void cargarDatos(View vista_graficas, String grafica_elegida,String mensual_o_semanal,GraphView vistaGrafica){
-        TextView vmin = vista_graficas.findViewById(R.id.Valor_min);
-        TextView vprom = vista_graficas.findViewById(R.id.Valor_promedio);
-        TextView vmax = vista_graficas.findViewById(R.id.Valor_max);
-
-
-        ImageView grafica = vista_graficas.findViewById(R.id.grafica1);
-
-        grafica.setImageResource(R.drawable.graficadiatemp);
 
         if (mensual_o_semanal.equals("semanal")){
 
@@ -124,31 +118,23 @@ public class Grafica extends Fragment {
                 case "Horas Sentado":
 
                     crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias");
-
-                    vmin.setText("5hrs");
-                    vprom.setText("12hrs");
-                    vmax.setText("19hrs");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosHorasSentado);
                     break;
 
                 case "Horas Sensibles":
 
                     crearGrafica_Firebase("proximidadPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosHorasSensibles);
 
-                    vmin.setText("5:00");
-                    vprom.setText("15:00");
-                    vmax.setText("21:00");
                     break;
 
                 case "Progreso Avisos":
 
                     crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias");
 
-
-                    vmin.setText("5");
-                    vprom.setText("10");
-                    vmax.setText("20");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosProgresoAvisos);
                     hacerVisible_Grafica2(vista_graficas);
-                    grafica.setImageResource(R.drawable.avisossemanales);
+
 
                     break;
 
@@ -157,11 +143,8 @@ public class Grafica extends Fragment {
                     //LOS VALORES DE X TIENEN QUE ESTAR EN ORDEN ASCENTDE O DA ERROR
 
                     crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosAvisosIgnorados);
 
-                    vmin.setText("1");
-                    vprom.setText("7");
-                    vmax.setText("22");
-                    grafica.setImageResource(R.drawable.avisossemanales);
                     break;
             }
         }
@@ -170,30 +153,24 @@ public class Grafica extends Fragment {
             switch (grafica_elegida) {
                 case "Horas Sentado":
 
-                    crearGrafica_Firebase("ruidoPromedio",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias");
+                    crearGrafica_Firebase("ruidoPromedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosHorasSentado);
 
-                    vmin.setText("12hrs");
-                    vprom.setText("20hrs");
-                    vmax.setText("30hrs");
+
                     break;
 
                 case "Horas Sensibles":
 
                     crearGrafica_Firebase("temperaturaPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosHorasSensibles);
 
-
-                    vmin.setText("9:00");
-                    vprom.setText("18:00");
-                    vmax.setText("24:00");
                     break;
 
                 case "Progreso Avisos":
 
                     crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosProgresoAvisos);
 
-                    vmin.setText("12");
-                    vprom.setText("25");
-                    vmax.setText("30");
                     hacerVisible_Grafica2(vista_graficas);
 
                     break;
@@ -201,10 +178,9 @@ public class Grafica extends Fragment {
                 case "Avisos Ignorados":
 
                     crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosAvisosIgnorados);
 
-                    vmin.setText("5");
-                    vprom.setText("15");
-                    vmax.setText("35");
+
                     break;
             }
         }
@@ -219,8 +195,12 @@ public class Grafica extends Fragment {
     private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo) {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String usuarioUID = auth.getCurrentUser().getUid();
+
+
         database.collection("usuarios")
-                .document("L9ZGAhbYotZIqlK4aKMKkgAFWbL2")//AQUI EL USER
+                .document(usuarioUID)//AQUI EL USER
                 .collection("Datos").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
@@ -237,6 +217,18 @@ public class Grafica extends Fragment {
                         // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
                     }
                 }).addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar documentos", e));
+    }
+
+
+    private void  setMaximo_Minimos_Promedios(View vista,DatosGrafica datos){
+        TextView vmin = vista.findViewById(R.id.Valor_min);
+        TextView vprom = vista.findViewById(R.id.Valor_promedio);
+        TextView vmax = vista.findViewById(R.id.Valor_max);
+
+        vmin.setText(datos.getValorMinimo_asString());
+        vprom.setText(datos.get_promedio_AsString());
+        vmax.setText(datos.getValorMaximo_asString());
+
     }
 
 
@@ -322,7 +314,7 @@ public class Grafica extends Fragment {
 
 
         grafica2.setVisibility(View.VISIBLE);
-        crearGrafica_Firebase("count",puntosProgresoAvisos,grafica2,"Avisos","Dias");
+        crearGrafica_Firebase("count",puntosProgresoAvisos2,grafica2,"Avisos","Dias");
 
 
         // Hacer visibles los valores asociados
@@ -332,6 +324,9 @@ public class Grafica extends Fragment {
         vmin.setVisibility(View.VISIBLE);
         vprom.setVisibility(View.VISIBLE);
         vmax.setVisibility(View.VISIBLE);
+        vmin.setText(puntosProgresoAvisos2.getValorMinimo_asString());
+        vprom.setText(puntosProgresoAvisos2.get_promedio_AsString());
+        vmax.setText(puntosProgresoAvisos2.getValorMaximo_asString());
 
         // Hacer visibles los textos asociados (Min, Promedio, Max)
         TextView minText = vista_graficas.findViewById(R.id.textView15);
@@ -363,10 +358,6 @@ public class Grafica extends Fragment {
         minText2.setVisibility(View.VISIBLE);
         promText2.setVisibility(View.VISIBLE);
         maxText2.setVisibility(View.VISIBLE);
-
-        vmin.setText("4");
-        vprom.setText("9");
-        vmax.setText("18");
 //        scrollView.setOnTouchListener(null);
     }
 
