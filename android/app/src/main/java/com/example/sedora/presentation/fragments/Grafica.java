@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,15 @@ import android.widget.TextView;
 import com.example.sedora.data.DatosGrafica;
 import com.example.sedora.R;
 import com.example.sedora.presentation.views.GraficaActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Grafica extends Fragment {
@@ -29,6 +34,12 @@ public class Grafica extends Fragment {
     private static final String ARG_SEM_MENS = "semanal_mensual"; // Para diferenciar entre semanal y mensual
     private String tipoGrafica; // "semanal" o "mensual"
     private ScrollView scrollView;
+    private DatosGrafica puntosHorasSentado=new DatosGrafica("Horas Sentado",new ArrayList<>(),new ArrayList<>());
+    private DatosGrafica puntosHorasSensibles=new DatosGrafica("Horas Sensibles",new ArrayList<>(),new ArrayList<>());
+    private DatosGrafica puntosAvisosIgnorados=new DatosGrafica("Avisos Ignorados",new ArrayList<>(),new ArrayList<>());
+    private DatosGrafica puntosProgresoAvisos=new DatosGrafica("Progreso Avisos",new ArrayList<>(),new ArrayList<>());
+    private DatosGrafica puntosProgresoAvisos2=new DatosGrafica("Progreso Avisos",new ArrayList<>(),new ArrayList<>());
+
 
     public static Grafica newInstance(String tipo) {
         Grafica fragment = new Grafica();
@@ -98,75 +109,32 @@ public class Grafica extends Fragment {
     }
 
 
-//    //Esta dependiendo que se elegio, carga los datos(POR AHORA SON FALSOS)
-    public void crearGrafica(DatosGrafica grafica_a_Construir,GraphView vista_Grafica,String yTitulo, String xTitulo){
-
-        List<Double> yValues=grafica_a_Construir.getValoresY();
-        List<Double> xValues=grafica_a_Construir.getValoresX();
-        int color= ContextCompat.getColor(getContext(), R.color.verde_secundario);
-
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
-
-        for (int i = 0; i < yValues.size(); i++) {
-            series.appendData(new DataPoint(xValues.get(i), yValues.get(i)), true, yValues.size());
-        }
-
-        vista_Grafica.addSeries(series);
-        vista_Grafica.getGridLabelRenderer().setVerticalAxisTitle(yTitulo);
-        vista_Grafica.getGridLabelRenderer().setHorizontalAxisTitle(xTitulo);
-        series.setDrawDataPoints(true);
-
-        series.setColor(color); // Cambia el color de la línea
-        series.setThickness(8); // Cambia el grosor de la línea
-    }
-
     //Nota: Una vez veamos como sirve el firebase con las graqficas, cambair esta funcion para cargue datos basado en el usuario
     public void cargarDatos(View vista_graficas, String grafica_elegida,String mensual_o_semanal,GraphView vistaGrafica){
-        TextView vmin = vista_graficas.findViewById(R.id.Valor_min);
-        TextView vprom = vista_graficas.findViewById(R.id.Valor_promedio);
-        TextView vmax = vista_graficas.findViewById(R.id.Valor_max);
-
-
-        ImageView grafica = vista_graficas.findViewById(R.id.grafica1);
-
-        grafica.setImageResource(R.drawable.graficadiatemp);
 
         if (mensual_o_semanal.equals("semanal")){
+
             switch (grafica_elegida) {
                 case "Horas Sentado":
-                    List<Double>x= Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
-                    List<Double>y= Arrays.asList(5.0, 3.0, 8.0, 20.0, 4.0);
 
-                    DatosGrafica horasSentado= new DatosGrafica("Horas Sentado",x,y);
-                    crearGrafica(horasSentado,vistaGrafica,"Avisos","Horas");
-
-                    vmin.setText("5hrs");
-                    vprom.setText("12hrs");
-                    vmax.setText("19hrs");
+                    crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosHorasSentado);
                     break;
 
                 case "Horas Sensibles":
-                    List<Double> xSensibles = Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
-                    List<Double> ySensibles = Arrays.asList(6.0, 11.0, 16.0, 21.0, 26.0);
-                    DatosGrafica horasSensibles = new DatosGrafica("Horas Sensibles", xSensibles, ySensibles);
-                    crearGrafica(horasSensibles,vistaGrafica,"Avisos","Horas");
 
-                    vmin.setText("5:00");
-                    vprom.setText("15:00");
-                    vmax.setText("21:00");
+                    crearGrafica_Firebase("proximidadPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosHorasSensibles);
+
                     break;
 
                 case "Progreso Avisos":
-                    List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
-                    List<Double> yAvisos = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
-                    DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
-                    crearGrafica(progresoAvisos,vistaGrafica,"Avisos","Dias");
 
-                    vmin.setText("5");
-                    vprom.setText("10");
-                    vmax.setText("20");
+                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias");
+
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosProgresoAvisos);
                     hacerVisible_Grafica2(vista_graficas);
-                    grafica.setImageResource(R.drawable.avisossemanales);
+
 
                     break;
 
@@ -174,16 +142,9 @@ public class Grafica extends Fragment {
 
                     //LOS VALORES DE X TIENEN QUE ESTAR EN ORDEN ASCENTDE O DA ERROR
 
-                    List<Double> xIgnorados = Arrays.asList(3.0, 4.5, 5.0, 9.0, 10.0);
-                    List<Double> yIgnorados = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
-                    DatosGrafica avisosIgnorados = new DatosGrafica("AvisosIgnorados", xIgnorados, yIgnorados);
+                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosAvisosIgnorados);
 
-                    crearGrafica(avisosIgnorados,vistaGrafica,"Avisos Ignoras","Dias");
-
-                    vmin.setText("1");
-                    vprom.setText("7");
-                    vmax.setText("22");
-                    grafica.setImageResource(R.drawable.avisossemanales);
                     break;
             }
         }
@@ -191,65 +152,158 @@ public class Grafica extends Fragment {
 
             switch (grafica_elegida) {
                 case "Horas Sentado":
-                    List<Double>x= Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
-                    List<Double>y= Arrays.asList(5.0, 10.0, 15.0, 20.0, 25.0);
 
-                    DatosGrafica horasSentado= new DatosGrafica("Horas Sentado",x,y);
-                    crearGrafica(horasSentado,vistaGrafica,"Avisos","Horas");
+                    crearGrafica_Firebase("ruidoPromedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosHorasSentado);
 
-                    vmin.setText("12hrs");
-                    vprom.setText("20hrs");
-                    vmax.setText("30hrs");
+
                     break;
 
                 case "Horas Sensibles":
 
-                    List<Double> xSensibles = Arrays.asList(0.0, 1.0, 2.0, 3.0, 4.0);
-                    List<Double> ySensibles = Arrays.asList(6.0, 11.0, 16.0, 21.0, 26.0);
-                    DatosGrafica horasSensibles = new DatosGrafica("Horas Sensibles", xSensibles, ySensibles);
-                    crearGrafica(horasSensibles,vistaGrafica,"Avisos","Dias");
+                    crearGrafica_Firebase("temperaturaPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosHorasSensibles);
 
-                    vmin.setText("9:00");
-                    vprom.setText("18:00");
-                    vmax.setText("24:00");
                     break;
 
                 case "Progreso Avisos":
-                    List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
-                    List<Double> yAvisos = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
-                    DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
-                    crearGrafica(progresoAvisos,vistaGrafica,"Avisos","Horas");
 
-                    vmin.setText("12");
-                    vprom.setText("25");
-                    vmax.setText("30");
+                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosProgresoAvisos);
+
                     hacerVisible_Grafica2(vista_graficas);
-                    grafica.setImageResource(R.drawable.avisosmensuales);
 
                     break;
 
                 case "Avisos Ignorados":
 
-                    List<Double> xIgnorados = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
-                    List<Double> yIgnorados = Arrays.asList(6.0, 11.0, 20.0, 21.0, 30.0);
-                    DatosGrafica avisosIgnorados = new DatosGrafica("AvisosIgnorados", xIgnorados, yIgnorados);
-
-                    crearGrafica(avisosIgnorados,vistaGrafica,"Avisos","Horas");
+                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias");
+                    setMaximo_Minimos_Promedios(vista_graficas,puntosAvisosIgnorados);
 
 
-                    vmin.setText("5");
-                    vprom.setText("15");
-                    vmax.setText("35");
-                    grafica.setImageResource(R.drawable.avisosmensuales);
                     break;
             }
         }
     }
 
 
+
+    //En base que el campo que quieres hacerle una grafica, rellena la lista y llama a crearGrafica dentro de la funcion
+    //Ejemplo: quiero los datos de presion el dia de ayer,
+    // graficaPresion.(presion)
+    //Mete la presion en su lista Y y el dia en su lista X  y crea la grafica(esto dentro de la funcion)
+    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo) {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String usuarioUID = auth.getCurrentUser().getUid();
+
+
+        database.collection("usuarios")
+                .document(usuarioUID)//AQUI EL USER
+                .collection("Datos").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            String fecha = document.getId();
+                            Double valor = document.contains(campo) ? document.getDouble(campo) : null;
+                            if (valor != null) {
+                                grafica_a_cual_se_añade.añadir_nuevo_Dato(fecha, valor);
+                            }
+                        }
+                        // Llama a crearGrafica aquí, cuando los datos ya estén listos
+                        crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
+                        //ESTO SE PODRIA HACER EN UN CALLBACK pa no meter to.do en la funcion,
+                        // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
+                    }
+                }).addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar documentos", e));
+    }
+
+
+    private void  setMaximo_Minimos_Promedios(View vista,DatosGrafica datos){
+        TextView vmin = vista.findViewById(R.id.Valor_min);
+        TextView vprom = vista.findViewById(R.id.Valor_promedio);
+        TextView vmax = vista.findViewById(R.id.Valor_max);
+
+        vmin.setText(datos.getValorMinimo_asString());
+        vprom.setText(datos.get_promedio_AsString());
+        vmax.setText(datos.getValorMaximo_asString());
+
+    }
+
+
+    private void crearGrafica(DatosGrafica grafica_a_Construir, GraphView vista_Grafica, String yTitulo, String xTitulo) {
+
+        List<Double> yValues = grafica_a_Construir.getValoresY();
+        List<String> xValues = grafica_a_Construir.getValoresX();
+        int color = ContextCompat.getColor(getContext(), R.color.verde_secundario);
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+
+        // Crear puntos de datos usando índices para X
+        for (int i = 0; i < yValues.size(); i++) {
+            series.appendData(new DataPoint(i, yValues.get(i)), true, yValues.size());
+        }
+
+        // *** FORMATEAR ETIQUETAS DEL EJE X ***
+        vista_Grafica.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    int index = (int) value; // Convertir valor X a índice
+                    if (index >= 0 && index < xValues.size()) {
+                        String fullDate = xValues.get(index);
+                        return fullDate.substring(5); // Muestra solo "MM-DD"
+                    }
+                    return "";
+                } else {
+                    return super.formatLabel(value, isValueX);
+                }
+            }
+        });
+
+        vista_Grafica.addSeries(series);
+
+        // Configurar título de los ejes
+        vista_Grafica.getGridLabelRenderer().setVerticalAxisTitle(yTitulo);
+
+        vista_Grafica.getGridLabelRenderer().setHorizontalAxisTitle(xTitulo);
+
+        vista_Grafica.getGridLabelRenderer().setPadding(25);
+        vista_Grafica.getGridLabelRenderer().setTextSize(30);
+        vista_Grafica.getGridLabelRenderer().setVerticalLabelsVisible(false);
+
+
+        // Configurar el estilo de la línea
+        series.setDrawDataPoints(true);  // Puntos visibles
+        series.setColor(color);          // Cambia color
+        series.setThickness(8);          // Grosor de la línea
+
+        // *** CONFIGURAR ESCALA MANUAL ***
+        // Ajusta los límites del eje X e Y manualmente
+        vista_Grafica.getViewport().setXAxisBoundsManual(true);
+//       vista_Grafica.getViewport().setYAxisBoundsManual(true);
+
+            vista_Grafica.getViewport().setMinX(0);                        // Inicio del eje X
+            vista_Grafica.getViewport().setMaxX(xValues.size());          // Fin del eje X
+//        vista_Grafica.getViewport().setMinY(Collections.min(yValues));   // Mínimo del eje Y
+//        vista_Grafica.getViewport().setMaxY(Collections.max(yValues));   // Máximo del eje Y
+
+        // *** CONFIGURAR NÚMERO DE ETIQUETAS EN EL EJE X ***
+        vista_Grafica.getGridLabelRenderer().setNumHorizontalLabels(xValues.size()+1);
+
+        // *** OPCIONAL: Rotar etiquetas del eje X si es necesario ***
+        vista_Grafica.getGridLabelRenderer().setHorizontalLabelsAngle(0);
+
+        // 2. Deshabilitar espacio automático
+        vista_Grafica.getViewport().setScrollable(false); // No permite mover
+        vista_Grafica.getViewport().setScalable(false);   // No permite zoom automático
+
+    }
+
+
+
     public void hacerVisible_Grafica2(View vista_graficas) {
-
-
 
         TextView subtitulo1=vista_graficas.findViewById(R.id.textView5);
         TextView subtitulo2=vista_graficas.findViewById(R.id.subtitulo);
@@ -260,10 +314,7 @@ public class Grafica extends Fragment {
 
 
         grafica2.setVisibility(View.VISIBLE);
-        List<Double> xAvisos = Arrays.asList(1.0, 4.0, 5.0, 9.0, 12.0);
-        List<Double> yAvisos = Arrays.asList(6.0, 1.0, 20.0, 10.0, 9.0);
-        DatosGrafica progresoAvisos = new DatosGrafica("Progreso Avisos", xAvisos, yAvisos);
-        crearGrafica(progresoAvisos,grafica2,"Avisos","Horas");
+        crearGrafica_Firebase("count",puntosProgresoAvisos2,grafica2,"Avisos","Dias");
 
 
         // Hacer visibles los valores asociados
@@ -273,6 +324,9 @@ public class Grafica extends Fragment {
         vmin.setVisibility(View.VISIBLE);
         vprom.setVisibility(View.VISIBLE);
         vmax.setVisibility(View.VISIBLE);
+        vmin.setText(puntosProgresoAvisos2.getValorMinimo_asString());
+        vprom.setText(puntosProgresoAvisos2.get_promedio_AsString());
+        vmax.setText(puntosProgresoAvisos2.getValorMaximo_asString());
 
         // Hacer visibles los textos asociados (Min, Promedio, Max)
         TextView minText = vista_graficas.findViewById(R.id.textView15);
@@ -304,13 +358,7 @@ public class Grafica extends Fragment {
         minText2.setVisibility(View.VISIBLE);
         promText2.setVisibility(View.VISIBLE);
         maxText2.setVisibility(View.VISIBLE);
-
-        vmin.setText("4");
-        vprom.setText("9");
-        vmax.setText("18");
 //        scrollView.setOnTouchListener(null);
-
-
     }
 
 }
