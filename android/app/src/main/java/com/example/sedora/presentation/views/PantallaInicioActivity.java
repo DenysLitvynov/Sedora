@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.sedora.miServicio;
+
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.example.sedora.presentation.managers.MenuManager;
-import com.example.sedora.presentation.managers.NotificacionManager;
+import com.example.sedora.presentation.managers.NotificacionesFirebase;
 import com.example.sedora.presentation.managers.Popup_pantalla_inicio;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,16 +41,6 @@ public class PantallaInicioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);
-
-        //INICIO DE SERVICIO
-        if (!foregroundServiceRunning()) {
-            Intent intent = new Intent(this, miServicio.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent);
-            }
-        }
-        //INICIO DE SERVICIO
-
 
         // Obtén el Header
         // Inicializar Firebase y obtener usuario actual
@@ -79,6 +69,12 @@ public class PantallaInicioActivity extends AppCompatActivity {
             mostrarConsejoDelDia();
             calcularTiempoSentado();
         }
+
+        // prueba para lanzar una noti
+//        NotificacionesFirebase noti = new NotificacionesFirebase(getApplicationContext(), "Título", "Descripción", "Descripción larga", R.drawable.sedora_logo, MainActivity.class);
+//        noti.lanzarNotificacion();
+
+
     }
 
     private void configurarHeader() {
@@ -170,22 +166,6 @@ public class PantallaInicioActivity extends AppCompatActivity {
         textView17.setText(evaluarLuminosidad(luminosidad));
         textView18.setText(evaluarRuido(ruido));
         textView19.setText(String.valueOf(temperatura) + " ºC");
-    }
-
-
-    //TODO
-    //Originalmente esto era metodo de miServicio pero no lo puedo llamar desde ahi porque luego tengo que cambiar la clase entera
-    //el TODO es hacer que el serviico se inicie despues que el usuario hace login, lo puse aqui porque aqui me cuadra, como ustedes vean
-    //pero donde se inice el servicio, tiene que ir esta funcion que ve si se esta ejecutando ya un servicio
-    public  boolean foregroundServiceRunning() {
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)){
-            if (miServicio.class.getName().equals(service.service.getClassName())){
-                return true;
-            }
-
-        }
-        return false;
     }
 
     private void calcularTiempoSentado() {

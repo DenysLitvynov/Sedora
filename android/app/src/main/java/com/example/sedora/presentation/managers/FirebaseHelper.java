@@ -1,10 +1,14 @@
 package com.example.sedora.presentation.managers;
 
+import android.util.Log;
+
+import com.example.sedora.model.Notificacion;
 import com.example.sedora.model.SensorData;
 import com.example.sedora.model.Usuario;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
@@ -42,6 +46,73 @@ public class FirebaseHelper {
                 })
                 .addOnFailureListener(e -> System.err.println("Error al guardar toma: " + e.getMessage()));
     }
+
+    public void obtenerUltimaTomaDeHoy(FirebaseUser user, SensorDataCallback callback) {
+        String fecha = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+        db.collection("usuarios")
+                .document(user.getUid())
+                .collection("Datos")
+                .document(fecha)
+                .collection("Tomas")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+                        SensorData data = document.toObject(SensorData.class);
+                        callback.onSensorDataObtained(data);
+                        Log.d("FirebaseHelper", "Datos obtenidos: " + data);
+                    } else {
+                        callback.onSensorDataObtained(null);
+                        Log.d("FirebaseHelper", "No se encontraron datos para hoy");
+                    }
+                });
+    }
+
+
+    public interface SensorDataCallback {
+        void onSensorDataObtained(SensorData data);
+    }
+
+    public void escucharCambiosEnDatos(FirebaseUser usuario, SensorDataCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Obtén la fecha actual para localizar el documento del día
+        String fecha = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String path = "usuarios/" + usuario.getUid() + "/Datos/" + fecha + "/Tomas";
+
+        db.collection(path)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(1) // Solo el último documento agregado
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.e("FirebaseHelper", "Error al escuchar cambios en los datos", e);
+                        return;
+                    }
+
+                    if (snapshots != null && !snapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot doc : snapshots) {
+                            SensorData data = doc.toObject(SensorData.class);
+                            callback.onSensorDataObtained(data); // Llama al callback
+                        }
+                    } else {
+                        Log.d("FirebaseHelper", "No se encontraron datos en la subcolección 'Tomas'");
+                        callback.onSensorDataObtained(null);
+                    }
+                });
+    }
+
+    public void guardarNotificacion(FirebaseUser user, Notificacion notificacion) {
+        String fecha = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        db.collection("usuarios")
+                .document(user.getUid())
+                .collection("notificaciones")
+                .add(notificacion)
+                .addOnSuccessListener(docRef -> {
+                    System.out.println("Notificación guardada: " + docRef.getId()); })
+                .addOnFailureListener(e -> System.err.println("Error al guardar notificación: " + e.getMessage())); }
 
     public void actualizarResumenDiario(FirebaseUser user, SensorData nuevaToma) {
         String fecha = new SimpleDateFormat("yyyy-MM-dd").format(new Date());

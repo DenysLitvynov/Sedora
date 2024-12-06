@@ -120,9 +120,9 @@ public class LoginActivity extends AppCompatActivity {
                                     firebaseHelper.guardarToma(usuario, data);
                                 }
 
-                                // Subir notificaciones a Firestore
-                                NotificacionManager notificacionManager = new NotificacionManager();
-                                notificacionManager.subirNotificacionesAFirestore(usuario);
+//                                // Subir notificaciones a Firestore
+//                                NotificacionManager notificacionManager = new NotificacionManager();
+//                                notificacionManager.subirNotificacionesAFirestore(usuario);
 
                                 //---------------------------------------------------------------
 
@@ -198,9 +198,9 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 //---------------------------------------------------------------
 
-                                // Subir notificaciones a Firestore
-                                NotificacionManager notificacionManager = new NotificacionManager();
-                                notificacionManager.subirNotificacionesAFirestore(usuario);
+//                                // Subir notificaciones a Firestore
+//                                NotificacionManager notificacionManager = new NotificacionManager();
+//                                notificacionManager.subirNotificacionesAFirestore(usuario);
 
                             }
                             verificaSiUsuarioValidado();
@@ -279,9 +279,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         //---------------------------------------------------------------
 
-                        // Subir notificaciones a Firestore
-                        NotificacionManager notificacionManager = new NotificacionManager();
-                        notificacionManager.subirNotificacionesAFirestore(usuario);
+//                        // Subir notificaciones a Firestore
+//                        NotificacionManager notificacionManager = new NotificacionManager();
+//                        notificacionManager.subirNotificacionesAFirestore(usuario);
                     }
                     verificaSiUsuarioValidado();
                 })
@@ -317,9 +317,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         //---------------------------------------------------------------
 
-                        // Subir notificaciones a Firestore
-                        NotificacionManager notificacionManager = new NotificacionManager();
-                        notificacionManager.subirNotificacionesAFirestore(usuario);
+//                        // Subir notificaciones a Firestore
+//                        NotificacionManager notificacionManager = new NotificacionManager();
+//                        notificacionManager.subirNotificacionesAFirestore(usuario);
 
                     }
                     verificaSiUsuarioValidado();
