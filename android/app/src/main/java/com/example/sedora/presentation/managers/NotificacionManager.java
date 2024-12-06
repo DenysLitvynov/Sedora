@@ -1,14 +1,10 @@
 package com.example.sedora.presentation.managers;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.os.Build;
-
-import androidx.core.app.NotificationCompat;
-
 import com.example.sedora.R;
 import com.example.sedora.model.Notificacion;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +12,9 @@ import java.util.List;
 public class NotificacionManager {
 
     private List<Notificacion> notificaciones;
-    private NotificationManager notificationManager;//Notification manager de android
-
-
 
     public NotificacionManager() {
-        // Inicializamos la lista de notificaciones
         notificaciones = new ArrayList<>();
-
 
         // Añadimos ejemplos de notificaciones predefinidas para que el RecyclerView las pueda mostrar
         notificaciones.add(new Notificacion("Postura", "Tu postura no es la adecuada, corrígela para evitar molestias.", "Aviso", "13:27 19/09/2024", 4, R.drawable.icono_silla));
@@ -34,18 +25,21 @@ public class NotificacionManager {
         notificaciones.add(new Notificacion("Ruido", "El nivel de ruido es elevado. Intenta reducirlo para mejorar tu concentración.", "Recomendación", "14:15 19/09/2024", 2, R.drawable.icono_ruido));
         notificaciones.add(new Notificacion("Temperatura", "Llevas varias horas sentado. Te sugerimos pausar para recargar energías.", "Recomendación", "14:15 19/09/2024", 2, R.drawable.icono_temperatura));
         notificaciones.add(new Notificacion("Hidratación", "Es recomendable que tomes un momento para beber agua y asegurarte de que estás bien hidratado.", "Recordatorio", "14:15 19/09/2024", 2, R.drawable.icono_hidratacion));
-
     }
 
     public List<Notificacion> getNotificaciones() {
         return notificaciones;
     }
 
-    // Método para añadir una nueva notificación
     public void addNotificacion(Notificacion notificacion) {
         notificaciones.add(notificacion);
     }
 
-
+    public void subirNotificacionesAFirestore(FirebaseUser usuario) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference notificacionesRef = db.collection("usuarios").document(usuario.getUid()).collection("notificaciones");
+        for (Notificacion notificacion : notificaciones) {
+            notificacionesRef.add(notificacion);
+        }
+    }
 }
-

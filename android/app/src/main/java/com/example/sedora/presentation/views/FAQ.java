@@ -30,10 +30,10 @@ public class FAQ extends AppCompatActivity {
         TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("FAQ");
 
-        // Comprueba las notificaciones
-        NotificacionManager notificacionManager = new NotificacionManager();
-        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
-        header.updateNotificationIcon(hasNotifications);
+//        // Comprueba las notificaciones
+//        NotificacionManager notificacionManager = new NotificacionManager();
+//        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+//        header.updateNotificationIcon(hasNotifications);
 
         // Inicializar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewFAQ);

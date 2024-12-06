@@ -36,6 +36,10 @@ android {
 
 dependencies {
 
+    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("androidx.work:work-runtime:2.8.1")
+    implementation("androidx.work:work-rxjava3:2.8.1")
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-analytics")

@@ -8,9 +8,12 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <application
+        android:name=".SedoraApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -78,17 +81,19 @@
             android:name=".presentation.views.TusMetas2Activity"
             android:exported="true"/>
 
-        <service
-            android:name=".miServicio"
-            android:foregroundServiceType="dataSync"
-            android:exported="false" />
-
-        <receiver android:name=".miBroadcastReceiver"
-            android:exported="true">
+        <receiver
+            android:name=".presentation.managers.BootReceiver"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".presentation.managers.SensorDataService"
+            android:exported="true" />
+
 
     </application>
 
