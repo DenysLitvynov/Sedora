@@ -36,6 +36,9 @@ android {
 
 dependencies {
 
+    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0")
+
+
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-analytics")

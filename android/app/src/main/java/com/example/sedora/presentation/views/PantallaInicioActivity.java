@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sedora.miServicio;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.FirebaseHelper;
-import com.example.sedora.presentation.views.Header;
 
 import android.Manifest;
 import com.example.sedora.presentation.managers.MenuManager;
@@ -29,10 +28,35 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+
+
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PantallaInicioActivity extends AppCompatActivity {
+import javax.net.ssl.SSLSocketFactory;
+
+public class PantallaInicioActivity extends AppCompatActivity implements MqttCallback {
+
+    private static final String TAG = "PantallaInicio";
+    private static final String BROKER = "ws://broker.hivemq.com:8000/mqtt"; // Broker WebSocket
+    private static final String TOPIC_LED = "Sedora/led/status"; // Tópico para el LED
+    private static final int QOS = 1; // Calidad de servicio para MQTT
+
+    private MqttClient client;
+    private MqttConnectOptions connOpts;
+    private boolean isLedOn = false; // Estado inicial del LED
+    private TextView connectionStatus; // Muestra el estado del LED
+    private ImageView ledButton; // Botón para controlar el LED
+
+
 
     private HalfDonutChart halfDonutChart;
     private TextView heading12; // Para mostrar la puntuación numérica
@@ -50,6 +74,19 @@ public class PantallaInicioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);
 
+
+        // Inicializar vistas
+        connectionStatus = findViewById(R.id.textView8); // Asegúrate de usar el ID correcto
+        ledButton = findViewById(R.id.imageView13); // Asegúrate de usar el ID correcto
+
+        // Configurar MQTT
+        setupMQTT();
+
+        // Configurar botón para encender/apagar el LED
+        ledButton.setOnClickListener(v -> toggleLed());
+
+
+
         //INICIO DE SERVICIO
         if (!foregroundServiceRunning()) {
             Intent intent = new Intent(this, miServicio.class);
@@ -60,7 +97,6 @@ public class PantallaInicioActivity extends AppCompatActivity {
         //INICIO DE SERVICIO
 
 
-        // Obtén el Header
         // Inicializar Firebase y obtener usuario actual
         firebaseHelper = new FirebaseHelper();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -88,6 +124,62 @@ public class PantallaInicioActivity extends AppCompatActivity {
             calcularTiempoSentado();
         }
     }
+
+    private void setupMQTT() {
+        try {
+            String clientId = MqttClient.generateClientId();
+            client = new MqttClient(BROKER, clientId, new MemoryPersistence());
+            connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
+
+            // Conectar al broker
+            Log.i(TAG, "Conectando al broker " + BROKER);
+            client.setCallback(this);
+            client.connect(connOpts);
+
+            // Publicar estado inicial del LED
+            publishLedStatus();
+
+            Log.i(TAG, "Conectado al broker");
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al conectar al broker MQTT", e);
+
+        }
+    }
+
+    private void toggleLed() {
+        try {
+            // Cambiar estado del LED
+            isLedOn = !isLedOn;
+
+            // Publicar nuevo estado del LED al broker
+            publishLedStatus();
+
+            // Actualizar texto del estado en la interfaz
+            updateLedStatus();
+
+            Log.i(TAG, "Estado del LED cambiado: " + (isLedOn ? "ON" : "OFF"));
+        } catch (Exception e) {
+            Log.e(TAG, "Error al cambiar estado del LED", e);
+            connectionStatus.setText("Error al cambiar estado del LED");
+        }
+    }
+
+    private void publishLedStatus() throws MqttException {
+        String message = isLedOn ? "ON" : "OFF";
+        MqttMessage mqttMessage = new MqttMessage(message.getBytes());
+        mqttMessage.setQos(QOS);
+        client.publish(TOPIC_LED, mqttMessage);
+
+        Log.i(TAG, "Mensaje publicado al broker: " + message);
+    }
+
+    private void updateLedStatus() {
+        // Actualizar el texto del estado del LED en la interfaz
+        connectionStatus.setText(isLedOn ? "Encendido" : "Apagado");
+    }
+
+
 
     private void configurarHeader() {
         // Solicitar permiso de notificaciones
@@ -368,5 +460,49 @@ public class PantallaInicioActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void connectionLost(Throwable cause) {
+        Log.d(TAG, "Conexión perdida", cause);
+        connectionStatus.setText("Conexión perdida");
+    }
+
+    @Override
+    public void messageArrived(String topic, MqttMessage message) throws Exception {
+        Log.i(TAG, "Mensaje recibido en tópico: " + topic);
+        if (topic.equals(TOPIC_LED)) {
+            String messageContent = new String(message.getPayload());
+            Log.i(TAG, "Contenido del mensaje recibido: " + messageContent);
+
+            // Actualizar el estado del LED basado en el mensaje recibido
+            if (messageContent.equalsIgnoreCase("ON")) {
+                isLedOn = true;
+            } else if (messageContent.equalsIgnoreCase("OFF")) {
+                isLedOn = false;
+            }
+            updateLedStatus(); // Actualizar la interfaz
+        }
+    }
+
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken token) {
+        Log.i(TAG, "Entrega completada");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            if (client != null && client.isConnected()) {
+                client.disconnect();
+                Log.i(TAG, "Desconectado del broker MQTT");
+            }
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al desconectar del broker MQTT", e);
+        }
+    }
+
+
 }
+
+
 
