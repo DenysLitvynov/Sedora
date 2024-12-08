@@ -81,14 +81,6 @@ public class PantallaInicioActivity extends AppCompatActivity {
         // Cargar meta actual desde Firestore
         cargarMetaActualDesdeFirestore();
 
-        //INICIO DE SERVICIO
-        if (!foregroundServiceRunning()) {
-            Intent intent = new Intent(this, miServicio.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent);
-            }
-        }
-        //INICIO DE SERVICIO
 
 
         // Obtén el Header
