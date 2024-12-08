@@ -66,19 +66,19 @@
         <item name="android:translationZ">2dp</item> <!-- Sombra adicional cuando el botón es presionado -->
     </style>
 
-    <!-- Box Background -->
+
     <style name="BoxBackground">
         <item name="android:background">@drawable/box_background</item>
         <item name="android:padding">16dp</item>
     </style>
 
-    <!-- Box Background Este es sin el margen de 8dp-->
+
     <style name="BoxBackground2">
         <item name="android:background">@drawable/box_background</item>
         <item name="android:padding">16dp</item>
     </style>
 
-    <!-- Box Background Blanco -->
+
     <style name="BoxBackgroundblanco">
         <item name="android:background">@drawable/box_background_blanco</item>
         <item name="android:padding">16dp</item>

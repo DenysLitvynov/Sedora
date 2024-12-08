@@ -9,14 +9,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.sedora.R;
+import com.example.sedora.model.Meta;
+import com.example.sedora.presentation.adapters.MetaAdapter;
 import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.example.sedora.presentation.views.Header;
 
@@ -28,9 +33,14 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PantallaInicioActivity extends AppCompatActivity {
 
@@ -44,11 +54,42 @@ public class PantallaInicioActivity extends AppCompatActivity {
     private TextView textView19;
     private TextView textView6;
     private TextView textView5;
+    private RecyclerView recyclerMetaActual;
+    private MetaAdapter metaActualAdapter;
+    private List<Meta> metaActualList;
+    private FirebaseFirestore db;
+
+    TextView metaTitulo, metaDescripcion;
+    ProgressBar metaProgresoBar;
+    ImageView metaIcono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);
+
+        //Muestra la Meta actual.
+
+        // Inicializar Firebase y lista de datos
+        db = FirebaseFirestore.getInstance();
+        metaActualList = new ArrayList<>();
+
+        // Inicializar RecyclerView
+        recyclerMetaActual = findViewById(R.id.recyclerViewMetaActual);
+        recyclerMetaActual.setLayoutManager(new LinearLayoutManager(this));
+
+        // Cargar meta actual desde Firestore
+        cargarMetaActualDesdeFirestore();
+
+        //INICIO DE SERVICIO
+        if (!foregroundServiceRunning()) {
+            Intent intent = new Intent(this, miServicio.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            }
+        }
+        //INICIO DE SERVICIO
+
 
         // Obtén el Header
         // Inicializar Firebase y obtener usuario actual
@@ -238,7 +279,7 @@ public class PantallaInicioActivity extends AppCompatActivity {
                     }
                 });
     }
-    
+
     private void mostrarConsejoDelDia() {
         String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
@@ -346,6 +387,33 @@ public class PantallaInicioActivity extends AppCompatActivity {
                 Toast.makeText(this, "Permiso de notificaciones denegado", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void cargarMetaActualDesdeFirestore() {
+        db.collection("metas")
+                .whereEqualTo("estado", "actual") // Filtrar solo metas con estado "actual"
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            metaActualList.clear(); // Limpia la lista antes de añadir nuevos datos
+                            for (DocumentSnapshot document : querySnapshot) {
+                                Meta meta = document.toObject(Meta.class);
+                                if (meta != null) {
+                                    metaActualList.add(meta); // Agrega la meta a la lista
+                                }
+                            }
+
+                            // Configurar el adaptador del RecyclerView
+                            metaActualAdapter = new MetaAdapter(PantallaInicioActivity.this, metaActualList, 0); // 0 indica que es la meta actual
+                            recyclerMetaActual.setAdapter(metaActualAdapter);
+                        }
+                    } else {
+                        // Manejo de errores
+                        Toast.makeText(this, "Error al cargar la meta actual.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    style="@style/BoxBackgroundblanco"
+    android:elevation="4dp"
+    android:layout_marginBottom="16dp">
+
+    <!-- Título de la meta con espacio adecuado -->
+    <TextView
+        android:id="@+id/metaTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tiempo sentado"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/metaNumeroContainer"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Descripción de la meta -->
+    <TextView
+        android:id="@+id/metaDescripcion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Menos de 5 avisos sobre postura incorrecta durante un día."
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/metaTitulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/metaIcono" />
+
+    <!-- Barra de progreso acortada -->
+    <ProgressBar
+        android:id="@+id/metaProgresoBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="120dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="12dp"
+        android:progressTint="@color/verde_primario"
+        android:max="100"
+        android:progress="20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/metaDescripcion" />
+
+    <!-- Texto del progreso -->
+    <TextView
+        android:id="@+id/metaProgresoTexto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 / 5"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/metaProgresoBar"
+        app:layout_constraintTop_toTopOf="@id/metaProgresoBar"
+        app:layout_constraintBottom_toBottomOf="@id/metaProgresoBar" />
+
+    <!-- Número de la meta y círculo -->
+    <FrameLayout
+        android:id="@+id/metaNumeroContainer"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintTop_toTopOf="@id/metaTitulo"
+        app:layout_constraintStart_toEndOf="@id/metaTitulo"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-2dp">
+
+        <!-- Círculo -->
+        <ImageView
+            android:id="@+id/metaNumeroCirculo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tint="@color/verde_primario"
+            app:srcCompat="@drawable/circulo" />
+
+        <!-- Número dentro del círculo -->
+        <TextView
+            android:id="@+id/metaNumero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_gravity="center"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <!-- Icono de la meta -->
+    <ImageView
+        android:id="@+id/metaIcono"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/descripcion_imagen_meta"
+        app:srcCompat="@drawable/icono_andando"
+        app:layout_constraintTop_toTopOf="@id/metaTitulo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/metaDescripcion"
+        android:layout_marginStart="8dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

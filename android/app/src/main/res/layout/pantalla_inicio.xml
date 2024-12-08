@@ -366,26 +366,54 @@
                 app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toTopOf="@+id/textView2" />
 
-            <View
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/boxExample13"
                 style="@style/BoxBackground2"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toTopOf="@+id/boxExample23"
                 app:layout_constraintEnd_toEndOf="@+id/boxExample3"
-                app:layout_constraintStart_toStartOf="@+id/boxExample3" />
+                app:layout_constraintStart_toStartOf="@+id/boxExample3">
 
-            <TextView
-                android:id="@+id/textView11"
-                style="@style/Heading3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Meta actual"
-                app:layout_constraintStart_toStartOf="@+id/boxExample13"
-                app:layout_constraintTop_toTopOf="@+id/boxExample13" />
+                <!-- Título -->
+                <TextView
+                    android:id="@+id/textView11"
+                    style="@style/Heading3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Meta actual"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewMetaActual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:minHeight="100dp"
+                    android:maxHeight="200dp"
+                    android:overScrollMode="ifContentScrolls"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView21"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:scrollbars="vertical" />
+
+                <!-- Botón Añadir -->
+                <ImageView
+                    android:id="@+id/imageView21"
+                    android:layout_width="34dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/icono_mas" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textView8"
@@ -400,28 +428,6 @@
                 app:layout_constraintStart_toStartOf="@+id/boxExample14"
                 app:layout_constraintTop_toTopOf="@+id/boxExample14" />
 
-            <TextView
-                android:id="@+id/textView13"
-                style="@style/ParagraphNegro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Menos de 5 avisos al día"
-                app:layout_constraintBottom_toTopOf="@+id/textView14"
-                app:layout_constraintStart_toStartOf="@+id/textView11"
-                app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-            <TextView
-                android:id="@+id/textView14"
-                style="@style/ParagraphNegro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="En progreso..."
-                app:layout_constraintBottom_toBottomOf="@+id/boxExample13"
-                app:layout_constraintStart_toStartOf="@+id/textView13" />
-
             <ImageView
                 android:id="@+id/imageView7"
                 android:layout_width="73dp"
@@ -435,16 +441,6 @@
                 app:srcCompat="@drawable/icono_bombilla" />
 
             <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="84dp"
-                android:layout_height="85dp"
-                android:layout_marginEnd="32dp"
-                app:layout_constraintBottom_toBottomOf="@+id/boxExample13"
-                app:layout_constraintEnd_toEndOf="@+id/boxExample13"
-                app:layout_constraintTop_toTopOf="@+id/boxExample13"
-                app:srcCompat="@drawable/icono_sentado" />
-
-            <ImageView
                 android:id="@+id/imageView13"
                 android:layout_width="22dp"
                 android:layout_height="24dp"
@@ -454,15 +450,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/imageView7"
                 app:srcCompat="@drawable/icono_encender" />
 
-            <ImageView
-                android:id="@+id/imageView21"
-                android:layout_width="34dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/boxExample13"
-                app:layout_constraintEnd_toEndOf="@+id/boxExample13"
-                app:srcCompat="@drawable/icono_mas" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
