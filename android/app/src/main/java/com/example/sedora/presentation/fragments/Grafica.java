@@ -114,42 +114,45 @@ public class Grafica extends Fragment {
         if (mensual_o_semanal.equals("semanal")){
             switch (grafica_elegida) {
                 case "Horas Sentado":
-                    crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias", true, vista_graficas);
+                    crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias",
+                            true, false, vista_graficas);
                     break;
 
                 case "Horas Sensibles":
-                    crearGrafica_Firebase("proximidadPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias", true, vista_graficas);
+                    crearGrafica_Firebase("proximidadPromedio",
+                            puntosHorasSensibles,vistaGrafica,"Avisos","Dias", true, false, vista_graficas);
                     break;
 
                 case "Progreso Avisos":
-                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias", true, vista_graficas);
+                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,
+                            "Avisos","Dias", true, false, vista_graficas);
                     hacerVisible_Grafica2(vista_graficas,true);
                     break;
 
                 case "Avisos Ignorados":
                     //LOS VALORES DE X TIENEN QUE ESTAR EN ORDEN ASCENTDE O DA ERROR
-                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", true, vista_graficas);
+                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", true, false, vista_graficas);
                     break;
             }
         }
          else if (mensual_o_semanal.equals("mensual")) {
             switch (grafica_elegida) {
                 case "Horas Sentado":
-                    crearGrafica_Firebase("ruidoPromedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias", false, vista_graficas);
+                    crearGrafica_Firebase("ruidoPromedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
                     break;
 
                 case "Horas Sensibles":
-                    crearGrafica_Firebase("temperaturaPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias", false, vista_graficas);
+                    crearGrafica_Firebase("temperaturaPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
                     break;
 
                 case "Progreso Avisos":
 
-                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias", false, vista_graficas);
+                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
                     hacerVisible_Grafica2(vista_graficas,false);
                     break;
 
                 case "Avisos Ignorados":
-                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", false, vista_graficas);
+                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
                     break;
             }
         }
@@ -160,7 +163,7 @@ public class Grafica extends Fragment {
     //Ejemplo: quiero los datos de presion el dia de ayer,
     // graficaPresion.(presion)
     //Mete la presion en su lista Y y el dia en su lista X  y crea la grafica(esto dentro de la funcion)
-    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo,boolean es_semanal,View vista) {
+    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo,boolean es_semanal,boolean esGrafica2,View vista) {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -183,19 +186,25 @@ public class Grafica extends Fragment {
                             // Llama a crearGrafica aquí, cuando los datos ya estén listos
                             grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
                             crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade);
+                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
+                            if (esGrafica2){
+                                setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
+                            }
                             //ESTO SE PODRIA HACER EN UN CALLBACK pa no meter to.do en la funcion,
                             // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
                         }
                         grafica_a_cual_se_añade.filtrarDatosPorMesActual();
                         crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-                        setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade);
+                        setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
+                        if (esGrafica2){
+                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
+                        }
                     }
                 }).addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar documentos", e));
     }
 
 
-    private void  setMaximo_Minimos_Promedios(View vista,DatosGrafica datos){
+    private void  setMaximo_Minimos_Promedios(View vista,DatosGrafica datos,boolean esGrafica2){
         TextView vmin = vista.findViewById(R.id.Valor_min);
         TextView vprom = vista.findViewById(R.id.Valor_promedio);
         TextView vmax = vista.findViewById(R.id.Valor_max);
@@ -203,6 +212,22 @@ public class Grafica extends Fragment {
         vmin.setText(datos.getValorMinimo_asString());
         vprom.setText(datos.get_promedio_AsString());
         vmax.setText(datos.getValorMaximo_asString());
+
+        if (esGrafica2){
+
+            TextView vmin2 = vista.findViewById(R.id.Valor_min2);
+            TextView vprom2 = vista.findViewById(R.id.Valor_prom2);
+            TextView vmax2 = vista.findViewById(R.id.Valor_max2);
+
+            vmin2.setVisibility(View.VISIBLE);
+            vprom2.setVisibility(View.VISIBLE);
+            vmax2.setVisibility(View.VISIBLE);
+
+            vmin2.setText(datos.getValorMinimo_asString());
+            vprom2.setText(datos.get_promedio_AsString());
+            vmax2.setText(datos.getValorMaximo_asString());
+        }
+
     }
 
 
@@ -286,21 +311,19 @@ public class Grafica extends Fragment {
         subtitulo2.setVisibility(View.VISIBLE);
 
         grafica2.setVisibility(View.VISIBLE);
-        crearGrafica_Firebase("count", puntosProgresoAvisos2, grafica2, "Avisos", "Dias", esSemanal, vista_graficas);
+        crearGrafica_Firebase("count", puntosProgresoAvisos2, grafica2, "Avisos", "Dias", esSemanal, true, vista_graficas);
 
-        // Llama a setMaximo_Minimos_Promedios para actualizar valores asociados a grafica2
-        setMaximo_Minimos_Promedios(vista_graficas, puntosProgresoAvisos2);
-
-        // Hacer visibles los valores asociados
-        TextView vmin = vista_graficas.findViewById(R.id.Valor_min2);
-        TextView vprom = vista_graficas.findViewById(R.id.Valor_prom2);
-        TextView vmax = vista_graficas.findViewById(R.id.Valor_max2);
-        vmin.setVisibility(View.VISIBLE);
-        vprom.setVisibility(View.VISIBLE);
-        vmax.setVisibility(View.VISIBLE);
-        vmin.setText(puntosProgresoAvisos2.getValorMinimo_asString());
-        vprom.setText(puntosProgresoAvisos2.get_promedio_AsString());
-        vmax.setText(puntosProgresoAvisos2.getValorMaximo_asString());
+//
+//        // Hacer visibles los valores asociados
+//        TextView vmin = vista_graficas.findViewById(R.id.Valor_min2);
+//        TextView vprom = vista_graficas.findViewById(R.id.Valor_prom2);
+//        TextView vmax = vista_graficas.findViewById(R.id.Valor_max2);
+//        vmin.setVisibility(View.VISIBLE);
+//        vprom.setVisibility(View.VISIBLE);
+//        vmax.setVisibility(View.VISIBLE);
+//        vmin.setText(puntosProgresoAvisos2.getValorMinimo_asString());
+//        vprom.setText(puntosProgresoAvisos2.get_promedio_AsString());
+//        vmax.setText(puntosProgresoAvisos2.getValorMaximo_asString());
 
         // Hacer visibles los textos asociados (Min, Promedio, Max)
         TextView minText = vista_graficas.findViewById(R.id.textView15);
