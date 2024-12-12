@@ -2,6 +2,8 @@ package com.example.sedora.presentation.views;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,29 +46,33 @@ public class TusMetas2Activity extends AppCompatActivity {
 
     private void cargarMetasPendientesDesdeFirestore() {
         db.collection("metas")
-                .whereEqualTo("estado", "pendiente") // Filtra por estado
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null) {
-                            metasList.clear(); // Limpia la lista antes de agregar nuevos elementos
-                            for (DocumentSnapshot document : querySnapshot) {
-                                Meta meta = document.toObject(Meta.class);
-                                if (meta != null) {
-                                    metasList.add(meta);
-                                }
-                            }
-                            // Ordenar manualmente por numeroMeta
-                            metasList.sort((meta1, meta2) -> Integer.compare(meta1.getNumeroMeta(), meta2.getNumeroMeta()));
+                .whereEqualTo("estado", "pendiente")
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Toast.makeText(this, "Error al cargar las metas pendientes.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                            // Después de ordenar, actualizamos el RecyclerView
-                            metaAdapter = new MetaAdapter(TusMetas2Activity.this, metasList, 1); // 1 para las próximas metas
-                            recyclerViewMetas.setAdapter(metaAdapter);
+                    if (querySnapshot != null) {
+                        metasList.clear();
+
+                        for (DocumentSnapshot document : querySnapshot) {
+                            Meta meta = document.toObject(Meta.class);
+                            if (meta != null) {
+                                metasList.add(meta);
+                            }
                         }
-                    } else {
-                        System.err.println("Error al cargar las metas: " + task.getException());
+
+                       metasList.sort((meta1, meta2) -> meta1.getNumeroMeta().compareTo(meta2.getNumeroMeta()));
+
+                        if (metaAdapter == null) {
+                            metaAdapter = new MetaAdapter(TusMetas2Activity.this, metasList, 1);
+                            recyclerViewMetas.setAdapter(metaAdapter);
+                        } else {
+                            metaAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
     }
+
 }

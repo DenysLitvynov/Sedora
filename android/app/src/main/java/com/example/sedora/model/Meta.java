@@ -7,7 +7,7 @@ public class Meta {
     private int progresoTotal;
     private int progresoActual;
     private String imagenDrawableName; // Cambiado para reflejar recursos locales
-    private int numeroMeta;
+    private String numeroMeta;
     private String estado;
 
     // Constructor vacío
@@ -15,7 +15,7 @@ public class Meta {
     }
 
     // Constructor con parámetros
-    public Meta(String nombre, String descripcion, int progresoTotal, int progresoActual, String imagenDrawableName, int numeroMeta, String estado) {
+    public Meta(String nombre, String descripcion, int progresoTotal, int progresoActual, String imagenDrawableName, String numeroMeta, String estado) {
 
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -67,11 +67,11 @@ public class Meta {
         this.imagenDrawableName = imagenDrawableName;
     }
 
-    public int getNumeroMeta() {
+    public String getNumeroMeta() {
         return numeroMeta;
     }
 
-    public void setNumeroMeta(int numeroMeta) {
+    public void setNumeroMeta(String numeroMeta) {
         this.numeroMeta = numeroMeta;
     }
 
