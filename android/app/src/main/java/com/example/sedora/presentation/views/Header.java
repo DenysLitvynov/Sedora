@@ -11,6 +11,9 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sedora.R;
+import com.example.sedora.presentation.managers.FirebaseHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Header extends LinearLayout {
 
@@ -39,17 +42,35 @@ public class Header extends LinearLayout {
                 Intent intent = new Intent(context, com.example.sedora.presentation.views.RecyclerActivity.class);
                 context.startActivity(intent);
             });
+
+
+            // Verificar notificaciones dinámicamente
+            verificarNotificaciones(context);
         }
     }
+
+
+    private void verificarNotificaciones(Context context) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            updateNotificationIcon(false);
+            return;
+        }
+
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
+        firebaseHelper.escucharNotificacionesActivas(user.getUid(), this::updateNotificationIcon);
+    }
+
 
     // Método para actualizar el icono de notificaciones
     public void updateNotificationIcon(boolean hasNotifications) {
         if (campananotificaciones != null) {
             if (hasNotifications) {
-                campananotificaciones.setImageResource(R.drawable.campananotificado);
+                campananotificaciones.setImageResource(R.drawable.campananotificado); // Icono si hay notificaciones
             } else {
-                campananotificaciones.setImageResource(R.drawable.campana);
+                campananotificaciones.setImageResource(R.drawable.campana); // Icono si no hay notificaciones
             }
         }
     }
+
 }
