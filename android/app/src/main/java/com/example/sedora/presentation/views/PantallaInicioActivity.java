@@ -1,11 +1,8 @@
 package com.example.sedora.presentation.views;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -23,11 +20,10 @@ import com.example.sedora.R;
 import com.example.sedora.model.Meta;
 import com.example.sedora.presentation.adapters.MetaAdapter;
 import com.example.sedora.presentation.managers.FirebaseHelper;
-import com.example.sedora.presentation.views.Header;
+import com.example.sedora.presentation.managers.MetasManager;
 
 import android.Manifest;
 import com.example.sedora.presentation.managers.MenuManager;
-import com.example.sedora.presentation.managers.NotificacionesFirebase;
 import com.example.sedora.presentation.managers.Popup_pantalla_inicio;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +31,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,6 +75,7 @@ public class PantallaInicioActivity extends AppCompatActivity {
 
         // Cargar meta actual desde Firestore
         cargarMetaActualDesdeFirestore();
+        gestionarCambioDeMeta();
 
 
 
@@ -383,29 +379,49 @@ public class PantallaInicioActivity extends AppCompatActivity {
 
     private void cargarMetaActualDesdeFirestore() {
         db.collection("metas")
-                .whereEqualTo("estado", "actual") // Filtrar solo metas con estado "actual"
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null) {
-                            metaActualList.clear(); // Limpia la lista antes de añadir nuevos datos
-                            for (DocumentSnapshot document : querySnapshot) {
-                                Meta meta = document.toObject(Meta.class);
-                                if (meta != null) {
-                                    metaActualList.add(meta); // Agrega la meta a la lista
-                                }
-                            }
+                .whereEqualTo("estado", "actual")
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                            // Configurar el adaptador del RecyclerView
-                            metaActualAdapter = new MetaAdapter(PantallaInicioActivity.this, metaActualList, 0); // 0 indica que es la meta actual
-                            recyclerMetaActual.setAdapter(metaActualAdapter);
+                    if (querySnapshot != null) {
+                        metaActualList.clear();
+
+                        for (DocumentSnapshot document : querySnapshot) {
+                            Meta meta = document.toObject(Meta.class);
+                            if (meta != null) {
+                                metaActualList.add(meta);
+                            }
                         }
-                    } else {
-                        // Manejo de errores
-                        Toast.makeText(this, "Error al cargar la meta actual.", Toast.LENGTH_SHORT).show();
+
+                        if (metaActualAdapter == null) {
+                            metaActualAdapter = new MetaAdapter(this, metaActualList, 0);
+                            recyclerMetaActual.setAdapter(metaActualAdapter);
+                        } else {
+                            metaActualAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
+    }
+
+    private void gestionarCambioDeMeta() {
+        MetasManager metasManager = new MetasManager();
+        metasManager.pasarMetaActualAConseguida(new MetasManager.MetaUpdateCallback() {
+            @Override
+            public void onMetaUpdated() {
+                Log.d("PantallaInicio", "Meta completada y promovida correctamente.");
+                // Actualizar la vista de metas
+                cargarMetaActualDesdeFirestore();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("PantallaInicio", "Error al cambiar de meta: " + e.getMessage(), e);
+                Toast.makeText(PantallaInicioActivity.this, "Error al cambiar de meta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

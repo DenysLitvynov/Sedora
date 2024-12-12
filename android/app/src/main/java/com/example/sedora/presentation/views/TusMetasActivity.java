@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import com.example.sedora.model.Meta;
 import com.example.sedora.presentation.adapters.MetaAdapter;
 import com.example.sedora.presentation.managers.NotificacionManager;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -73,52 +75,54 @@ public class TusMetasActivity extends AppCompatActivity {
 
     private void cargarMetasDesdeFirestore() {
         db.collection("metas")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null) {
-                            metasList.clear(); // Limpia la lista antes de agregar nuevos elementos
-                            for (DocumentSnapshot document : querySnapshot) {
-                                Meta meta = document.toObject(Meta.class);
-                                if (meta != null) {
-                                    metasList.add(meta);
-                                }
-                            }
+                .orderBy("numeroMeta", Query.Direction.ASCENDING)
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Toast.makeText(this, "Error al cargar las metas.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                            // Ordenar metas por numeroMeta
-                            metasList.sort((meta1, meta2) -> Integer.compare(meta1.getNumeroMeta(), meta2.getNumeroMeta()));
+                    if (querySnapshot != null) {
+                        metasList.clear();
+                        metaActualList.clear();
+                        proximasMetasList.clear();
 
-                            // Encontrar la meta actual (estado == "actual")
-                            for (Meta meta : metasList) {
+                        for (DocumentSnapshot document : querySnapshot) {
+                            Meta meta = document.toObject(Meta.class);
+                            if (meta != null) {
+                                metasList.add(meta);
                                 if ("actual".equals(meta.getEstado())) {
                                     metaActualList.add(meta);
-                                    break; // Solo hay una meta actual
-                                }
-                            }
-
-                            // Encontrar las próximas metas (estado == "pendiente")
-                            boolean isAfterCurrent = false;
-                            for (Meta meta : metasList) {
-                                if (isAfterCurrent && "pendiente".equals(meta.getEstado())) {
+                                } else if ("pendiente".equals(meta.getEstado())) {
                                     proximasMetasList.add(meta);
                                 }
-                                if (!metaActualList.isEmpty() && meta.equals(metaActualList.get(0))) {
-                                    isAfterCurrent = true;
-                                }
-                                if (proximasMetasList.size() == 2) break; // Limitar a las dos siguientes
                             }
-
-                            // Configurar adaptadores
-                            metaActualAdapter = new MetaAdapter(TusMetasActivity.this, metaActualList, 0); // 0 para meta actual
-                            proximasMetasAdapter = new MetaAdapter(TusMetasActivity.this, proximasMetasList, 1); // 1 para próximas metas
-
-                            recyclerMetaActual.setAdapter(metaActualAdapter);
-                            recyclerProximasMetas.setAdapter(proximasMetasAdapter);
                         }
-                    } else {
-                        System.err.println("Error al cargar las metas: " + task.getException());
+
+                        // Limitar las próximas metas a las 2 siguientes
+                        if (proximasMetasList.size() > 2) {
+                            proximasMetasList = proximasMetasList.subList(0, 2);
+                        }
+
+                        actualizarAdaptadores();
                     }
                 });
     }
+
+    private void actualizarAdaptadores() {
+        if (metaActualAdapter == null) {
+            metaActualAdapter = new MetaAdapter(this, metaActualList, 0);
+            recyclerMetaActual.setAdapter(metaActualAdapter);
+        } else {
+            metaActualAdapter.notifyDataSetChanged();
+        }
+
+        if (proximasMetasAdapter == null) {
+            proximasMetasAdapter = new MetaAdapter(this, proximasMetasList, 1);
+            recyclerProximasMetas.setAdapter(proximasMetasAdapter);
+        } else {
+            proximasMetasAdapter.notifyDataSetChanged();
+        }
+    }
+
 }
