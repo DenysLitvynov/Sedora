@@ -5,10 +5,12 @@
 #include <ArduinoJson.h>
 #include "sedora1_map.h"
 #include <PubSubClient.h>
+#include <WiFiClientSecure.h> // Necesario para WebSocket
 
 // Definiciones
 #define DHTPIN 26
 #define DHTTYPE DHT11
+#define LED_PIN 2 // Pin donde está conectado el LED
 DHT dht(DHTPIN, DHTTYPE);
 int micPin = 35;
 int ldrPin = 36;
@@ -28,8 +30,8 @@ float pesoRespaldo = 0.0;
 #define AZUL 0x001F
 
 //Cambiar a la red wifi que se vaya a usar cada vez
-const char* ssid = "MiFibra-3078";
-const char* password = "V5AQboPQ";
+const char* ssid = "SaforNet_PPGP9";
+const char* password = "8F3B2MWZ";
 
 char texto[200];
 boolean recibidoDist = false;
@@ -38,10 +40,22 @@ boolean recibidoPes = false;
 AsyncUDP udp;
 int currentScreen = 0;
 
+//=============LED=============
+#define MQTT_CLIENT_ID "M5Stack_LED"
+#define MQTT_TOPIC_LED "Sedora/led/status"
+const char* mqtt_server_led = "broker.hivemq.com";
+const char* mqtt_client_led_name = "M5Stack_LED";
+const int mqtt_port_led = 1883;
+WiFiClient espClient_led;    // En lugar de WiFiClientSecure
+PubSubClient client_led(espClient_led);
+// Variables
+bool ledState = false;
+//=============LED=============
+
 WiFiClient espClient;
 
 PubSubClient client(espClient);
-const char* mqtt_server = "test.mosquitto.org";
+const char* mqtt_server = "broker.hivemq.com";
 const int mqtt_port = 1883;
 const char* mqtt_client_name = "Sedora1";
 unsigned long lastPublishTime = 0;
@@ -83,6 +97,40 @@ void conectarMQTT() {
     }
   }
 }
+//------------------------------------------------
+//------------------------------------------------
+// Función para conectar MQTT del LED
+void conectarMQTTLed() {
+  while (!client_led.connected()) {
+    if (client_led.connect(mqtt_client_led_name)) {
+      Serial.println("Conectado al MQTT LED!");
+      client_led.subscribe(MQTT_TOPIC_LED);
+    } else {
+      Serial.println("Error MQTT LED, reintentando...");
+      delay(5000);
+    }
+  }
+}
+//------------------------------------------------
+// Callback de mensajes MQTT (LED)
+//------------------------------------------------
+void callbackMQTTLed(char* topic, byte* payload, unsigned int length) {
+  String message = "";
+  for (unsigned int i = 0; i < length; i++) {
+    message += (char)payload[i];
+  }
+
+  if (String(topic) == MQTT_TOPIC_LED) {
+    if (message.equalsIgnoreCase("ON")) {
+      digitalWrite(LED_PIN, HIGH);
+      Serial.println("LED ENCENDIDO.");
+    } else if (message.equalsIgnoreCase("OFF")) {
+      digitalWrite(LED_PIN, LOW);
+      Serial.println("LED APAGADO.");
+    }
+  }
+}
+
 //------------------------------------------------
 //------------------------------------------------
 void iniciarUDP() {
@@ -327,6 +375,21 @@ void setup() {
   delay(3000);
   conectarWiFi();
   client.setServer(mqtt_server, mqtt_port);
+
+//================LED================
+  // Configurar MQTT LED
+    client_led.setServer(mqtt_server_led, mqtt_port_led);
+    client_led.setCallback(callbackMQTTLed);
+    conectarMQTTLed();
+
+    // Configurar LED
+    pinMode(LED_PIN, OUTPUT);
+    digitalWrite(LED_PIN, LOW);
+//====================================
+
+  // Conectar al broker MQTT
+  conectarMQTT();
+  
   iniciarUDP();
   dht.begin();
   verPantallaPrincipal(0, 0, 0, 0);
@@ -335,7 +398,21 @@ void setup() {
 //------------------------------------------------
 void loop() {
   M5.update();
+
+   if (!client.connected()) {
+    conectarMQTT();
+  }
+  
+  //========LED=======
+  if (!client_led.connected()) {
+    conectarMQTTLed();
+  }
+  //========LED=======
+
   client.loop();
+  client_led.loop();
+
+  
   unsigned long currentMillis = millis();
 
   float temp = dht.readTemperature();

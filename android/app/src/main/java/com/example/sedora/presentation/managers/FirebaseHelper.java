@@ -263,4 +263,37 @@ public class FirebaseHelper {
     public interface PuntuacionCallback {
         void onPuntuacionCalculada(float puntuacion);
     }
+
+    public interface NotificationCallback {
+        void onNotificationStatusChanged(boolean hasNotifications);
+    }
+
+    public void escucharNotificacionesActivas(String userId, NotificationCallback callback) {
+        db.collection("usuarios") // Acceder a la colección de usuarios
+                .document(userId) // Acceder al documento del usuario autenticado
+                .collection("notificaciones") // Subcolección de notificaciones
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.e("FirebaseHelper", "Error al escuchar notificaciones: " + e.getMessage());
+                        callback.onNotificationStatusChanged(false);
+                        return;
+                    }
+
+                    if (snapshots != null && !snapshots.isEmpty()) {
+                        boolean hasNotifications = false;
+                        for (QueryDocumentSnapshot doc : snapshots) {
+                            Long numeroAvisos = doc.getLong("numeroAvisos");
+                            if (numeroAvisos != null && numeroAvisos > 0) {
+                                hasNotifications = true;
+                                break;
+                            }
+                        }
+                        callback.onNotificationStatusChanged(hasNotifications);
+                    } else {
+                        callback.onNotificationStatusChanged(false);
+                    }
+                });
+    }
+
+
 }

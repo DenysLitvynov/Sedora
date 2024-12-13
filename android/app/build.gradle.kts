@@ -36,6 +36,8 @@ android {
 
 dependencies {
 
+    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0")
+
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("androidx.work:work-runtime:2.8.1")
     implementation("androidx.work:work-rxjava3:2.8.1")
