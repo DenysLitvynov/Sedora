@@ -39,13 +39,14 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import com.example.sedora.presentation.managers.MetasManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PantallaInicioActivity extends AppCompatActivity implements MqttCallback{
+public class PantallaInicioActivity extends AppCompatActivity implements MqttCallback {
 
     private static final String TAG = "PantallaInicio";
     private static final String BROKER = "tcp://broker.hivemq.com:1883"; // Broker WebSocket
@@ -87,6 +88,15 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);
+        //Muestra la Meta actual.
+
+        // Inicializar Firebase y lista de datos
+        db = FirebaseFirestore.getInstance();
+        metaActualList = new ArrayList<>();
+
+        // Inicializar RecyclerView
+        recyclerMetaActual = findViewById(R.id.recyclerViewMetaActual);
+        recyclerMetaActual.setLayoutManager(new LinearLayoutManager(this));
 
 
         // Inicializar vistas
@@ -98,6 +108,9 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
         // Configurar botón para encender/apagar el LED
         ledButton.setOnClickListener(v -> toggleLed());
+        // Cargar meta actual desde Firestore
+        cargarMetaActualDesdeFirestore();
+        gestionarCambioDeMeta();
 
 
         // Obtén el Header
@@ -182,7 +195,6 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     }
 
 
-
     private void toggleLed() {
         try {
             isLedOn = !isLedOn;
@@ -250,6 +262,37 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         ImageView btnPantallaPerfil = findViewById(R.id.Perfil);
         btnPantallaPerfil.setOnClickListener(v -> funcionMenu.abrirPantallaPerfil(PantallaInicioActivity.this));
     }
+
+    private void cargarMetaActualDesdeFirestore() {
+        db.collection("metas")
+                .whereEqualTo("estado", "actual")
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (querySnapshot != null) {
+                        metaActualList.clear();
+
+                        for (DocumentSnapshot document : querySnapshot) {
+                            Meta meta = document.toObject(Meta.class);
+                            if (meta != null) {
+                                metaActualList.add(meta);
+                            }
+                        }
+
+                        if (metaActualAdapter == null) {
+                            metaActualAdapter = new MetaAdapter(this, metaActualList, 0);
+                            recyclerMetaActual.setAdapter(metaActualAdapter);
+                        } else {
+                            metaActualAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+    }
+
+
 
 
 
@@ -388,6 +431,7 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
             }
         });
     }
+
     // Solicitar permiso de notificaciones
     private void requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -450,13 +494,13 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
                 } else if (topic.equals("Sedora/sensores/humedad")) {
                     float humedad = Float.parseFloat(payload);
                     if (textHumidity != null) {
-                        textHumidity.setText( humedad + " %");
+                        textHumidity.setText(humedad + " %");
                     }
                 } else if (topic.equals("Sedora/sensores/sonido")) {
                     int sonido = Integer.parseInt(payload);
                     if (textView17 != null) {
                         String estadoSonido = (sonido == 1) ? "Inadecuado" : "Adecuado";
-                        textView17.setText( estadoSonido);
+                        textView17.setText(estadoSonido);
                     }
                 } else if (topic.equals("Sedora/sensores/luz")) {
                     int luz = Integer.parseInt(payload);
@@ -498,7 +542,29 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         Log.i(TAG, "Entrega completada");
     }
 
-    @Override
+    private void gestionarCambioDeMeta() {
+        MetasManager metasManager = new MetasManager();
+        metasManager.pasarMetaActualAConseguida(new MetasManager.MetaUpdateCallback() {
+            @Override
+            public void onMetaUpdated() {
+                Log.d("PantallaInicio", "Meta completada y promovida correctamente.");
+                // Actualizar la vista de metas
+                cargarMetaActualDesdeFirestore();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // Manejar el error si ocurre
+                Log.e("PantallaInicio", "Error al cambiar de meta: " + e.getMessage(), e);
+                Toast.makeText(PantallaInicioActivity.this, "Error al cambiar de meta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+
+@Override
     protected void onDestroy() {
         super.onDestroy();
         try {
