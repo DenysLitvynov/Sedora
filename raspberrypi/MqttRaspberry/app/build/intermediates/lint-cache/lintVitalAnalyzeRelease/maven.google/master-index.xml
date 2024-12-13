@@ -24,6 +24,7 @@
   <androidx.bluetooth/>
   <androidx.browser/>
   <androidx.camera/>
+  <androidx.camera.media3/>
   <androidx.camera.viewfinder/>
   <androidx.car/>
   <androidx.car.app/>
@@ -141,6 +142,11 @@
   <androidx.window/>
   <androidx.window.extensions.core/>
   <androidx.work/>
+  <androidx.xr.arcore/>
+  <androidx.xr.compose/>
+  <androidx.xr.compose.material3/>
+  <androidx.xr.runtime/>
+  <androidx.xr.scenecore/>
   <com.android/>
   <com.android.ai-pack/>
   <com.android.application/>
@@ -167,6 +173,11 @@
   <com.android.ndk.thirdparty/>
   <com.android.privacy-sandbox-sdk/>
   <com.android.reporting/>
+  <com.android.security.autorepro/>
+  <com.android.security.autorepro.apptest/>
+  <com.android.security.autorepro.javahosttest/>
+  <com.android.security.autorepro.ndktest/>
+  <com.android.security.autorepro.submission/>
   <com.android.security.lint/>
   <com.android.settings/>
   <com.android.support/>
@@ -249,6 +260,7 @@
   <com.google.android.support/>
   <com.google.android.things/>
   <com.google.android.tv/>
+  <com.google.android.tv.tvpanelframework/>
   <com.google.android.ump/>
   <com.google.android.wearable/>
   <com.google.androidbrowserhelper/>

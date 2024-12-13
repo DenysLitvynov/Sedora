@@ -1,10 +1,10 @@
-C:\Users\denis\MqttRaspberry\gradle\libs.versions.toml:2: Warning: A newer version of com.android.application than 8.6.0 is available: 8.7.2. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.2 is difficult: 8.6.1) [AndroidGradlePluginVersion]
+C:\Users\denis\MqttRaspberry\gradle\libs.versions.toml:2: Warning: A newer version of com.android.application than 8.6.0 is available: 8.7.3. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.3 is difficult: 8.6.1) [AndroidGradlePluginVersion]
 agp = "8.6.0"
       ~~~~~~~
-C:\Users\denis\MqttRaspberry\gradle\libs.versions.toml:2: Warning: A newer version of com.android.application than 8.6.0 is available: 8.7.2. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.2 is difficult: 8.6.1) [AndroidGradlePluginVersion]
+C:\Users\denis\MqttRaspberry\gradle\libs.versions.toml:2: Warning: A newer version of com.android.application than 8.6.0 is available: 8.7.3. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.3 is difficult: 8.6.1) [AndroidGradlePluginVersion]
 agp = "8.6.0"
       ~~~~~~~
-C:\Users\denis\MqttRaspberry\gradle\libs.versions.toml:2: Warning: A newer version of com.android.application than 8.6.0 is available: 8.7.2. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.2 is difficult: 8.6.1) [AndroidGradlePluginVersion]
+C:\Users\denis\MqttRaspberry\gradle\libs.versions.toml:2: Warning: A newer version of com.android.application than 8.6.0 is available: 8.7.3. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.3 is difficult: 8.6.1) [AndroidGradlePluginVersion]
 agp = "8.6.0"
       ~~~~~~~
 

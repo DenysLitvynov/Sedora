@@ -4,7 +4,7 @@
     <issue
         id="AndroidGradlePluginVersion"
         severity="Warning"
-        message="A newer version of com.android.application than 8.6.0 is available: 8.7.2. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.2 is difficult: 8.6.1)"
+        message="A newer version of com.android.application than 8.6.0 is available: 8.7.3. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.3 is difficult: 8.6.1)"
         category="Correctness"
         priority="4"
         summary="Obsolete Android Gradle Plugin Version"
@@ -20,7 +20,7 @@
     <issue
         id="AndroidGradlePluginVersion"
         severity="Warning"
-        message="A newer version of com.android.application than 8.6.0 is available: 8.7.2. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.2 is difficult: 8.6.1)"
+        message="A newer version of com.android.application than 8.6.0 is available: 8.7.3. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.3 is difficult: 8.6.1)"
         category="Correctness"
         priority="4"
         summary="Obsolete Android Gradle Plugin Version"
@@ -36,7 +36,7 @@
     <issue
         id="AndroidGradlePluginVersion"
         severity="Warning"
-        message="A newer version of com.android.application than 8.6.0 is available: 8.7.2. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.2 is difficult: 8.6.1)"
+        message="A newer version of com.android.application than 8.6.0 is available: 8.7.3. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.3 is difficult: 8.6.1)"
         category="Correctness"
         priority="4"
         summary="Obsolete Android Gradle Plugin Version"

@@ -4,13 +4,13 @@
     <incident
         id="AndroidGradlePluginVersion"
         severity="warning"
-        message="A newer version of com.android.application than 8.6.0 is available: 8.7.2. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.2 is difficult: 8.6.1)">
+        message="A newer version of com.android.application than 8.6.0 is available: 8.7.3. (There is also a newer version of 8.6.𝑥 available, if upgrading to 8.7.3 is difficult: 8.6.1)">
         <fix-alternatives>
             <fix-replace
-                description="Change to 8.7.2"
+                description="Change to 8.7.3"
                 family="Update versions"
                 oldString="8.6.0"
-                replacement="8.7.2"
+                replacement="8.7.3"
                 priority="0"/>
             <fix-replace
                 description="Change to 8.6.1"

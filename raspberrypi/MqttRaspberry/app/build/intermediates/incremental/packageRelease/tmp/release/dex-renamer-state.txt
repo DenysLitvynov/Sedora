@@ -1,4 +1,4 @@
-#Fri Nov 22 12:32:28 CET 2024
+#Fri Dec 13 13:40:35 CET 2024
 base.0=C\:\\Users\\denis\\MqttRaspberry\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
