@@ -51,6 +51,8 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     private static final String BROKER = "tcp://broker.hivemq.com:1883"; // Broker WebSocket
     private static final String TOPIC_LED = "Sedora/led/status"; // Tópico para el LED
     private static final int QOS = 1; // Calidad de servicio para MQTT
+    private static final String clientId = "sedoraapp" + System.currentTimeMillis();
+
 
     private MqttClient client;
     private MqttConnectOptions connOpts;
@@ -58,16 +60,18 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     private TextView connectionStatus; // Muestra el estado del LED
     private ImageView ledButton; // Botón para controlar el LED
 
-
+    private TextView textView19;
+    private TextView textHumidity;
+    private TextView textView18;
+    private TextView textView17;
 
     private HalfDonutChart halfDonutChart;
     private TextView heading12; // Para mostrar la puntuación numérica
     private TextView heading11; // Para mostrar el texto del estado
     private FirebaseHelper firebaseHelper;
     private FirebaseUser currentUser;
-    private TextView textView17;
-    private TextView textView18;
-    private TextView textView19;
+
+
     private TextView textView6;
     private TextView textView5;
     private RecyclerView recyclerMetaActual;
@@ -119,7 +123,7 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
         if (currentUser != null) {
             calcularPuntuacionDiaria();
-            obtenerUltimaTomaDelDia();
+            //obtenerUltimaTomaDelDia();
             mostrarConsejoDelDia();
             calcularTiempoSentado();
         }
@@ -127,8 +131,32 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         // prueba para lanzar una noti
 //        NotificacionesFirebase noti = new NotificacionesFirebase(getApplicationContext(), "Título", "Descripción", "Descripción larga", R.drawable.sedora_logo, MainActivity.class);
 //        noti.lanzarNotificacion();
+        // Inicialización del botón
 
+        try {
+            client = new MqttClient(BROKER, clientId, new MemoryPersistence());
 
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
+            connOpts.setKeepAliveInterval(60);
+            connOpts.setWill("Sedora/desconectado", "Desconectada!".getBytes(), 0, false); // Mensaje de última voluntad
+
+            client.connect(connOpts);
+
+            client.setCallback(this);
+            client.subscribe("Sedora/sensores/temperatura", QOS);
+            client.subscribe("Sedora/sensores/humedad", QOS);
+            client.subscribe("Sedora/sensores/sonido", QOS);
+            client.subscribe("Sedora/sensores/luz", QOS);
+            Log.i("MQTT", "Suscripción a los tópicos de sensores");
+
+        } catch (MqttException e) {
+            Log.e("MQTT", "Error al conectar con el bróker: " + e.getMessage());
+        }
+
+        if (textView19 == null || textHumidity == null || textView17 == null || textView18 == null) {
+            Log.e(TAG, "Uno o más TextView no fueron inicializados correctamente.");
+        }
     }
 
     private void setupMQTT() {
@@ -223,59 +251,7 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         btnPantallaPerfil.setOnClickListener(v -> funcionMenu.abrirPantallaPerfil(PantallaInicioActivity.this));
     }
 
-    private void obtenerUltimaTomaDelDia() {
-        String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-        firebaseHelper.db.collection("usuarios")
-                .document(currentUser.getUid())
-                .collection("Datos")
-                .document(fechaHoy)
-                .collection("Tomas")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                        actualizarTextViews(document);
-                    } else {
-                        // Manejar el caso en que no hay tomas para el día actual
-                        textView17.setText("No disponible");
-                        textView18.setText("No disponible");
-                        textView19.setText("No disponible");
-                    }
-                });
-    }
-
-    private String evaluarLuminosidad(double luminosidad) {
-        if (luminosidad < 200) {
-            return "Insuficiente";
-        } else if (luminosidad <= 400) {
-            return "Suficiente";
-        } else {
-            return "Excesiva";
-        }
-    }
-
-    private String evaluarRuido(double ruido) {
-        if (ruido < 30) {
-            return "Bajo";
-        } else if (ruido <= 60) {
-            return "Medio";
-        } else {
-            return "Alto";
-        }
-    }
-
-    private void actualizarTextViews(DocumentSnapshot document) {
-        double luminosidad = document.getDouble("luminosidad");
-        double ruido = document.getDouble("ruido");
-        double temperatura = document.getDouble("temperatura");
-
-        textView17.setText(evaluarLuminosidad(luminosidad));
-        textView18.setText(evaluarRuido(ruido));
-        textView19.setText(String.valueOf(temperatura) + " ºC");
-    }
 
     private void calcularTiempoSentado() {
         String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -452,19 +428,70 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.i(TAG, "Mensaje recibido en tópico: " + topic);
-        if (topic.equals(TOPIC_LED)) {
-            String messageContent = new String(message.getPayload());
-            Log.i(TAG, "Contenido del mensaje recibido: " + messageContent);
+        String payload = new String(message.getPayload());
+        Log.i(TAG, "Contenido del mensaje recibido: " + payload);
 
-            // Actualizar el estado del LED basado en el mensaje recibido
-            if (messageContent.equalsIgnoreCase("ON")) {
+        // Manejar mensajes del tópico del LED
+        if (topic.equals(TOPIC_LED)) {
+            if (payload.equalsIgnoreCase("ON")) {
                 isLedOn = true;
-            } else if (messageContent.equalsIgnoreCase("OFF")) {
+            } else if (payload.equalsIgnoreCase("OFF")) {
                 isLedOn = false;
             }
             updateLedStatus(); // Actualizar la interfaz
         }
+        runOnUiThread(() -> {
+            try {
+                if (topic.equals("Sedora/sensores/temperatura")) {
+                    float temperatura = Float.parseFloat(payload);
+                    if (textView19 != null) {
+                        textView19.setText(temperatura + " °C");
+                    }
+                } else if (topic.equals("Sedora/sensores/humedad")) {
+                    float humedad = Float.parseFloat(payload);
+                    if (textHumidity != null) {
+                        textHumidity.setText( humedad + " %");
+                    }
+                } else if (topic.equals("Sedora/sensores/sonido")) {
+                    int sonido = Integer.parseInt(payload);
+                    if (textView17 != null) {
+                        String estadoSonido = (sonido == 1) ? "Inadecuado" : "Adecuado";
+                        textView17.setText( estadoSonido);
+                    }
+                } else if (topic.equals("Sedora/sensores/luz")) {
+                    int luz = Integer.parseInt(payload);
+                    if (textView18 != null) {
+                        String estadoLuz = (luz == 1) ? "Inadecuada" : "Adecuada";
+                        textView18.setText(estadoLuz);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error al procesar el mensaje: " + payload, e);
+            }
+        });
+
     }
+
+    /**
+     * Convierte un String a float, lanza una excepción si no es válido.
+     */
+    private float parseToFloat(String value) throws NumberFormatException {
+        if (value == null || value.equalsIgnoreCase("nan")) {
+            throw new NumberFormatException("Valor no válido: " + value);
+        }
+        return Float.parseFloat(value);
+    }
+
+    /**
+     * Convierte un String a int, lanza una excepción si no es válido.
+     */
+    private int parseToInt(String value) throws NumberFormatException {
+        if (value == null || value.equalsIgnoreCase("nan")) {
+            throw new NumberFormatException("Valor no válido: " + value);
+        }
+        return Integer.parseInt(value);
+    }
+
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
