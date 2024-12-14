@@ -54,7 +54,6 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     private static final int QOS = 1; // Calidad de servicio para MQTT
     private static final String clientId = "sedoraapp" + System.currentTimeMillis();
 
-
     private MqttClient client;
     private MqttConnectOptions connOpts;
     private boolean isLedOn = false; // Estado inicial del LED
@@ -72,7 +71,6 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     private FirebaseHelper firebaseHelper;
     private FirebaseUser currentUser;
 
-
     private TextView textView6;
     private TextView textView5;
     private RecyclerView recyclerMetaActual;
@@ -88,7 +86,6 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);
-        //Muestra la Meta actual.
 
         // Inicializar Firebase y lista de datos
         db = FirebaseFirestore.getInstance();
@@ -97,7 +94,6 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         // Inicializar RecyclerView
         recyclerMetaActual = findViewById(R.id.recyclerViewMetaActual);
         recyclerMetaActual.setLayoutManager(new LinearLayoutManager(this));
-
 
         // Inicializar vistas
         connectionStatus = findViewById(R.id.textView8);
@@ -108,12 +104,11 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
         // Configurar botón para encender/apagar el LED
         ledButton.setOnClickListener(v -> toggleLed());
+
         // Cargar meta actual desde Firestore
         cargarMetaActualDesdeFirestore();
         gestionarCambioDeMeta();
 
-
-        // Obtén el Header
         // Inicializar Firebase y obtener usuario actual
         firebaseHelper = new FirebaseHelper();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -136,39 +131,8 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
         if (currentUser != null) {
             calcularPuntuacionDiaria();
-            //obtenerUltimaTomaDelDia();
             mostrarConsejoDelDia();
             calcularTiempoSentado();
-        }
-
-        // prueba para lanzar una noti
-//        NotificacionesFirebase noti = new NotificacionesFirebase(getApplicationContext(), "Título", "Descripción", "Descripción larga", R.drawable.sedora_logo, MainActivity.class);
-//        noti.lanzarNotificacion();
-        // Inicialización del botón
-
-        try {
-            client = new MqttClient(BROKER, clientId, new MemoryPersistence());
-
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-            connOpts.setKeepAliveInterval(60);
-            connOpts.setWill("Sedora/desconectado", "Desconectada!".getBytes(), 0, false); // Mensaje de última voluntad
-
-            client.connect(connOpts);
-
-            client.setCallback(this);
-            client.subscribe("Sedora/sensores/temperatura", QOS);
-            client.subscribe("Sedora/sensores/humedad", QOS);
-            client.subscribe("Sedora/sensores/sonido", QOS);
-            client.subscribe("Sedora/sensores/luz", QOS);
-            Log.i("MQTT", "Suscripción a los tópicos de sensores");
-
-        } catch (MqttException e) {
-            Log.e("MQTT", "Error al conectar con el bróker: " + e.getMessage());
-        }
-
-        if (textView19 == null || textView17 == null || textView18 == null) {
-            Log.e(TAG, "Uno o más TextView no fueron inicializados correctamente.");
         }
     }
 
@@ -193,14 +157,11 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
                 client.subscribe("Sedora/sensores/luz", QOS);
                 Log.i(TAG, "Conectado al broker y suscrito a los tópicos.");
 
-                runOnUiThread(() -> connectionStatus.setText("Conectado a MQTT"));
             } catch (MqttException e) {
                 Log.e(TAG, "Error al conectar al broker MQTT: " + e.getMessage());
-                runOnUiThread(() -> connectionStatus.setText("Sin conexión a MQTT"));
             }
         }).start();
     }
-
 
     private void toggleLed() {
         try {
@@ -210,7 +171,6 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
             Log.i(TAG, "Estado del LED cambiado: " + (isLedOn ? "ON" : "OFF"));
         } catch (Exception e) {
             Log.e(TAG, "Error al cambiar estado del LED", e);
-            connectionStatus.setText("Error al cambiar estado del LED");
         }
     }
 
