@@ -27,7 +27,10 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Grafica extends Fragment {
 
@@ -114,95 +117,150 @@ public class Grafica extends Fragment {
         if (mensual_o_semanal.equals("semanal")){
             switch (grafica_elegida) {
                 case "Horas Sentado":
-                    crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias",
-                            true, false, vista_graficas);
+//                    crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias",
+//                            true, false, vista_graficas);
+
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSentado,"Avsiso","Dias",puntosHorasSentado.getNombre_grafica(),true,false);
                     break;
 
                 case "Horas Sensibles":
-                    crearGrafica_Firebase("proximidadPromedio",
-                            puntosHorasSensibles,vistaGrafica,"Avisos","Dias", true, false, vista_graficas);
+                    //crearGrafica_Firebase("proximidadPromedio", puntosHorasSensibles,vistaGrafica,"Avisos","Dias", true, false, vista_graficas);
                     break;
 
                 case "Progreso Avisos":
-                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,
-                            "Avisos","Dias", true, false, vista_graficas);
+                    //crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica, "Avisos","Dias", true, false, vista_graficas);
                     hacerVisible_Grafica2(vista_graficas,true);
                     break;
 
                 case "Avisos Ignorados":
                     //LOS VALORES DE X TIENEN QUE ESTAR EN ORDEN ASCENTDE O DA ERROR
-                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", true, false, vista_graficas);
+                    //crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", true, false, vista_graficas);
                     break;
             }
         }
          else if (mensual_o_semanal.equals("mensual")) {
             switch (grafica_elegida) {
                 case "Horas Sentado":
-                    crearGrafica_Firebase("ruidoPromedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
+//                    crearGrafica_Firebase("ruidoPromedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSentado,"Avsiso","Dias",puntosHorasSentado.getNombre_grafica(),false,false);
+
                     break;
 
                 case "Horas Sensibles":
-                    crearGrafica_Firebase("temperaturaPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
+                    //crearGrafica_Firebase("temperaturaPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
                     break;
 
                 case "Progreso Avisos":
 
-                    crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
+                    //crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
                     hacerVisible_Grafica2(vista_graficas,false);
                     break;
 
                 case "Avisos Ignorados":
-                    crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
+                    //crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
                     break;
             }
         }
     }
 
 
+    //===========================================================================================================================
     //En base que el campo que quieres hacerle una grafica, rellena la lista y llama a crearGrafica dentro de la funcion
     //Ejemplo: quiero los datos de presion el dia de ayer,
     // graficaPresion.(presion)
     //Mete la presion en su lista Y y el dia en su lista X  y crea la grafica(esto dentro de la funcion)
-    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo,boolean es_semanal,boolean esGrafica2,View vista) {
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo,boolean es_semanal,boolean esGrafica2,View vista) {
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//        String usuarioUID = auth.getCurrentUser().getUid();
+//
+//        database.collection("usuarios")
+//                .document(usuarioUID)//AQUI EL USER
+//                .collection("Datos").get()//SI LAS NOTIS ESTAN EN OTRA COLECION HABRA QUE CAMBIAR ESTO A UNA VARIABLE
+//                .addOnSuccessListener(queryDocumentSnapshots -> {
+//
+//                    if (!queryDocumentSnapshots.isEmpty()) {
+//                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+//                            String fecha = document.getId();
+//                            Double valor = document.contains(campo) ? document.getDouble(campo) : null;
+//                            if (valor != null) {
+//                                grafica_a_cual_se_añade.añadir_nuevo_Dato(fecha, valor);
+//                            }
+//                        }
+//                        if (es_semanal==true){
+//                            // Llama a crearGrafica aquí, cuando los datos ya estén listos
+//                            grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
+//                            crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
+//                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
+//                            if (esGrafica2){
+//                                setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
+//                            }
+//                            //ESTO SE PODRIA HACER EN UN CALLBACK pa no meter to.do en la funcion,
+//                            // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
+//                        }
+//                        grafica_a_cual_se_añade.filtrarDatosPorMesActual();
+//                        crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
+//                        setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
+//                        if (esGrafica2){
+//                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
+//                        }
+//                    }
+//                }).addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar documentos", e));
+//    }
 
+    private void crearGraficaNotis(View vista, GraphView vistaGrafica, DatosGrafica grafica_a_cual_se_añade, String yTitulo,
+                                   String xTitulo,String que_se_evalua, boolean es_semanal, boolean esGrafica2) {
+
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String usuarioUID = auth.getCurrentUser().getUid();
 
-        database.collection("usuarios")
-                .document(usuarioUID)//AQUI EL USER
-                .collection("Datos").get()//SI LAS NOTIS ESTAN EN OTRA COLECION HABRA QUE CAMBIAR ESTO A UNA VARIABLE
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+        // Cambiar la colección según sea necesario
+        String coleccion = "notificaciones"; // Puedes cambiarlo a una variable dinámica
 
+        database.collection("usuarios")
+                .document(usuarioUID)
+                .collection(coleccion)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        // Map para almacenar el conteo de notificaciones por día
+                        Map<String, Integer> conteoPorDia = new HashMap<>();
+
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            String fecha = document.getId();
-                            Double valor = document.contains(campo) ? document.getDouble(campo) : null;
-                            if (valor != null) {
-                                grafica_a_cual_se_añade.añadir_nuevo_Dato(fecha, valor);
+                            String horaCompleta = document.getString("hora");
+
+                            if (horaCompleta != null) {
+                                // Extraer solo el día (dd/MM/yyyy) de la cadena "hora"
+                                String dia = horaCompleta.split(" ")[1]; // "12/12/2024" de "11:44 12/12/2024"
+
+                                // Contar notificaciones por día
+                                conteoPorDia.put(dia, conteoPorDia.getOrDefault(dia, 0) + 1);
                             }
                         }
-                        if (es_semanal==true){
-                            // Llama a crearGrafica aquí, cuando los datos ya estén listos
-                            grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
-                            crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
-                            if (esGrafica2){
-                                setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
-                            }
-                            //ESTO SE PODRIA HACER EN UN CALLBACK pa no meter to.do en la funcion,
-                            // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
+                        // Añadir datos al objeto de gráfica
+                        for (Map.Entry<String, Integer> entry : conteoPorDia.entrySet()) {
+                            String dia = entry.getKey();
+                            int valor = entry.getValue().intValue();
+
+                            // Añadir a la gráfica
+                            grafica_a_cual_se_añade.añadir_nuevo_Dato(dia, valor);
                         }
-                        grafica_a_cual_se_añade.filtrarDatosPorMesActual();
+
+                        Log.d("TAG", grafica_a_cual_se_añade.toString());
+
+                        // Crear la gráfica con los datos recopilados
                         crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-                        setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
-                        if (esGrafica2){
-                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
-                        }
+                        setMaximo_Minimos_Promedios(vista, grafica_a_cual_se_añade, false);
                     }
-                }).addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar documentos", e));
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar notificaciones", e));
     }
 
+
+
+//===========================================================================================================================
 
     private void  setMaximo_Minimos_Promedios(View vista,DatosGrafica datos,boolean esGrafica2){
         TextView vmin = vista.findViewById(R.id.Valor_min);
@@ -233,7 +291,7 @@ public class Grafica extends Fragment {
 
     private void crearGrafica(DatosGrafica grafica_a_Construir, GraphView vista_Grafica, String yTitulo, String xTitulo) {
 
-        List<Double> yValues = grafica_a_Construir.getValoresY();
+        List<Integer> yValues = grafica_a_Construir.getValoresY();
         List<String> xValues = grafica_a_Construir.getValoresX();
         int color = ContextCompat.getColor(getContext(), R.color.verde_secundario);
 
@@ -311,7 +369,7 @@ public class Grafica extends Fragment {
         subtitulo2.setVisibility(View.VISIBLE);
 
         grafica2.setVisibility(View.VISIBLE);
-        crearGrafica_Firebase("count", puntosProgresoAvisos2, grafica2, "Avisos", "Dias", esSemanal, true, vista_graficas);
+        //crearGrafica_Firebase("count", puntosProgresoAvisos2, grafica2, "Avisos", "Dias", esSemanal, true, vista_graficas);
 
 //
 //        // Hacer visibles los valores asociados

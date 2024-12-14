@@ -8,21 +8,18 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-//EN ESTA CLASE SE CONSTRUYEN TODOS LOS DATOS NECESARIOS PARA CREAR UNA GRAFICA
+// EN ESTA CLASE SE CONSTRUYEN TODOS LOS DATOS NECESARIOS PARA CREAR UNA GRAFICA
 public class DatosGrafica {
 
     private String nombre_grafica;
     private List<String> valoresX = new ArrayList<>();
-    private List<Double> valoresY = new ArrayList<>();
+    private List<Integer> valoresY = new ArrayList<>();
 
-    //private List<Date> valoresXFechas=new ArrayList<>();
-
-    public DatosGrafica(String nombre_grafica, List<String> valoresX, List<Double> valoresY) {
+    public DatosGrafica(String nombre_grafica, List<String> valoresX, List<Integer> valoresY) {
         this.nombre_grafica = nombre_grafica;
         this.valoresX = valoresX;
         this.valoresY = valoresY;
     }
-
 
     public String getNombre_grafica() {
         return nombre_grafica;
@@ -40,68 +37,57 @@ public class DatosGrafica {
         this.valoresX = valoresX;
     }
 
-    public List<Double> getValoresY() {
+    public List<Integer> getValoresY() {
         return valoresY;
     }
 
-    public void setValoresY(List<Double> valoresY) {
+    public void setValoresY(List<Integer> valoresY) {
         this.valoresY = valoresY;
     }
 
-    //=============================================================================================
-    //=============================================================================================
-
-    //METODOS
-
-    //=============================================================================================
-    //=============================================================================================
+    // =============================================================================================
+    // MÉTODOS
+    // =============================================================================================
 
     public String get_promedio_AsString() {
         if (valoresY.isEmpty()) {
             return "0"; // Mensaje si la lista está vacía
         }
-        double suma = 0;
-        for (double valor : valoresY) {
+        int suma = 0;
+        for (int valor : valoresY) {
             suma += valor;
         }
-        double promedio = suma / valoresY.size();
-        return String.format("%.1f", promedio); // Limita a 1 decimal
+        int promedio = suma / valoresY.size();
+        return String.valueOf(promedio); // Promedio sin decimales
     }
 
     public String getValorMaximo_asString() {
         if (valoresY.isEmpty()) {
             return "0"; // Mensaje si la lista está vacía
         }
-        double maximo = Collections.max(valoresY);
-        return String.format("%.1f", maximo); // Limita a 1 decimal
+        int maximo = Collections.max(valoresY);
+        return String.valueOf(maximo);
     }
 
     public String getValorMinimo_asString() {
         if (valoresY.isEmpty()) {
             return "0"; // Mensaje si la lista está vacía
         }
-        double minimo = Collections.min(valoresY);
-        return String.format("%.1f", minimo); // Limita a 1 decimal
+        int minimo = Collections.min(valoresY);
+        return String.valueOf(minimo);
     }
 
-    public void añadir_nuevo_Dato(String valornuevoX, double valornuevoY) {
+    public void añadir_nuevo_Dato(String valornuevoX, int valornuevoY) {
         this.valoresX.add(valornuevoX);
         this.valoresY.add(valornuevoY);
     }
 
-    public void añadir_una_lista_de_datos_Nuevos(List<String> valores_nuevosX, List<Double> valores_nuevosY) {
-
-        for (int i = 0; i < valores_nuevosX.size(); i++) {
-            this.valoresX.add(valores_nuevosX.get(i));
-        }
-
-        for (int i = 0; i < valores_nuevosY.size(); i++) {
-            this.valoresY.add(valores_nuevosY.get(i));
-        }
+    public void añadir_una_lista_de_datos_Nuevos(List<String> valores_nuevosX, List<Integer> valores_nuevosY) {
+        this.valoresX.addAll(valores_nuevosX);
+        this.valoresY.addAll(valores_nuevosY);
     }
 
-    //ESTOS METODOS NO SE USAN HASTA QUE TENGAMOS MAS DIAS
-    //Estara vacio siempre la lista si estamos en diciembre y tenemos los datos en noviembre
+    // Filtrar por semana actual
     private List<String> filtrarPorSemanaActual(List<String> fechas) {
         List<String> fechasFiltradas = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Ajusta el formato según tus cadenas
@@ -129,7 +115,7 @@ public class DatosGrafica {
 
     public void filtrarDatosPorSemanaActual() {
         List<String> fechasFiltradas = filtrarPorSemanaActual(valoresX);
-        List<Double> valoresFiltradosY = new ArrayList<>();
+        List<Integer> valoresFiltradosY = new ArrayList<>();
 
         for (String fechaFiltrada : fechasFiltradas) {
             int index = valoresX.indexOf(fechaFiltrada);
@@ -143,18 +129,11 @@ public class DatosGrafica {
         this.valoresY = valoresFiltradosY;
     }
 
-    //====================================================================================
-
-    //ESTOS METODOS NO SE USAN HASTA QUE TENGAMOS MAS DIAS
-    //Estara vacio siempre la lista si estamos en diciembre y tenemos los datos en noviembre
+    // Filtrar por mes actual
     private List<String> filtrarPorMesActual(List<String> fechas) {
-
         List<String> fechasFiltradas = new ArrayList<>();
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Ajusta el formato según tus cadenas
-
         Calendar calendarioActual = Calendar.getInstance();
-
         int mesActual = calendarioActual.get(Calendar.MONTH);
         int añoActual = calendarioActual.get(Calendar.YEAR);
 
@@ -164,8 +143,9 @@ public class DatosGrafica {
                 Calendar calendarioFecha = Calendar.getInstance();
                 calendarioFecha.setTime(fecha);
 
-                // Verifica si la semana y el año coinciden
-                if (calendarioFecha.get(Calendar.MONTH) == mesActual && calendarioFecha.get(Calendar.YEAR) == añoActual) {
+                // Verifica si el mes y el año coinciden
+                if (calendarioFecha.get(Calendar.MONTH) == mesActual &&
+                        calendarioFecha.get(Calendar.YEAR) == añoActual) {
                     fechasFiltradas.add(fechaString);
                 }
             } catch (ParseException e) {
@@ -177,7 +157,7 @@ public class DatosGrafica {
 
     public void filtrarDatosPorMesActual() {
         List<String> fechasFiltradas = filtrarPorMesActual(valoresX);
-        List<Double> valoresFiltradosY = new ArrayList<>();
+        List<Integer> valoresFiltradosY = new ArrayList<>();
 
         for (String fechaFiltrada : fechasFiltradas) {
             int index = valoresX.indexOf(fechaFiltrada);
@@ -185,6 +165,7 @@ public class DatosGrafica {
                 valoresFiltradosY.add(valoresY.get(index));
             }
         }
+
         // Actualiza las listas con los datos filtrados
         this.valoresX = fechasFiltradas;
         this.valoresY = valoresFiltradosY;
