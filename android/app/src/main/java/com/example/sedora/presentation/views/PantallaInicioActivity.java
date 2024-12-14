@@ -167,31 +167,38 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
             Log.e("MQTT", "Error al conectar con el bróker: " + e.getMessage());
         }
 
-        if (textView19 == null || textHumidity == null || textView17 == null || textView18 == null) {
+        if (textView19 == null || textView17 == null || textView18 == null) {
             Log.e(TAG, "Uno o más TextView no fueron inicializados correctamente.");
         }
     }
 
     private void setupMQTT() {
-        try {
-            String clientId = MqttClient.generateClientId();
-            client = new MqttClient(BROKER, clientId, new MemoryPersistence());
-            connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
+        new Thread(() -> {
+            try {
+                String clientId = MqttClient.generateClientId();
+                client = new MqttClient(BROKER, clientId, new MemoryPersistence());
+                connOpts = new MqttConnectOptions();
+                connOpts.setCleanSession(true);
+                connOpts.setConnectionTimeout(10); // Tiempo de espera de 10 segundos
+                connOpts.setAutomaticReconnect(true);
 
-            // Opcional: establece un tiempo de espera para la conexión
-            connOpts.setConnectionTimeout(10);
+                Log.i(TAG, "Conectando al broker " + BROKER);
+                client.setCallback(this);
+                client.connect(connOpts);
 
-            // Intenta conectar
-            Log.i(TAG, "Conectando al broker " + BROKER);
-            client.setCallback(this);
-            client.connect(connOpts);
+                // Suscripciones si la conexión es exitosa
+                client.subscribe("Sedora/sensores/temperatura", QOS);
+                client.subscribe("Sedora/sensores/humedad", QOS);
+                client.subscribe("Sedora/sensores/sonido", QOS);
+                client.subscribe("Sedora/sensores/luz", QOS);
+                Log.i(TAG, "Conectado al broker y suscrito a los tópicos.");
 
-            publishLedStatus();
-            Log.i(TAG, "Conectado al broker");
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al conectar al broker MQTT", e);
-        }
+                runOnUiThread(() -> connectionStatus.setText("Conectado a MQTT"));
+            } catch (MqttException e) {
+                Log.e(TAG, "Error al conectar al broker MQTT: " + e.getMessage());
+                runOnUiThread(() -> connectionStatus.setText("Sin conexión a MQTT"));
+            }
+        }).start();
     }
 
 
