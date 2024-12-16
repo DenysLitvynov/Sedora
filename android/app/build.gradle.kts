@@ -36,6 +36,12 @@ android {
 
 dependencies {
 
+    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0")
+
+    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("androidx.work:work-runtime:2.8.1")
+    implementation("androidx.work:work-rxjava3:2.8.1")
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-analytics")
@@ -47,7 +53,6 @@ dependencies {
     implementation ("androidx.appcompat:appcompat:1.2.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.0")
     implementation ("com.google.firebase:firebase-auth:21.0.1")
-
     implementation("com.jjoe64:graphview:4.2.2") {
         exclude(group = "com.android.support")
     }

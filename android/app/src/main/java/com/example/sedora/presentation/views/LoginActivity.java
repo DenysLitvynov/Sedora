@@ -16,6 +16,7 @@ import com.example.sedora.R;
 import com.example.sedora.data.SensorDataList;
 import com.example.sedora.model.SensorData;
 import com.example.sedora.presentation.managers.FirebaseHelper;
+import com.example.sedora.presentation.managers.NotificacionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -118,6 +119,11 @@ public class LoginActivity extends AppCompatActivity {
                                     // Guardar cada toma de datos de sensores para el usuario
                                     firebaseHelper.guardarToma(usuario, data);
                                 }
+
+//                                // Subir notificaciones a Firestore
+//                                NotificacionManager notificacionManager = new NotificacionManager();
+//                                notificacionManager.subirNotificacionesAFirestore(usuario);
+
                                 //---------------------------------------------------------------
 
                                 Intent i = new Intent(LoginActivity.this, PantallaInicioActivity.class);
@@ -192,6 +198,9 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 //---------------------------------------------------------------
 
+//                                // Subir notificaciones a Firestore
+//                                NotificacionManager notificacionManager = new NotificacionManager();
+//                                notificacionManager.subirNotificacionesAFirestore(usuario);
 
                             }
                             verificaSiUsuarioValidado();
@@ -270,7 +279,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         //---------------------------------------------------------------
 
-
+//                        // Subir notificaciones a Firestore
+//                        NotificacionManager notificacionManager = new NotificacionManager();
+//                        notificacionManager.subirNotificacionesAFirestore(usuario);
                     }
                     verificaSiUsuarioValidado();
                 })
@@ -305,6 +316,10 @@ public class LoginActivity extends AppCompatActivity {
                             firebaseHelper.guardarToma(usuario, data);
                         }
                         //---------------------------------------------------------------
+
+//                        // Subir notificaciones a Firestore
+//                        NotificacionManager notificacionManager = new NotificacionManager();
+//                        notificacionManager.subirNotificacionesAFirestore(usuario);
 
                     }
                     verificaSiUsuarioValidado();

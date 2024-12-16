@@ -1,0 +1,37 @@
+plugins {
+    id 'java-library'
+    id 'application'
+}
+apply plugin: 'java-library'
+apply plugin: 'application'
+mainClassName = "Main"
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+test {
+    useTestNG()
+}
+dependencies {
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
+    implementation 'com.pi4j:pi4j-core:2.3.0'
+    implementation 'com.pi4j:pi4j-plugin-pigpio:2.0'
+    implementation 'com.pi4j:pi4j-plugin-raspberrypi:2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.testng:testng:6.9.6'
+}
+application {
+    mainClass = 'com.example.mqtt.Main'
+}
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(
+                'Main-Class': 'com.example.mqtt.Main'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA"
+}

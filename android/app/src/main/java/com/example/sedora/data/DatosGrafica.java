@@ -65,23 +65,23 @@ public class DatosGrafica {
             suma += valor;
         }
         double promedio = suma / valoresY.size();
-        return String.valueOf(promedio);
+        return String.format("%.1f", promedio); // Limita a 1 decimal
     }
 
     public String getValorMaximo_asString() {
-
         if (valoresY.isEmpty()) {
             return "0"; // Mensaje si la lista está vacía
         }
-        return String.valueOf(Collections.max(valoresY));
+        double maximo = Collections.max(valoresY);
+        return String.format("%.1f", maximo); // Limita a 1 decimal
     }
 
     public String getValorMinimo_asString() {
         if (valoresY.isEmpty()) {
             return "0"; // Mensaje si la lista está vacía
         }
-        return String.valueOf(Collections.min(valoresY));
-
+        double minimo = Collections.min(valoresY);
+        return String.format("%.1f", minimo); // Limita a 1 decimal
     }
 
     public void añadir_nuevo_Dato(String valornuevoX, double valornuevoY) {
@@ -99,8 +99,6 @@ public class DatosGrafica {
             this.valoresY.add(valores_nuevosY.get(i));
         }
     }
-
-
 
     //ESTOS METODOS NO SE USAN HASTA QUE TENGAMOS MAS DIAS
     //Estara vacio siempre la lista si estamos en diciembre y tenemos los datos en noviembre
@@ -145,4 +143,59 @@ public class DatosGrafica {
         this.valoresY = valoresFiltradosY;
     }
 
+    //====================================================================================
+
+    //ESTOS METODOS NO SE USAN HASTA QUE TENGAMOS MAS DIAS
+    //Estara vacio siempre la lista si estamos en diciembre y tenemos los datos en noviembre
+    private List<String> filtrarPorMesActual(List<String> fechas) {
+
+        List<String> fechasFiltradas = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Ajusta el formato según tus cadenas
+
+        Calendar calendarioActual = Calendar.getInstance();
+
+        int mesActual = calendarioActual.get(Calendar.MONTH);
+        int añoActual = calendarioActual.get(Calendar.YEAR);
+
+        for (String fechaString : fechas) {
+            try {
+                Date fecha = sdf.parse(fechaString);
+                Calendar calendarioFecha = Calendar.getInstance();
+                calendarioFecha.setTime(fecha);
+
+                // Verifica si la semana y el año coinciden
+                if (calendarioFecha.get(Calendar.MONTH) == mesActual && calendarioFecha.get(Calendar.YEAR) == añoActual) {
+                    fechasFiltradas.add(fechaString);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace(); // Manejo de errores si el formato de fecha es inválido
+            }
+        }
+        return fechasFiltradas;
+    }
+
+    public void filtrarDatosPorMesActual() {
+        List<String> fechasFiltradas = filtrarPorMesActual(valoresX);
+        List<Double> valoresFiltradosY = new ArrayList<>();
+
+        for (String fechaFiltrada : fechasFiltradas) {
+            int index = valoresX.indexOf(fechaFiltrada);
+            if (index != -1) {
+                valoresFiltradosY.add(valoresY.get(index));
+            }
+        }
+        // Actualiza las listas con los datos filtrados
+        this.valoresX = fechasFiltradas;
+        this.valoresY = valoresFiltradosY;
+    }
+
+    @Override
+    public String toString() {
+        return "DatosGrafica{" +
+                "nombre_grafica='" + nombre_grafica + '\'' +
+                ", valoresX=" + valoresX +
+                ", valoresY=" + valoresY +
+                '}';
+    }
 }

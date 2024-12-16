@@ -1,66 +1,114 @@
 package com.example.sedora.presentation.views;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.sedora.miServicio;
+
 import com.example.sedora.R;
+import com.example.sedora.model.Meta;
+import com.example.sedora.presentation.adapters.MetaAdapter;
 import com.example.sedora.presentation.managers.FirebaseHelper;
-import com.example.sedora.presentation.views.Header;
+import com.example.sedora.presentation.managers.MetasManager;
 
 import android.Manifest;
 import com.example.sedora.presentation.managers.MenuManager;
-import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.presentation.managers.Popup_pantalla_inicio;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class PantallaInicioActivity extends AppCompatActivity {
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import com.example.sedora.presentation.managers.MetasManager;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class PantallaInicioActivity extends AppCompatActivity implements MqttCallback {
+
+    private static final String TAG = "PantallaInicio";
+    private static final String BROKER = "tcp://broker.hivemq.com:1883"; // Broker WebSocket
+    private static final String TOPIC_LED = "Sedora/led/status"; // Tópico para el LED
+    private static final int QOS = 1; // Calidad de servicio para MQTT
+    private static final String clientId = "sedoraapp" + System.currentTimeMillis();
+
+    private MqttClient client;
+    private MqttConnectOptions connOpts;
+    private boolean isLedOn = false; // Estado inicial del LED
+    private TextView connectionStatus; // Muestra el estado del LED
+    private ImageView ledButton; // Botón para controlar el LED
+
+    private TextView textView19;
+    private TextView textHumidity;
+    private TextView textView18;
+    private TextView textView17;
 
     private HalfDonutChart halfDonutChart;
     private TextView heading12; // Para mostrar la puntuación numérica
     private TextView heading11; // Para mostrar el texto del estado
     private FirebaseHelper firebaseHelper;
     private FirebaseUser currentUser;
-    private TextView textView17;
-    private TextView textView18;
-    private TextView textView19;
+
     private TextView textView6;
     private TextView textView5;
+    private RecyclerView recyclerMetaActual;
+    private MetaAdapter metaActualAdapter;
+    private List<Meta> metaActualList;
+    private FirebaseFirestore db;
+
+    TextView metaTitulo, metaDescripcion;
+    ProgressBar metaProgresoBar;
+    ImageView metaIcono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_inicio);
 
-        //INICIO DE SERVICIO
-        if (!foregroundServiceRunning()) {
-            Intent intent = new Intent(this, miServicio.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent);
-            }
-        }
-        //INICIO DE SERVICIO
+        // Inicializar Firebase y lista de datos
+        db = FirebaseFirestore.getInstance();
+        metaActualList = new ArrayList<>();
 
+        // Inicializar RecyclerView
+        recyclerMetaActual = findViewById(R.id.recyclerViewMetaActual);
+        recyclerMetaActual.setLayoutManager(new LinearLayoutManager(this));
 
-        // Obtén el Header
+        // Inicializar vistas
+        connectionStatus = findViewById(R.id.textView8);
+        ledButton = findViewById(R.id.imageView13);
+
+        // Configurar MQTT
+        setupMQTT();
+
+        // Configurar botón para encender/apagar el LED
+        ledButton.setOnClickListener(v -> toggleLed());
+
+        // Cargar meta actual desde Firestore
+        cargarMetaActualDesdeFirestore();
+        gestionarCambioDeMeta();
+
         // Inicializar Firebase y obtener usuario actual
         firebaseHelper = new FirebaseHelper();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -83,10 +131,60 @@ public class PantallaInicioActivity extends AppCompatActivity {
 
         if (currentUser != null) {
             calcularPuntuacionDiaria();
-            obtenerUltimaTomaDelDia();
             mostrarConsejoDelDia();
             calcularTiempoSentado();
         }
+    }
+
+    private void setupMQTT() {
+        new Thread(() -> {
+            try {
+                String clientId = MqttClient.generateClientId();
+                client = new MqttClient(BROKER, clientId, new MemoryPersistence());
+                connOpts = new MqttConnectOptions();
+                connOpts.setCleanSession(true);
+                connOpts.setConnectionTimeout(10); // Tiempo de espera de 10 segundos
+                connOpts.setAutomaticReconnect(true);
+
+                Log.i(TAG, "Conectando al broker " + BROKER);
+                client.setCallback(this);
+                client.connect(connOpts);
+
+                // Suscripciones si la conexión es exitosa
+                client.subscribe("Sedora/sensores/temperatura", QOS);
+                client.subscribe("Sedora/sensores/humedad", QOS);
+                client.subscribe("Sedora/sensores/sonido", QOS);
+                client.subscribe("Sedora/sensores/luz", QOS);
+                Log.i(TAG, "Conectado al broker y suscrito a los tópicos.");
+
+            } catch (MqttException e) {
+                Log.e(TAG, "Error al conectar al broker MQTT: " + e.getMessage());
+            }
+        }).start();
+    }
+
+    private void toggleLed() {
+        try {
+            isLedOn = !isLedOn;
+            publishLedStatus();
+            updateLedStatus();
+            Log.i(TAG, "Estado del LED cambiado: " + (isLedOn ? "ON" : "OFF"));
+        } catch (Exception e) {
+            Log.e(TAG, "Error al cambiar estado del LED", e);
+        }
+    }
+
+    private void publishLedStatus() throws MqttException {
+        String message = isLedOn ? "ON" : "OFF";
+        MqttMessage mqttMessage = new MqttMessage(message.getBytes());
+        mqttMessage.setQos(QOS);
+        client.publish(TOPIC_LED, mqttMessage);
+
+        Log.i(TAG, "Mensaje publicado al broker: " + message);
+    }
+
+    private void updateLedStatus() {
+        connectionStatus.setText(isLedOn ? "Encendido" : "Apagado");
     }
 
     private void configurarHeader() {
@@ -99,9 +197,9 @@ public class PantallaInicioActivity extends AppCompatActivity {
         headerTitle.setText("Inicio");
         //---FIN HEADER---
 
-        NotificacionManager notificacionManager = new NotificacionManager();
-        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
-        header.updateNotificationIcon(hasNotifications);
+//        NotificacionManager notificacionManager = new NotificacionManager();
+//        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+//        header.updateNotificationIcon(hasNotifications);
 
         Popup_pantalla_inicio popupPantallaInicio = new Popup_pantalla_inicio(this, this);
         popupPantallaInicio.setupPopup();
@@ -132,75 +230,38 @@ public class PantallaInicioActivity extends AppCompatActivity {
         btnPantallaPerfil.setOnClickListener(v -> funcionMenu.abrirPantallaPerfil(PantallaInicioActivity.this));
     }
 
-    private void obtenerUltimaTomaDelDia() {
-        String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    private void cargarMetaActualDesdeFirestore() {
+        db.collection("metas")
+                .whereEqualTo("estado", "actual")
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-        firebaseHelper.db.collection("usuarios")
-                .document(currentUser.getUid())
-                .collection("Datos")
-                .document(fechaHoy)
-                .collection("Tomas")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                        actualizarTextViews(document);
-                    } else {
-                        // Manejar el caso en que no hay tomas para el día actual
-                        textView17.setText("No disponible");
-                        textView18.setText("No disponible");
-                        textView19.setText("No disponible");
+                    if (querySnapshot != null) {
+                        metaActualList.clear();
+
+                        for (DocumentSnapshot document : querySnapshot) {
+                            Meta meta = document.toObject(Meta.class);
+                            if (meta != null) {
+                                metaActualList.add(meta);
+                            }
+                        }
+
+                        if (metaActualAdapter == null) {
+                            metaActualAdapter = new MetaAdapter(this, metaActualList, 0);
+                            recyclerMetaActual.setAdapter(metaActualAdapter);
+                        } else {
+                            metaActualAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
     }
 
-    private String evaluarLuminosidad(double luminosidad) {
-        if (luminosidad < 200) {
-            return "Insuficiente";
-        } else if (luminosidad <= 400) {
-            return "Suficiente";
-        } else {
-            return "Excesiva";
-        }
-    }
-
-    private String evaluarRuido(double ruido) {
-        if (ruido < 30) {
-            return "Bajo";
-        } else if (ruido <= 60) {
-            return "Medio";
-        } else {
-            return "Alto";
-        }
-    }
-
-    private void actualizarTextViews(DocumentSnapshot document) {
-        double luminosidad = document.getDouble("luminosidad");
-        double ruido = document.getDouble("ruido");
-        double temperatura = document.getDouble("temperatura");
-
-        textView17.setText(evaluarLuminosidad(luminosidad));
-        textView18.setText(evaluarRuido(ruido));
-        textView19.setText(String.valueOf(temperatura) + " ºC");
-    }
 
 
-    //TODO
-    //Originalmente esto era metodo de miServicio pero no lo puedo llamar desde ahi porque luego tengo que cambiar la clase entera
-    //el TODO es hacer que el serviico se inicie despues que el usuario hace login, lo puse aqui porque aqui me cuadra, como ustedes vean
-    //pero donde se inice el servicio, tiene que ir esta funcion que ve si se esta ejecutando ya un servicio
-    public  boolean foregroundServiceRunning() {
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)){
-            if (miServicio.class.getName().equals(service.service.getClassName())){
-                return true;
-            }
 
-        }
-        return false;
-    }
 
     private void calcularTiempoSentado() {
         String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -258,7 +319,7 @@ public class PantallaInicioActivity extends AppCompatActivity {
                     }
                 });
     }
-    
+
     private void mostrarConsejoDelDia() {
         String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
@@ -337,6 +398,7 @@ public class PantallaInicioActivity extends AppCompatActivity {
             }
         });
     }
+
     // Solicitar permiso de notificaciones
     private void requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -367,6 +429,121 @@ public class PantallaInicioActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void connectionLost(Throwable cause) {
+        Log.d(TAG, "Conexión perdida", cause);
+        connectionStatus.setText("Conexión perdida");
+    }
+
+    @Override
+    public void messageArrived(String topic, MqttMessage message) throws Exception {
+        Log.i(TAG, "Mensaje recibido en tópico: " + topic);
+        String payload = new String(message.getPayload());
+        Log.i(TAG, "Contenido del mensaje recibido: " + payload);
+
+        // Manejar mensajes del tópico del LED
+        if (topic.equals(TOPIC_LED)) {
+            if (payload.equalsIgnoreCase("ON")) {
+                isLedOn = true;
+            } else if (payload.equalsIgnoreCase("OFF")) {
+                isLedOn = false;
+            }
+            updateLedStatus(); // Actualizar la interfaz
+        }
+        runOnUiThread(() -> {
+            try {
+                if (topic.equals("Sedora/sensores/temperatura")) {
+                    float temperatura = Float.parseFloat(payload);
+                    if (textView19 != null) {
+                        textView19.setText(temperatura + " °C");
+                    }
+                } else if (topic.equals("Sedora/sensores/humedad")) {
+                    float humedad = Float.parseFloat(payload);
+                    if (textHumidity != null) {
+                        textHumidity.setText(humedad + " %");
+                    }
+                } else if (topic.equals("Sedora/sensores/sonido")) {
+                    int sonido = Integer.parseInt(payload);
+                    if (textView17 != null) {
+                        String estadoSonido = (sonido == 1) ? "Inadecuado" : "Adecuado";
+                        textView17.setText(estadoSonido);
+                    }
+                } else if (topic.equals("Sedora/sensores/luz")) {
+                    int luz = Integer.parseInt(payload);
+                    if (textView18 != null) {
+                        String estadoLuz = (luz == 1) ? "Inadecuada" : "Adecuada";
+                        textView18.setText(estadoLuz);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error al procesar el mensaje: " + payload, e);
+            }
+        });
+
+    }
+
+    /**
+     * Convierte un String a float, lanza una excepción si no es válido.
+     */
+    private float parseToFloat(String value) throws NumberFormatException {
+        if (value == null || value.equalsIgnoreCase("nan")) {
+            throw new NumberFormatException("Valor no válido: " + value);
+        }
+        return Float.parseFloat(value);
+    }
+
+    /**
+     * Convierte un String a int, lanza una excepción si no es válido.
+     */
+    private int parseToInt(String value) throws NumberFormatException {
+        if (value == null || value.equalsIgnoreCase("nan")) {
+            throw new NumberFormatException("Valor no válido: " + value);
+        }
+        return Integer.parseInt(value);
+    }
+
+
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken token) {
+        Log.i(TAG, "Entrega completada");
+    }
+
+    private void gestionarCambioDeMeta() {
+        MetasManager metasManager = new MetasManager();
+        metasManager.pasarMetaActualAConseguida(new MetasManager.MetaUpdateCallback() {
+            @Override
+            public void onMetaUpdated() {
+                Log.d("PantallaInicio", "Meta completada y promovida correctamente.");
+                // Actualizar la vista de metas
+                cargarMetaActualDesdeFirestore();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // Manejar el error si ocurre
+                Log.e("PantallaInicio", "Error al cambiar de meta: " + e.getMessage(), e);
+                Toast.makeText(PantallaInicioActivity.this, "Error al cambiar de meta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+
+@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            if (client != null && client.isConnected()) {
+                client.disconnect();
+                Log.i(TAG, "Desconectado del broker MQTT");
+            }
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al desconectar del broker MQTT", e);
+        }
+    }
+
 
 }
 

@@ -5,10 +5,12 @@
 #include <ArduinoJson.h>
 #include "sedora1_map.h"
 #include <PubSubClient.h>
+#include <WiFiClientSecure.h> // Necesario para WebSocket
 
 // Definiciones
 #define DHTPIN 26
 #define DHTTYPE DHT11
+#define LED_PIN 2 // Pin donde está conectado el LED
 DHT dht(DHTPIN, DHTTYPE);
 int micPin = 35;
 int ldrPin = 36;
@@ -18,8 +20,8 @@ int thresholdLow = 200;
 int prevSoundState = -1;
 int prevLightState = -1;
 int distancia = 0;
-float pesoAsiento = 0.0;
-float pesoRespaldo = 0.0;
+int pulsador1 = 0;
+int pulsador2 = 0;
 
 #define BLANCO 0xFFFF
 #define NEGRO 0
@@ -28,20 +30,32 @@ float pesoRespaldo = 0.0;
 #define AZUL 0x001F
 
 //Cambiar a la red wifi que se vaya a usar cada vez
-const char* ssid = "MiFibra-3078";
-const char* password = "V5AQboPQ";
+const char* ssid = "SaforNet_PPGP9";
+const char* password = "8F3B2MWZ";
 
 char texto[200];
 boolean recibidoDist = false;
-boolean recibidoPes = false;
+boolean recibidoPulsadores = false;
 
 AsyncUDP udp;
 int currentScreen = 0;
 
+//=============LED=============
+#define MQTT_CLIENT_ID "M5Stack_LED"
+#define MQTT_TOPIC_LED "Sedora/led/status"
+const char* mqtt_server_led = "broker.hivemq.com";
+const char* mqtt_client_led_name = "M5Stack_LED";
+const int mqtt_port_led = 1883;
+WiFiClient espClient_led;    // En lugar de WiFiClientSecure
+PubSubClient client_led(espClient_led);
+// Variables
+bool ledState = false;
+//=============LED=============
+
 WiFiClient espClient;
 
 PubSubClient client(espClient);
-const char* mqtt_server = "test.mosquitto.org";
+const char* mqtt_server = "broker.hivemq.com";
 const int mqtt_port = 1883;
 const char* mqtt_client_name = "Sedora1";
 unsigned long lastPublishTime = 0;
@@ -85,25 +99,69 @@ void conectarMQTT() {
 }
 //------------------------------------------------
 //------------------------------------------------
+// Función para conectar MQTT del LED
+void conectarMQTTLed() {
+  while (!client_led.connected()) {
+    if (client_led.connect(mqtt_client_led_name)) {
+      Serial.println("Conectado al MQTT LED!");
+      client_led.subscribe(MQTT_TOPIC_LED);
+    } else {
+      Serial.println("Error MQTT LED, reintentando...");
+      delay(5000);
+    }
+  }
+}
+//------------------------------------------------
+// Callback de mensajes MQTT (LED)
+//------------------------------------------------
+void callbackMQTTLed(char* topic, byte* payload, unsigned int length) {
+  String message = "";
+  for (unsigned int i = 0; i < length; i++) {
+    message += (char)payload[i];
+  }
+
+  if (String(topic) == MQTT_TOPIC_LED) {
+    if (message.equalsIgnoreCase("ON")) {
+      digitalWrite(LED_PIN, HIGH);
+      Serial.println("LED ENCENDIDO.");
+    } else if (message.equalsIgnoreCase("OFF")) {
+      digitalWrite(LED_PIN, LOW);
+      Serial.println("LED APAGADO.");
+    }
+  }
+}
+
+//------------------------------------------------
+//------------------------------------------------
 void iniciarUDP() {
   if (udp.listen(1234)) {
     udp.onPacket([](AsyncUDPPacket packet) {
       strncpy(texto, (char*)packet.data(), sizeof(texto));
       texto[sizeof(texto) - 1] = '\0';
 
-      JsonDocument doc;
+
+      DynamicJsonDocument doc(200);
       DeserializationError error = deserializeJson(doc, texto);
 
       if (!error) {
-        if (doc["Distancia"] != NULL) {
+        if (doc.containsKey("Distancia")) {
           recibidoDist = true;
-        } else if (doc["PesoAsiento"] != NULL && doc["PesoRespaldo"] != NULL) {
-          recibidoPes = true;
+          Serial.println("Datos de distancia recibidos");
+        } else if (doc.containsKey("asiento") && doc.containsKey("respaldo")) {
+          recibidoPulsadores = true;
+          Serial.println("Datos de pulsadores recibidos");
         }
+      } else {
+        Serial.println("Error al deserializar JSON");
+        Serial.println(error.c_str());  
       }
     });
+  } else {
+    Serial.println("Error al iniciar UDP");
   }
 }
+
+
 //------------------------------------------------
 //------------------------------------------------
 void mostrarDatosUDP_DISTANCIA() {
@@ -134,25 +192,42 @@ void mostrarDatosUDP_DISTANCIA() {
 }
 //------------------------------------------------
 //------------------------------------------------
-void mostrarDatosUDP_PESO() {
-if (recibidoPes) {
-    recibidoPes = false;
+void mostrarDatosUDP_PULSADORES() {
+  const char* estado = "Sentado incorrectamente"; // Mantén el estado como local
+
+  if (recibidoPulsadores) {
+    recibidoPulsadores = false;
+
     DynamicJsonDocument jsonBufferRecv(200);
     DeserializationError error = deserializeJson(jsonBufferRecv, texto);
-    if (error) return;
+    if (error) {
+      Serial.println("Error al deserializar el JSON recibido");
+    } else {
 
-    pesoAsiento = jsonBufferRecv["PesoAsiento"];
-    pesoRespaldo = jsonBufferRecv["PesoRespaldo"];
-
-    M5.Lcd.setCursor(10, 170);
-    M5.Lcd.print("Peso Asiento: ");
-    M5.Lcd.printf("%.2f kg", pesoAsiento);
-
-    M5.Lcd.setCursor(10, 190);
-    M5.Lcd.print("Peso Respaldo: ");
-    M5.Lcd.printf("%.2f kg", pesoRespaldo);
+      if (jsonBufferRecv.containsKey("asiento")) {
+        pulsador1 = jsonBufferRecv["asiento"];
+      }
+      if (jsonBufferRecv.containsKey("respaldo")) {
+        pulsador2 = jsonBufferRecv["respaldo"];
+      }
+      if (jsonBufferRecv.containsKey("Estado")) {
+        estado = jsonBufferRecv["Estado"];
+      }
+    }
   }
+
+  M5.Lcd.setCursor(10, 170);
+  M5.Lcd.print("Pulsador1: ");
+  M5.Lcd.print(pulsador1 == 1 ? "Pulsado" : "No pulsado");
+
+  M5.Lcd.setCursor(10, 190);
+  M5.Lcd.print("Pulsador2: ");
+  M5.Lcd.print(pulsador2 == 1 ? "Pulsado" : "No pulsado");
+
+  M5.Lcd.setCursor(10, 210);
+  M5.Lcd.print(estado);
 }
+
 //------------------------------------------------
 //Funciones que tiene que ver con los sensores
 //------------------------------------------------
@@ -216,7 +291,7 @@ void verPantallaPrincipal(float hum, float temp, int micValue, int ldrValue) {
   mostrarNivelDeSonido(10, 50, micValue);
   mostrarLuminosidad(10, 70, ldrValue);
   mostrarDatosUDP_DISTANCIA();
-  mostrarDatosUDP_PESO();
+  mostrarDatosUDP_PULSADORES();
 }
 //------------------------------------------------
 //------------------------------------------------
@@ -278,47 +353,42 @@ void verPantallaDist() {
 //------------------------------------------------
 //Funcion para publicar los datos al Boker MQTT
 //------------------------------------------------
-void publicarDatos(float temp, float hum, int micValue, int ldrValue, int distancia, float pesoAsiento, float pesoRespaldo) {
+void publicarDatos(float temp, float hum, int micValue, int ldrValue, int distancia, int pulsador1, int pulsador2) {
   if (!client.connected()) {
     conectarMQTT();
   }
 
+  // Publicar temperatura
   char tempStr[10];
   dtostrf(temp, 6, 2, tempStr);
   client.publish("Sedora/sensores/temperatura", tempStr);
 
+  // Publicar humedad
   char humStr[10];
   dtostrf(hum, 6, 2, humStr);
   client.publish("Sedora/sensores/humedad", humStr);
 
-  // Publicar sonido: Adecuado/Inadecuado
-  String soundMessage = (micValue > thresholdHigh) ? "Inadecuado" : "Adecuado";
-  client.publish("Sedora/sensores/sonido", soundMessage.c_str());
+  // Publicar valor de sonido
+  int soundMessage = (micValue > thresholdHigh) ? 0 : 1;
+  client.publish("Sedora/sensores/sonido", String(soundMessage).c_str());
 
-  // Publicar luz: Adecuada/Inadecuada
-  String lightMessage = (ldrValue < 800) ? "Adecuada" : "Inadecuada";
-  client.publish("Sedora/sensores/luz", lightMessage.c_str());
+  // Publicar valor de luz
+  int lightMessage = (ldrValue < 800) ? 1 : 0;
+  client.publish("Sedora/sensores/luz", String(lightMessage).c_str());
 
+  // Publicar distancia
   char distStr[10];
   itoa(distancia, distStr, 10);
   client.publish("Sedora/sensores/distancia", distStr);
 
-  char pesoAsientoStr[10], pesoRespaldoStr[10];
-  dtostrf(pesoAsiento, 6, 2, pesoAsientoStr);
-  dtostrf(pesoRespaldo, 6, 2, pesoRespaldoStr);
+  // Publicar Pulsadores
+  int estadoAsiento = pulsador1 ? 1 : 0;
+  int estadoRespaldo = pulsador2 ? 1 : 0;
 
-  client.publish("Sedora/sensores/pesoAsiento", pesoAsientoStr);
-  client.publish("Sedora/sensores/pesoRespaldo", pesoRespaldoStr);
-
-  // Publicar Postura: correcto/Incorrecto
-  String posicionMessage;
-  if (pesoAsiento >= 9 && pesoRespaldo >= 9) {
-    posicionMessage = "Correcto";
-  } else {
-    posicionMessage = "Incorrecto";
-  }
-  client.publish("Sedora/sensores/posicion", posicionMessage.c_str());
+  client.publish("Sedora/sensores/pulsadorAsiento", String(estadoAsiento).c_str());
+  client.publish("Sedora/sensores/pulsadorRespaldo", String(estadoRespaldo).c_str());
 }
+
 //------------------------------------------------
 //------------------------------------------------
 void setup() {
@@ -327,6 +397,21 @@ void setup() {
   delay(3000);
   conectarWiFi();
   client.setServer(mqtt_server, mqtt_port);
+
+//================LED================
+  // Configurar MQTT LED
+    client_led.setServer(mqtt_server_led, mqtt_port_led);
+    client_led.setCallback(callbackMQTTLed);
+    conectarMQTTLed();
+
+    // Configurar LED
+    pinMode(LED_PIN, OUTPUT);
+    digitalWrite(LED_PIN, LOW);
+//====================================
+
+  // Conectar al broker MQTT
+  conectarMQTT();
+  
   iniciarUDP();
   dht.begin();
   verPantallaPrincipal(0, 0, 0, 0);
@@ -335,7 +420,21 @@ void setup() {
 //------------------------------------------------
 void loop() {
   M5.update();
+
+   if (!client.connected()) {
+    conectarMQTT();
+  }
+  
+  //========LED=======
+  if (!client_led.connected()) {
+    conectarMQTTLed();
+  }
+  //========LED=======
+
   client.loop();
+  client_led.loop();
+
+  
   unsigned long currentMillis = millis();
 
   float temp = dht.readTemperature();
@@ -345,7 +444,7 @@ void loop() {
 
   if (currentMillis - lastPublishTime >= 5000) {
     lastPublishTime = currentMillis;
-    publicarDatos(temp, hum, micValue, ldrValue, distancia, pesoAsiento, pesoRespaldo);
+    publicarDatos(temp, hum, micValue, ldrValue, distancia, pulsador1, pulsador2);
   }
 
   if (M5.BtnB.wasPressed()) {

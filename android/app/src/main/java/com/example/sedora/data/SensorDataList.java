@@ -32,6 +32,11 @@ public class SensorDataList {
                     generarTemperatura(),
                     generarHumedad(),
                     generarProximidad(),
+                    generarPostura(),
+                    generarDistanciaMonitor(),
+                    generarIluminacion(),
+                    generarTiempoSentado(),
+                    generarHidratacion(),
                     timestamp
             ));
 
@@ -61,6 +66,26 @@ public class SensorDataList {
 
     private double generarProximidad() {
         return 0.0 + (random.nextDouble() * 1.0); // Rango: 0.0 - 1.0
+    }
+
+    private double generarPostura() {
+        return random.nextDouble() * 10.0; // Rango: 0.0 - 10.0 (ejemplo)
+    }
+
+    private double generarDistanciaMonitor() {
+        return 40.0 + (random.nextDouble() * 20.0); // Rango: 40.0 - 60.0 (ejemplo)
+    }
+
+    private double generarIluminacion() {
+        return 100.0 + (random.nextDouble() * 400.0); // Rango: 100.0 - 500.0 (ejemplo)
+    }
+
+    private double generarTiempoSentado() {
+        return random.nextDouble() * 300.0; // Rango: 0.0 - 300.0 minutos (ejemplo)
+    }
+
+    private double generarHidratacion() {
+        return random.nextDouble() * 2.0; // Rango: 0.0 - 2.0 litros (ejemplo)
     }
 
     public List<SensorData> getListaDatos() {

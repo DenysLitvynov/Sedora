@@ -23,7 +23,10 @@
     <string name="ConfirmContra">Confirmar contraseña</string>
     <string name="HeLeido">He leído y acepto la</string>
     <string name="Polpriv">Política de privacidad</string>
-
     <string name="flecha_vuelta_desc">Volver</string>
+
+    <!--Metas-->
+    <string name="descripcion_imagen_meta">Imagen representativa de la meta</string>
+
 
 </resources>
