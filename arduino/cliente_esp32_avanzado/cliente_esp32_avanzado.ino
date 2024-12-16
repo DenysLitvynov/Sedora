@@ -3,8 +3,8 @@
 #include <ArduinoJson.h>
 
 // Configuración WiFi
-const char* ssid = "**************";
-const char* password = "*********";
+const char* ssid = "MiFibra-3078";
+const char* password = "V5AQboPQ";
 
 // Pines del sensor HC-SR04
 const int trigPin = 26;
@@ -45,9 +45,9 @@ void setupWiFi() {
 long medirDistancia() {
     long duration, distance;
     digitalWrite(trigPin, LOW);
-    ets_delay_us(2); // Reemplazo de delayMicroseconds por ets_delay_us
+    ets_delay_us(2); 
     digitalWrite(trigPin, HIGH);
-    ets_delay_us(10); // Reemplazo de delayMicroseconds por ets_delay_us
+    ets_delay_us(10); 
     digitalWrite(trigPin, LOW);
 
     duration = pulseIn(echoPin, HIGH);
@@ -59,9 +59,9 @@ long medirDistancia() {
 void tareaEnviarDatos(void* parameter) {
     for (;;) {
         long distance;
-        xSemaphoreTake(mutexSensor, portMAX_DELAY); // Tomar el mutex
+        xSemaphoreTake(mutexSensor, portMAX_DELAY); 
         distance = medirDistancia();
-        xSemaphoreGive(mutexSensor); // Liberar el mutex
+        xSemaphoreGive(mutexSensor); 
 
         jsonBuffer["Distancia"] = distance;
         jsonBuffer["Alerta"] = (distance < 8);
@@ -73,7 +73,7 @@ void tareaEnviarDatos(void* parameter) {
         // Enviar distancia a la cola
         xQueueSend(colaDistancia, &distance, portMAX_DELAY);
 
-        vTaskDelay(1000 / portTICK_PERIOD_MS); // Enviar cada 1 segundo
+        vTaskDelay(1000 / portTICK_PERIOD_MS); 
     }
 }
 
@@ -117,6 +117,6 @@ void setup() {
 }
 
 void loop() {
-    // El loop queda libre para futuros usos
-    vTaskDelay(1000 / portTICK_PERIOD_MS); // Mantenimiento (si fuera necesario)
+    
+    vTaskDelay(1000 / portTICK_PERIOD_MS); 
 }
