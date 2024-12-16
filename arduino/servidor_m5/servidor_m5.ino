@@ -30,8 +30,8 @@ int pulsador2 = 0;
 #define AZUL 0x001F
 
 //Cambiar a la red wifi que se vaya a usar cada vez
-const char* ssid = "SaforNet_PPGP9";
-const char* password = "8F3B2MWZ";
+const char* ssid = "MiFibra-3078";
+const char* password = "V5AQboPQ";
 
 char texto[200];
 boolean recibidoDist = false;
@@ -80,7 +80,6 @@ void conectarWiFi() {
 
   M5.Lcd.fillScreen(NEGRO);
   M5.Lcd.setTextColor(VERDE);
-  M5.Lcd.println("[Servidor] Conexion OK.");
 }
 //------------------------------------------------
 //------------------------------------------------
@@ -272,6 +271,7 @@ void mostrarLuminosidad(int x, int y, int ldrValue) {
   M5.Lcd.setCursor(x, y);
   if (ldrValue < 800) {
     M5.Lcd.println("Luminosidad: Adecuada");
+    Serial.println(ldrValue);
   } else {
     M5.Lcd.println("Luminosidad: Inadecuada");
   }
@@ -368,25 +368,25 @@ void publicarDatos(float temp, float hum, int micValue, int ldrValue, int distan
   dtostrf(hum, 6, 2, humStr);
   client.publish("Sedora/sensores/humedad", humStr);
 
-  // Publicar valor de sonido
+  // Publicar valor de sonido (ruido)
   int soundMessage = (micValue > thresholdHigh) ? 0 : 1;
-  client.publish("Sedora/sensores/sonido", String(soundMessage).c_str());
+  client.publish("Sedora/sensores/ruido", String(soundMessage).c_str());
 
-  // Publicar valor de luz
+  // Publicar valor de luz (luminosidad)
   int lightMessage = (ldrValue < 800) ? 1 : 0;
-  client.publish("Sedora/sensores/luz", String(lightMessage).c_str());
+  client.publish("Sedora/sensores/luminosidad", String(lightMessage).c_str());
 
-  // Publicar distancia
+  // Publicar distancia (proximidad)
   char distStr[10];
   itoa(distancia, distStr, 10);
-  client.publish("Sedora/sensores/distancia", distStr);
+  client.publish("Sedora/sensores/proximidad", distStr);
 
-  // Publicar Pulsadores
+  // Publicar pulsadores
   int estadoAsiento = pulsador1 ? 1 : 0;
   int estadoRespaldo = pulsador2 ? 1 : 0;
 
-  client.publish("Sedora/sensores/pulsadorAsiento", String(estadoAsiento).c_str());
-  client.publish("Sedora/sensores/pulsadorRespaldo", String(estadoRespaldo).c_str());
+  client.publish("Sedora/sensores/presion1", String(estadoAsiento).c_str());
+  client.publish("Sedora/sensores/presion2", String(estadoRespaldo).c_str());
 }
 
 //------------------------------------------------
@@ -442,7 +442,7 @@ void loop() {
   int micValue = analogRead(micPin);
   int ldrValue = analogRead(ldrPin);
 
-  if (currentMillis - lastPublishTime >= 5000) {
+  if (currentMillis - lastPublishTime >= 10000) {
     lastPublishTime = currentMillis;
     publicarDatos(temp, hum, micValue, ldrValue, distancia, pulsador1, pulsador2);
   }

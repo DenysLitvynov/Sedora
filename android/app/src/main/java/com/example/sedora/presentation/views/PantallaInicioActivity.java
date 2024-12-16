@@ -154,7 +154,7 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
                 client.subscribe("Sedora/sensores/temperatura", QOS);
                 client.subscribe("Sedora/sensores/humedad", QOS);
                 client.subscribe("Sedora/sensores/sonido", QOS);
-                client.subscribe("Sedora/sensores/luz", QOS);
+                client.subscribe("Sedora/sensores/luminosidad", QOS);
                 Log.i(TAG, "Conectado al broker y suscrito a los tópicos.");
 
             } catch (MqttException e) {
@@ -465,15 +465,15 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
                     }
                 } else if (topic.equals("Sedora/sensores/sonido")) {
                     int sonido = Integer.parseInt(payload);
-                    if (textView17 != null) {
-                        String estadoSonido = (sonido == 1) ? "Inadecuado" : "Adecuado";
-                        textView17.setText(estadoSonido);
-                    }
-                } else if (topic.equals("Sedora/sensores/luz")) {
-                    int luz = Integer.parseInt(payload);
                     if (textView18 != null) {
-                        String estadoLuz = (luz == 1) ? "Inadecuada" : "Adecuada";
-                        textView18.setText(estadoLuz);
+                        String estadoSonido = (sonido == 1) ? "Inadecuado" : "Adecuado";
+                        textView18.setText(estadoSonido);
+                    }
+                } else if (topic.equals("Sedora/sensores/luminosidad")) {
+                    int luz = Integer.parseInt(payload);
+                    if (textView17 != null) {
+                        String estadoLuz = (luz == 0) ? "Inadecuada" : "Adecuada";
+                        textView17.setText(estadoLuz);
                     }
                 }
             } catch (Exception e) {
@@ -531,7 +531,7 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
 
 
-@Override
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         try {
@@ -546,4 +546,5 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
 
 }
+
 
