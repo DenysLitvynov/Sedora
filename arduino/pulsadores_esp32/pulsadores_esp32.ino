@@ -11,10 +11,11 @@ const char* password = "V5AQboPQ";
 #define PULSADOR_1_PIN 18
 #define PULSADOR_2_PIN 19
 
-#define SLEEP_TIME 5000000UL   
-#define MEASURE_INTERVAL 3000  
+#define SLEEP_TIME 10000000UL 
+#define MEASURE_INTERVAL 5000 
 
-unsigned long lastMeasureTime = 0;
+unsigned long lastActiveTime = 0; 
+unsigned long lastSendTime = 0;  
 
 AsyncUDP udp;
 StaticJsonDocument<200> jsonBuffer;
@@ -69,26 +70,32 @@ void setup() {
   pinMode(PULSADOR_2_PIN, INPUT_PULLUP);
 
   setupWiFi();
+  lastActiveTime = millis(); 
+  lastSendTime = millis();   
 }
 
 void loop() {
+  unsigned long currentTime = millis();
+
+  // Leer pulsadores
   int asiento = leerPulsador(PULSADOR_1_PIN);
   int respaldo = leerPulsador(PULSADOR_2_PIN);
 
-  Serial.printf("Asiento: %d\n", asiento); 
-  Serial.printf("Respaldo: %d\n", respaldo); 
-  enviarDatos(asiento, respaldo);
-
   if (asiento || respaldo) {
-    lastMeasureTime = millis();  
+    lastActiveTime = currentTime;
   }
 
-  if (millis() - lastMeasureTime >= MEASURE_INTERVAL) {
-    Serial.println("Entrando en deep sleep...");
+  if (currentTime - lastSendTime >= MEASURE_INTERVAL) {
+    enviarDatos(asiento, respaldo);
+    lastSendTime = currentTime; 
+  }
 
+  if ((asiento == 0 && respaldo == 0) && (currentTime - lastActiveTime >= 10000)) {
+    Serial.println("Entrando en deep sleep por 10 segundos...");
+    delay(100); 
     esp_sleep_enable_timer_wakeup(SLEEP_TIME);
-    esp_deep_sleep_start(); 
+    esp_deep_sleep_start();
   }
 
-  delay(1000);
+  delay(100); 
 }
