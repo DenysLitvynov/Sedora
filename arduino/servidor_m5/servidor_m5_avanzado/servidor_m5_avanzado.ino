@@ -11,9 +11,9 @@
 #define DHTTYPE DHT11
 #define MIC_PIN 35
 #define LDR_PIN 36
-#define WIFI_SSID "MiFibra-3078"
-#define WIFI_PASSWORD "V5AQboPQ"
-#define MQTT_SERVER "test.mosquitto.org"
+#define WIFI_SSID "MOVISTAR EK639"
+#define WIFI_PASSWORD "bloodborne"
+#define MQTT_SERVER "broker.hivemq.com"
 #define MQTT_PORT 1883
 #define MQTT_CLIENT_NAME "Sedora1"
 
@@ -47,6 +47,9 @@ boolean recibidoPes = false;
 
 int currentScreen = 0;
 unsigned long lastPublishTime = 0;
+
+// Mutex para acceso a la pantalla LCD
+portMUX_TYPE lcdMutex = portMUX_INITIALIZER_UNLOCKED;
 
 //------------------------------------------------
 // Funciones para conexión WiFi y MQTT
@@ -127,7 +130,19 @@ void mostrarLuminosidad(int x, int y, int ldrValue) {
   M5.Lcd.printf("Luminosidad: %s", (ldrValue < 800) ? "Adecuada" : "Inadecuada");
 }
 
+void mostrarDatosUDP_PESO() {
+  if (recibidoPes) {
+    recibidoPes = false;
+    M5.Lcd.setCursor(10, 170);
+    M5.Lcd.printf("Peso Asiento: %.2f kg", pesoAsiento);
+
+    M5.Lcd.setCursor(10, 190);
+    M5.Lcd.printf("Peso Respaldo: %.2f kg", pesoRespaldo);
+  }
+}
+
 void verPantallaPrincipal() {
+  portENTER_CRITICAL(&lcdMutex);
   M5.Lcd.fillScreen(BLANCO);
   M5.Lcd.setTextColor(NEGRO);
   M5.Lcd.setTextSize(2);
@@ -140,10 +155,75 @@ void verPantallaPrincipal() {
   mostrarTemperatura(10, 110, temperatura);
   M5.Lcd.setCursor(10, 130);
   M5.Lcd.printf("Distancia: %d cm", distancia);
-  M5.Lcd.setCursor(10, 150);
-  M5.Lcd.printf("Peso Asiento: %.1f kg", pesoAsiento);
-  M5.Lcd.setCursor(10, 170);
-  M5.Lcd.printf("Peso Respaldo: %.1f kg", pesoRespaldo);
+  mostrarDatosUDP_PESO();  // Mostrar el peso del asiento y respaldo
+  portEXIT_CRITICAL(&lcdMutex);
+}
+
+void verPantallaTemperatura() {
+  portENTER_CRITICAL(&lcdMutex);
+  M5.Lcd.fillScreen(BLANCO);
+  M5.Lcd.setTextColor(NEGRO);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.println("Pantalla Temperatura");
+  mostrarTemperatura(10, 50, temperatura);
+  portEXIT_CRITICAL(&lcdMutex);
+}
+
+void verPantallaHumedad() {
+  portENTER_CRITICAL(&lcdMutex);
+  M5.Lcd.fillScreen(BLANCO);
+  M5.Lcd.setTextColor(NEGRO);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.println("Pantalla Humedad");
+  mostrarHumedad(10, 50, humedad);
+  portEXIT_CRITICAL(&lcdMutex);
+}
+
+void verPantallaSonido() {
+  portENTER_CRITICAL(&lcdMutex);
+  M5.Lcd.fillScreen(BLANCO);
+  M5.Lcd.setTextColor(NEGRO);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.println("Pantalla Sonido");
+  mostrarNivelDeSonido(10, 50, micValue);
+  portEXIT_CRITICAL(&lcdMutex);
+}
+
+void verPantallaLuminosidad() {
+  portENTER_CRITICAL(&lcdMutex);
+  M5.Lcd.fillScreen(BLANCO);
+  M5.Lcd.setTextColor(NEGRO);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.println("Pantalla Luminosidad");
+  mostrarLuminosidad(10, 50, ldrValue);
+  portEXIT_CRITICAL(&lcdMutex);
+}
+
+void verPantallaDistancia() {
+  portENTER_CRITICAL(&lcdMutex);
+  M5.Lcd.fillScreen(BLANCO);
+  M5.Lcd.setTextColor(NEGRO);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.println("Pantalla Distancia");
+  M5.Lcd.setCursor(10, 50);
+  M5.Lcd.printf("Distancia: %d cm", distancia);
+  portEXIT_CRITICAL(&lcdMutex);
+}
+
+void verPantallaPeso() {
+  portENTER_CRITICAL(&lcdMutex);
+  M5.Lcd.fillScreen(BLANCO);
+  M5.Lcd.setTextColor(NEGRO);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.println("Pantalla Peso");
+  mostrarDatosUDP_PESO();
+  portEXIT_CRITICAL(&lcdMutex);
 }
 
 //------------------------------------------------
@@ -155,21 +235,6 @@ void tareaSensores(void* parameter) {
     humedad = dht.readHumidity();
     micValue = analogRead(MIC_PIN);
     ldrValue = analogRead(LDR_PIN);
-    delay(2000);
-  }
-}
-
-void tareaPantallas(void* parameter) {
-  for (;;) {
-    switch (currentScreen) {
-      case 0:
-        verPantallaPrincipal();
-        break;
-      // Otros casos con pantallas específicas
-      default:
-        verPantallaPrincipal();
-        break;
-    }
     delay(2000);
   }
 }
@@ -221,15 +286,62 @@ void setup() {
   dht.begin();
 
   xTaskCreate(tareaSensores, "Tarea Sensores", 4096, NULL, 1, NULL);
-  xTaskCreate(tareaPantallas, "Tarea Pantallas", 4096, NULL, 1, NULL);
   xTaskCreate(tareaMQTT, "Tarea MQTT", 4096, NULL, 1, NULL);
 }
 
+unsigned long lastButtonPress = 0;
+const unsigned long debounceDelay = 200; // 200 ms de debounce
+
 void loop() {
+ M5.update();  // Actualiza el estado de los botones
+  
+  // Avanzar pantalla con el botón B
+  if (M5.BtnB.wasPressed() && (millis() - lastButtonPress) > debounceDelay) {
+    currentScreen = (currentScreen + 1) % 7;  // Ciclo entre 7 pantallas
+    lastButtonPress = millis();  // Registra el tiempo de la última presión
+  }
+
+  // Retroceder pantalla con el botón C
+  if (M5.BtnC.wasPressed() && (millis() - lastButtonPress) > debounceDelay) {
+    currentScreen = (currentScreen - 1 + 7) % 7;  // Maneja retroceso cíclico
+    lastButtonPress = millis();  // Registra el tiempo de la última presión
+  }
+
   if (M5.BtnB.wasPressed()) {
-    currentScreen = (currentScreen + 1) % 6;
+  Serial.println("Botón B presionado");
+}
+if (M5.BtnC.wasPressed()) {
+  Serial.println("Botón C presionado");
+}
+
+
+  // Mostrar la pantalla correspondiente
+  switch (currentScreen) {
+    case 0:
+      verPantallaPrincipal();
+      break;
+    case 1:
+      verPantallaTemperatura();
+      break;
+    case 2:
+      verPantallaHumedad();
+      break;
+    case 3:
+      verPantallaSonido();
+      break;
+    case 4:
+      verPantallaLuminosidad();
+      break;
+    case 5:
+      verPantallaDistancia();
+      break;
+    case 6:
+      verPantallaPeso();
+      break;
+    default:
+      verPantallaPrincipal();
+      break;
   }
-  if (M5.BtnC.wasPressed()) {
-    currentScreen = (currentScreen - 1 + 6) % 6;
-  }
+
+  delay(100);  // Agregar un pequeño retraso para evitar problemas de rendimiento
 }
