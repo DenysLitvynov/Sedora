@@ -26,8 +26,11 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,46 +119,51 @@ public class Grafica extends Fragment {
         if (mensual_o_semanal.equals("semanal")){
             switch (grafica_elegida) {
                 case "Horas Sentado":
-//                    crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias",
-//                            true, false, vista_graficas);
 
-                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSentado,"A","s","Distancia al monitor",true,false);
+                    crearGraficaDatos("presion1Promedio",puntosHorasSentado,vistaGrafica,"Cantidad de Horas","Dias",
+                            true,false,vista_graficas);
                     break;
 
                 case "Horas Sensibles":
-                    //crearGrafica_Firebase("proximidadPromedio", puntosHorasSensibles,vistaGrafica,"Avisos","Dias", true, false, vista_graficas);
+                        crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSensibles,
+                                "Horas","Dias",null,true,false);
                     break;
 
                 case "Progreso Avisos":
-                    //crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica, "Avisos","Dias", true, false, vista_graficas);
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosProgresoAvisos,
+                            "Horas","Dias","Distancia al monitor",true,false);
                     hacerVisible_Grafica2(vista_graficas,true);
                     break;
 
                 case "Avisos Ignorados":
                     //LOS VALORES DE X TIENEN QUE ESTAR EN ORDEN ASCENTDE O DA ERROR
-                    //crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", true, false, vista_graficas);
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosProgresoAvisos,
+                            "Avisos","Dias",null,true,false);
                     break;
             }
         }
          else if (mensual_o_semanal.equals("mensual")) {
             switch (grafica_elegida) {
                 case "Horas Sentado":
-//                    crearGrafica_Firebase("ruidoPromedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
-                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSentado,"A","s","Ruido",false,false);
+                    crearGraficaDatos("presion1Promedio",puntosHorasSentado,vistaGrafica,"Horas","Dias",
+                            false,false,vista_graficas);
                     break;
 
                 case "Horas Sensibles":
-                    //crearGrafica_Firebase("temperaturaPromedio",puntosHorasSensibles,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSensibles,
+                            "Horas","Dias",null,false,false);
+
                     break;
 
                 case "Progreso Avisos":
-
-                    //crearGrafica_Firebase("count",puntosProgresoAvisos,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosProgresoAvisos,
+                            "Horas","Dias","Distancia al monitor",false,false);
                     hacerVisible_Grafica2(vista_graficas,false);
                     break;
 
                 case "Avisos Ignorados":
-                    //crearGrafica_Firebase("count",puntosAvisosIgnorados,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosAvisosIgnorados,
+                            "Avisos","Dias",null,false,false);
                     break;
             }
         }
@@ -167,7 +175,7 @@ public class Grafica extends Fragment {
     //Ejemplo: quiero los datos de presion el dia de ayer,
     // graficaPresion.(presion)
     //Mete la presion en su lista Y y el dia en su lista X  y crea la grafica(esto dentro de la funcion)
-    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo,boolean es_semanal,boolean esGrafica2,View vista) {
+    private void crearGraficaDatos(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo,boolean es_semanal,boolean esGrafica2,View vista) {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -229,40 +237,74 @@ public class Grafica extends Fragment {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             // Obtener el valor del campo "titulo"
                             String titulo = document.getString("titulo");
+                            String horaCompleta = document.getString("hora");
 
                             // Aplicar el filtro: solo procesar si "titulo" coincide con el filtro deseado
                             if (titulo != null && titulo.equals(filtroTitulo)) {
-                                String horaCompleta = document.getString("hora");
                                 if (horaCompleta != null) {
+                                    try {
+                                        // Extraer solo el día (dd/MM/yyyy) de la cadena "hora"
+                                        String dia = horaCompleta.split(" ")[1]; // "12/12/2024" de "11:44 12/12/2024"
+
+                                        // Formatear el día al formato yyyy-MM-dd
+                                        SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                        Date fecha = inputFormat.parse(dia); // Parsear la fecha de entrada
+                                        String diaFormateado = outputFormat.format(fecha); // Formatear la fecha
+
+                                        // Contar notificaciones por día formateado
+                                        conteoPorDia.put(diaFormateado, conteoPorDia.getOrDefault(diaFormateado, 0) + 1);
+
+                                    } catch (ParseException e) {
+                                        e.printStackTrace(); // Manejo de errores si el formato de fecha es inválido
+                                    }
+                                }
+                            }else if (horaCompleta!=null){
+                                try {
+
                                     // Extraer solo el día (dd/MM/yyyy) de la cadena "hora"
                                     String dia = horaCompleta.split(" ")[1]; // "12/12/2024" de "11:44 12/12/2024"
 
-                                    // Contar notificaciones por día
-                                    conteoPorDia.put(dia, conteoPorDia.getOrDefault(dia, 0) + 1);
+                                    // Formatear el día al formato yyyy-MM-dd
+                                    SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                    Date fecha = inputFormat.parse(dia); // Parsear la fecha de entrada
+                                    String diaFormateado = outputFormat.format(fecha); // Formatear la fecha
+
+                                    // Contar notificaciones por día formateado
+                                    conteoPorDia.put(diaFormateado, conteoPorDia.getOrDefault(diaFormateado, 0) + 1);
+
+                                } catch (ParseException e) {
+                                    e.printStackTrace(); // Manejo de errores si el formato de fecha es inválido
                                 }
+
                             }
                         }
                         // Añadir datos al objeto de gráfica
                         for (Map.Entry<String, Integer> entry : conteoPorDia.entrySet()) {
                             String dia = entry.getKey();
                             int valor = entry.getValue();
-
+                            double valorDouble=valor;
                             // Añadir a la gráfica
-                            grafica_a_cual_se_añade.añadir_nuevo_Dato(dia, valor);
+                            grafica_a_cual_se_añade.añadir_nuevo_Dato(dia, valorDouble);
                         }
 
-                        Log.d("TAG", grafica_a_cual_se_añade.toString());
-
+                        if (es_semanal==true) {
+                            grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
+                            // Crear la gráfica con los datos recopilados
+                            crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
+                            setMaximo_Minimos_Promedios(vista, grafica_a_cual_se_añade, false);
+                        }
                         // Crear la gráfica con los datos recopilados
                         crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
                         setMaximo_Minimos_Promedios(vista, grafica_a_cual_se_añade, false);
+                        if (esGrafica2){
+                            setMaximo_Minimos_Promedios(vista, grafica_a_cual_se_añade, true);
+                        }
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar notificaciones", e));
     }
-
-
-
 
 //===========================================================================================================================
 
@@ -373,7 +415,8 @@ public class Grafica extends Fragment {
         subtitulo2.setVisibility(View.VISIBLE);
 
         grafica2.setVisibility(View.VISIBLE);
-        //crearGrafica_Firebase("count", puntosProgresoAvisos2, grafica2, "Avisos", "Dias", esSemanal, true, vista_graficas);
+        crearGraficaNotis(vista_graficas,grafica2,puntosProgresoAvisos2,
+                "Horas","Dias","Descanso",esSemanal,true);
 
 //
 //        // Hacer visibles los valores asociados

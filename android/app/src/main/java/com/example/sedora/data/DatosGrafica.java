@@ -62,20 +62,21 @@ public class DatosGrafica {
     }
 
     public String getValorMaximo_asString() {
-        if (valoresY.isEmpty()) {
-            return "0"; // Mensaje si la lista está vacía
+        if (valoresY.isEmpty() || valoresY.contains(null)) {
+            return "0"; // Mensaje si la lista está vacía o tiene null
         }
         double maximo = Collections.max(valoresY);
-        return String.valueOf(maximo);
+        return String.format("%.2f", maximo);
     }
 
     public String getValorMinimo_asString() {
-        if (valoresY.isEmpty()) {
-            return "0"; // Mensaje si la lista está vacía
+        if (valoresY.isEmpty() || valoresY.contains(null)) {
+            return "0"; // Mensaje si la lista está vacía o tiene null
         }
         double minimo = Collections.min(valoresY);
-        return String.valueOf(minimo);
+        return String.format("%.2f", minimo);
     }
+
 
     public void añadir_nuevo_Dato(String valornuevoX, double valornuevoY) {
         this.valoresX.add(valornuevoX);
