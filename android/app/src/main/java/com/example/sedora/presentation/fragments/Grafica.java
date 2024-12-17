@@ -43,7 +43,6 @@ public class Grafica extends Fragment {
     private DatosGrafica puntosProgresoAvisos=new DatosGrafica("Progreso Avisos",new ArrayList<>(),new ArrayList<>());
     private DatosGrafica puntosProgresoAvisos2=new DatosGrafica("Progreso Avisos",new ArrayList<>(),new ArrayList<>());
 
-
     public static Grafica newInstance(String tipo) {
         Grafica fragment = new Grafica();
         Bundle args = new Bundle();
@@ -120,7 +119,7 @@ public class Grafica extends Fragment {
 //                    crearGrafica_Firebase("presion1Promedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias",
 //                            true, false, vista_graficas);
 
-                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSentado,"Avsiso","Dias",puntosHorasSentado.getNombre_grafica(),true,false);
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSentado,"A","s","Distancia al monitor",true,false);
                     break;
 
                 case "Horas Sensibles":
@@ -142,8 +141,7 @@ public class Grafica extends Fragment {
             switch (grafica_elegida) {
                 case "Horas Sentado":
 //                    crearGrafica_Firebase("ruidoPromedio",puntosHorasSentado,vistaGrafica,"Avisos","Dias", false, false, vista_graficas);
-                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSentado,"Avsiso","Dias",puntosHorasSentado.getNombre_grafica(),false,false);
-
+                    crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSentado,"A","s","Ruido",false,false);
                     break;
 
                 case "Horas Sensibles":
@@ -169,48 +167,48 @@ public class Grafica extends Fragment {
     //Ejemplo: quiero los datos de presion el dia de ayer,
     // graficaPresion.(presion)
     //Mete la presion en su lista Y y el dia en su lista X  y crea la grafica(esto dentro de la funcion)
-//    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo,boolean es_semanal,boolean esGrafica2,View vista) {
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//        String usuarioUID = auth.getCurrentUser().getUid();
-//
-//        database.collection("usuarios")
-//                .document(usuarioUID)//AQUI EL USER
-//                .collection("Datos").get()//SI LAS NOTIS ESTAN EN OTRA COLECION HABRA QUE CAMBIAR ESTO A UNA VARIABLE
-//                .addOnSuccessListener(queryDocumentSnapshots -> {
-//
-//                    if (!queryDocumentSnapshots.isEmpty()) {
-//                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-//                            String fecha = document.getId();
-//                            Double valor = document.contains(campo) ? document.getDouble(campo) : null;
-//                            if (valor != null) {
-//                                grafica_a_cual_se_añade.añadir_nuevo_Dato(fecha, valor);
-//                            }
-//                        }
-//                        if (es_semanal==true){
-//                            // Llama a crearGrafica aquí, cuando los datos ya estén listos
-//                            grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
-//                            crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-//                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
-//                            if (esGrafica2){
-//                                setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
-//                            }
-//                            //ESTO SE PODRIA HACER EN UN CALLBACK pa no meter to.do en la funcion,
-//                            // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
-//                        }
-//                        grafica_a_cual_se_añade.filtrarDatosPorMesActual();
-//                        crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-//                        setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
-//                        if (esGrafica2){
-//                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
-//                        }
-//                    }
-//                }).addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar documentos", e));
-//    }
+    private void crearGrafica_Firebase(String campo, DatosGrafica grafica_a_cual_se_añade, GraphView vistaGrafica,String yTitulo, String xTitulo,boolean es_semanal,boolean esGrafica2,View vista) {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String usuarioUID = auth.getCurrentUser().getUid();
+
+        database.collection("usuarios")
+                .document(usuarioUID)//AQUI EL USER
+                .collection("Datos").get()//SI LAS NOTIS ESTAN EN OTRA COLECION HABRA QUE CAMBIAR ESTO A UNA VARIABLE
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            String fecha = document.getId();
+                            Double valor = document.contains(campo) ? document.getDouble(campo) : null;
+                            if (valor != null) {
+                                grafica_a_cual_se_añade.añadir_nuevo_Dato(fecha, valor);
+                            }
+                        }
+                        if (es_semanal==true){
+                            // Llama a crearGrafica aquí, cuando los datos ya estén listos
+                            grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
+                            crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
+                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
+                            if (esGrafica2){
+                                setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
+                            }
+                            //ESTO SE PODRIA HACER EN UN CALLBACK pa no meter to.do en la funcion,
+                            // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
+                        }
+                        grafica_a_cual_se_añade.filtrarDatosPorMesActual();
+                        crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
+                        setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
+                        if (esGrafica2){
+                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
+                        }
+                    }
+                }).addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar documentos", e));
+    }
 
     private void crearGraficaNotis(View vista, GraphView vistaGrafica, DatosGrafica grafica_a_cual_se_añade, String yTitulo,
-                                   String xTitulo,String que_se_evalua, boolean es_semanal, boolean esGrafica2) {
+                                   String xTitulo, String filtroTitulo, boolean es_semanal, boolean esGrafica2) {
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -229,20 +227,25 @@ public class Grafica extends Fragment {
                         Map<String, Integer> conteoPorDia = new HashMap<>();
 
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            String horaCompleta = document.getString("hora");
+                            // Obtener el valor del campo "titulo"
+                            String titulo = document.getString("titulo");
 
-                            if (horaCompleta != null) {
-                                // Extraer solo el día (dd/MM/yyyy) de la cadena "hora"
-                                String dia = horaCompleta.split(" ")[1]; // "12/12/2024" de "11:44 12/12/2024"
+                            // Aplicar el filtro: solo procesar si "titulo" coincide con el filtro deseado
+                            if (titulo != null && titulo.equals(filtroTitulo)) {
+                                String horaCompleta = document.getString("hora");
+                                if (horaCompleta != null) {
+                                    // Extraer solo el día (dd/MM/yyyy) de la cadena "hora"
+                                    String dia = horaCompleta.split(" ")[1]; // "12/12/2024" de "11:44 12/12/2024"
 
-                                // Contar notificaciones por día
-                                conteoPorDia.put(dia, conteoPorDia.getOrDefault(dia, 0) + 1);
+                                    // Contar notificaciones por día
+                                    conteoPorDia.put(dia, conteoPorDia.getOrDefault(dia, 0) + 1);
+                                }
                             }
                         }
                         // Añadir datos al objeto de gráfica
                         for (Map.Entry<String, Integer> entry : conteoPorDia.entrySet()) {
                             String dia = entry.getKey();
-                            int valor = entry.getValue().intValue();
+                            int valor = entry.getValue();
 
                             // Añadir a la gráfica
                             grafica_a_cual_se_añade.añadir_nuevo_Dato(dia, valor);
@@ -257,6 +260,7 @@ public class Grafica extends Fragment {
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar notificaciones", e));
     }
+
 
 
 
@@ -291,7 +295,7 @@ public class Grafica extends Fragment {
 
     private void crearGrafica(DatosGrafica grafica_a_Construir, GraphView vista_Grafica, String yTitulo, String xTitulo) {
 
-        List<Integer> yValues = grafica_a_Construir.getValoresY();
+        List<Double> yValues = grafica_a_Construir.getValoresY();
         List<String> xValues = grafica_a_Construir.getValoresX();
         int color = ContextCompat.getColor(getContext(), R.color.verde_secundario);
 
