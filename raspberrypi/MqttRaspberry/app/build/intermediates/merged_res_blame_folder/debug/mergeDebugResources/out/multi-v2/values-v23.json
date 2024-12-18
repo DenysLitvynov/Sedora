@@ -4,7 +4,7 @@
             "outputFile": "com.example.mqttraspberry.app-mergeDebugResources-29:/values-v23/values-v23.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\denis\\.gradle\\caches\\transforms-4\\ceed396c0d73aa9ec24979df9d4e43d6\\transformed\\material-1.12.0\\res\\values-v23\\values-v23.xml",
+                    "source": "C:\\Users\\denis\\.gradle\\caches\\8.9\\transforms\\eb9e8a4b3002890c7ce7a585678b2c94\\transformed\\material-1.12.0\\res\\values-v23\\values-v23.xml",
                     "from": {
                         "startLines": "2,5,9,13,16,19,22,25,28,32",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\denis\\.gradle\\caches\\transforms-4\\b5314e0a6ca169f99edfe9ca33006252\\transformed\\cardview-1.0.0\\res\\values-v23\\values-v23.xml",
+                    "source": "C:\\Users\\denis\\.gradle\\caches\\8.9\\transforms\\f122b02f093ba863b598ef5de3de0eaf\\transformed\\cardview-1.0.0\\res\\values-v23\\values-v23.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -42,7 +42,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\denis\\.gradle\\caches\\transforms-4\\b71004df97aad1651f3b3ca4de6982c0\\transformed\\appcompat-1.7.0\\res\\values-v23\\values-v23.xml",
+                    "source": "C:\\Users\\denis\\.gradle\\caches\\8.9\\transforms\\747237118342c52e5cb18c3fb3fd2c5b\\transformed\\appcompat-1.7.0\\res\\values-v23\\values-v23.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,20,34,35,36,39,43,44,45,46",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
