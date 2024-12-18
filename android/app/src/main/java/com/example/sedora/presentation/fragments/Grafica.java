@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Grafica extends Fragment {
 
@@ -131,14 +132,15 @@ public class Grafica extends Fragment {
 
                 case "Progreso Avisos":
                     crearGraficaNotis(vista_graficas,vistaGrafica,puntosProgresoAvisos,
-                            "Horas","Dias","Distancia al monitor",true,false);
-                    hacerVisible_Grafica2(vista_graficas,true);
+                            "Numero de Avisos","Dias","Distancia al monitor",true,false);
+
+                            hacerVisible_Grafica2(vista_graficas,true);
                     break;
 
                 case "Avisos Ignorados":
                     //LOS VALORES DE X TIENEN QUE ESTAR EN ORDEN ASCENTDE O DA ERROR
                     crearGraficaNotis(vista_graficas,vistaGrafica,puntosProgresoAvisos,
-                            "Avisos","Dias",null,true,false);
+                            "Avisos Ignorados","Dias",null,true,false);
                     break;
             }
         }
@@ -157,7 +159,7 @@ public class Grafica extends Fragment {
 
                 case "Progreso Avisos":
                     crearGraficaNotis(vista_graficas,vistaGrafica,puntosProgresoAvisos,
-                            "Horas","Dias","Distancia al monitor",false,false);
+                            "Numero de Avisos","Dias","Distancia al monitor",false,false);
                     hacerVisible_Grafica2(vista_graficas,false);
                     break;
 
@@ -215,6 +217,25 @@ public class Grafica extends Fragment {
                 }).addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar documentos", e));
     }
 
+
+    private String formatearFecha(String horaCompleta) {
+        try {
+            if (horaCompleta != null) {
+                // Extraer solo el día (dd/MM/yyyy) de la cadena "hora"
+                String dia = horaCompleta.split(" ")[1];
+
+                // Formatear el día al formato yyyy-MM-dd
+                SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date fecha = inputFormat.parse(dia); // Parsear la fecha de entrada
+                return outputFormat.format(fecha); // Retorna la fecha formateada
+            }
+        } catch (ParseException e) {
+            e.printStackTrace(); // Manejo de errores si el formato de fecha es inválido
+        }
+        return null; // Retorna null si hay algún error
+    }
+
     private void crearGraficaNotis(View vista, GraphView vistaGrafica, DatosGrafica grafica_a_cual_se_añade, String yTitulo,
                                    String xTitulo, String filtroTitulo, boolean es_semanal, boolean esGrafica2) {
 
@@ -222,8 +243,7 @@ public class Grafica extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String usuarioUID = auth.getCurrentUser().getUid();
 
-        // Cambiar la colección según sea necesario
-        String coleccion = "notificaciones"; // Puedes cambiarlo a una variable dinámica
+        String coleccion = "notificaciones";
 
         database.collection("usuarios")
                 .document(usuarioUID)
@@ -231,80 +251,61 @@ public class Grafica extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
-                        // Map para almacenar el conteo de notificaciones por día
-                        Map<String, Integer> conteoPorDia = new HashMap<>();
+                        // TreeMap para mantener las fechas ordenadas automáticamente
+                        Map<String, Integer> conteoPorDia = new TreeMap<>();
 
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            // Obtener el valor del campo "titulo"
                             String titulo = document.getString("titulo");
                             String horaCompleta = document.getString("hora");
 
-                            // Aplicar el filtro: solo procesar si "titulo" coincide con el filtro deseado
-                            if (titulo != null && titulo.equals(filtroTitulo)) {
-                                if (horaCompleta != null) {
-                                    try {
-                                        // Extraer solo el día (dd/MM/yyyy) de la cadena "hora"
-                                        String dia = horaCompleta.split(" ")[1]; // "12/12/2024" de "11:44 12/12/2024"
-
-                                        // Formatear el día al formato yyyy-MM-dd
-                                        SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                        Date fecha = inputFormat.parse(dia); // Parsear la fecha de entrada
-                                        String diaFormateado = outputFormat.format(fecha); // Formatear la fecha
-
-                                        // Contar notificaciones por día formateado
+                            // Formatear la fecha usando la función auxiliar
+                            String diaFormateado = formatearFecha(horaCompleta);
+                            if (diaFormateado != null) {
+                                // Filtrado de notificaciones
+                                if (filtroTitulo != null) {
+                                    if (titulo != null && titulo.equals(filtroTitulo)) {
                                         conteoPorDia.put(diaFormateado, conteoPorDia.getOrDefault(diaFormateado, 0) + 1);
-
-                                    } catch (ParseException e) {
-                                        e.printStackTrace(); // Manejo de errores si el formato de fecha es inválido
                                     }
-                                }
-                            }else if (horaCompleta!=null){
-                                try {
-
-                                    // Extraer solo el día (dd/MM/yyyy) de la cadena "hora"
-                                    String dia = horaCompleta.split(" ")[1]; // "12/12/2024" de "11:44 12/12/2024"
-
-                                    // Formatear el día al formato yyyy-MM-dd
-                                    SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                    Date fecha = inputFormat.parse(dia); // Parsear la fecha de entrada
-                                    String diaFormateado = outputFormat.format(fecha); // Formatear la fecha
-
-                                    // Contar notificaciones por día formateado
+                                } else {
+                                    // Si no hay filtro, agregar todas las notificaciones
                                     conteoPorDia.put(diaFormateado, conteoPorDia.getOrDefault(diaFormateado, 0) + 1);
-
-                                } catch (ParseException e) {
-                                    e.printStackTrace(); // Manejo de errores si el formato de fecha es inválido
                                 }
-
                             }
                         }
-                        // Añadir datos al objeto de gráfica
+
+                        // Añadir los datos ordenados al objeto de gráfica
                         for (Map.Entry<String, Integer> entry : conteoPorDia.entrySet()) {
-                            String dia = entry.getKey();
-                            int valor = entry.getValue();
-                            double valorDouble=valor;
-                            // Añadir a la gráfica
-                            grafica_a_cual_se_añade.añadir_nuevo_Dato(dia, valorDouble);
+                            grafica_a_cual_se_añade.añadir_nuevo_Dato(entry.getKey(), (double) entry.getValue());
                         }
 
-                        if (es_semanal==true) {
+                        Log.d("TAG", grafica_a_cual_se_añade.toString());
+
+                        if (es_semanal==true){
+                            // Llama a crearGrafica aquí, cuando los datos ya estén listos
                             grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
-                            // Crear la gráfica con los datos recopilados
                             crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-                            setMaximo_Minimos_Promedios(vista, grafica_a_cual_se_añade, false);
+                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
+
+                            if (esGrafica2){
+                                setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
+                            }
+
                         }
-                        // Crear la gráfica con los datos recopilados
+                        grafica_a_cual_se_añade.filtrarDatosPorMesActual();
                         crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-                        setMaximo_Minimos_Promedios(vista, grafica_a_cual_se_añade, false);
+                        setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
                         if (esGrafica2){
-                            setMaximo_Minimos_Promedios(vista, grafica_a_cual_se_añade, true);
+                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
                         }
+
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error al recuperar notificaciones", e));
     }
+
+
+
+
 
 //===========================================================================================================================
 
@@ -415,8 +416,9 @@ public class Grafica extends Fragment {
         subtitulo2.setVisibility(View.VISIBLE);
 
         grafica2.setVisibility(View.VISIBLE);
+
         crearGraficaNotis(vista_graficas,grafica2,puntosProgresoAvisos2,
-                "Horas","Dias","Descanso",esSemanal,true);
+                "Horas","Dias","Postura",esSemanal,true);
 
 //
 //        // Hacer visibles los valores asociados
