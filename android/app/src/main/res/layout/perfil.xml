@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -18,50 +20,14 @@
             android:layout_height="wrap_content">
 
 
-            <View
-                android:id="@+id/seccion"
+            <!-- HEADER personalizado con el layout especificado -->
+            <com.example.sedora.presentation.views.Header
+                android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:elevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/button_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="16dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:contentDescription="TODO"
-                android:elevation="4dp"
-                android:focusable="true"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icono_campana_2"
-                app:layout_constraintBottom_toBottomOf="@+id/header_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/header_title"
-                app:layout_constraintTop_toTopOf="@+id/header_title"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/header_title"
-                style="@style/Heading1"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Perfil"
-                app:layout_constraintBottom_toBottomOf="@+id/seccion"
-                app:layout_constraintStart_toStartOf="@+id/seccion"
+                app:headerLayout="@layout/header_4"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
+            <!-- FIN DEL HEADER -->
             <Button
                 android:id="@+id/cerrar_sesion"
                 style="@style/BotonVerde"
@@ -69,7 +35,7 @@
                 android:layout_height="52dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="76dp"
+                android:layout_marginBottom="16dp"
                 android:onClick="cerrarSesion"
                 android:padding="0dp"
                 android:text="Cerrar Sesión"
@@ -82,15 +48,14 @@
                 android:id="@+id/view"
                 style="@style/BoxBackground"
                 android:layout_width="0dp"
-                android:layout_height="550dp"
+                android:layout_height="620dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/cerrar_sesion"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seccion" />
+                app:layout_constraintTop_toBottomOf="@+id/header" />
 
             <Button
                 android:id="@+id/botonEditar"

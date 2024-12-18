@@ -1,0 +1,72 @@
+package com.example.sedora.presentation.adapters;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.sedora.R;
+import com.example.sedora.model.RecyclerViewItem;
+
+import java.util.List;
+
+public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.AcercaDeViewHolder> {
+
+
+    private final List<RecyclerViewItem> AcercaDeItems;
+
+    public AcercaDeAdapter(List<RecyclerViewItem> AcercaDeItems) {
+        this.AcercaDeItems = AcercaDeItems;
+    }
+
+    @NonNull
+    @Override
+    public AcercaDeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recycler_view_item, parent, false);
+        return new AcercaDeViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull AcercaDeViewHolder holder, int position) {
+        RecyclerViewItem faqItem = AcercaDeItems.get(position);
+        holder.bind(faqItem);
+    }
+
+    @Override
+    public int getItemCount() {
+        return AcercaDeItems.size();
+    }
+
+    public class AcercaDeViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView textViewHeader;
+        private final TextView textViewContent;
+        private final ImageButton buttonToggle;
+
+        public AcercaDeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textViewHeader = itemView.findViewById(R.id.textViewFAQHeader);
+            textViewContent = itemView.findViewById(R.id.textViewFAQContent);
+            buttonToggle = itemView.findViewById(R.id.buttonToggle);
+        }
+
+        public void bind(RecyclerViewItem AcercaDeItems) {
+            textViewHeader.setText(AcercaDeItems.getTitle());
+            textViewContent.setText(AcercaDeItems.getContent());
+
+            boolean isExpanded = AcercaDeItems.isExpanded();
+            textViewContent.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+            buttonToggle.setImageResource(isExpanded ? R.drawable.flecha_arriba : R.drawable.flecha_abajo);
+
+            buttonToggle.setOnClickListener(v -> {
+                AcercaDeItems.setExpanded(!AcercaDeItems.isExpanded());
+                notifyItemChanged(getAdapterPosition());
+            });
+        }
+    }
+}

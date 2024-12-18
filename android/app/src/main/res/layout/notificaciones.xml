@@ -6,49 +6,28 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <ImageButton
-        android:id="@+id/button_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:contentDescription="TODO"
-        android:elevation="4dp"
-        android:focusable="true"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icono_flecha"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintEnd_toStartOf="@+id/textView8"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView8"
-        tools:ignore="SpeakableTextPresentCheck" />
 
-    <!-- Título de la página -->
-
-    <TextView
-        android:id="@+id/textView8"
-        style="@style/Heading1"
-        android:layout_width="wrap_content"
+    <!-- HEADER personalizado con el layout especificado -->
+    <com.example.sedora.presentation.views.Header
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Notificaciones"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:headerLayout="@layout/header_2"
         app:layout_constraintTop_toTopOf="parent" />
+    <!-- FIN DEL HEADER -->
+
 
     <View
         android:id="@+id/view"
         style="@style/BoxBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/header" />
 
     <!-- RecyclerView donde se mostrarán las notificaciones-->
     <androidx.recyclerview.widget.RecyclerView

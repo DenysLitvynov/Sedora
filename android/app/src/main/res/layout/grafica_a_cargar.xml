@@ -32,6 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible" />
 
+
             <ImageView
                 android:id="@+id/grafica1"
                 android:layout_width="0dp"
@@ -39,11 +40,21 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="16dp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.481"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/graficadiatemp" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/Grafica"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/grafica1"
+                app:layout_constraintEnd_toEndOf="@+id/grafica1"
+                app:layout_constraintStart_toStartOf="@+id/grafica1"
+                app:layout_constraintTop_toBottomOf="@+id/subtitulo"></com.jjoe64.graphview.GraphView>
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -120,7 +131,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5"
@@ -195,6 +206,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.4875195" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/Grafica2F"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/Grafica2"
+                app:layout_constraintEnd_toEndOf="@+id/Grafica2"
+                app:layout_constraintStart_toStartOf="@+id/Grafica2"
+                app:layout_constraintTop_toTopOf="@+id/Grafica2"
+                tools:visibility="visible"></com.jjoe64.graphview.GraphView>
 
             <ImageView
                 android:id="@+id/Circ1"

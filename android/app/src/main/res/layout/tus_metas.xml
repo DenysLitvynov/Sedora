@@ -1,34 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tus_metas"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <ImageView
-        android:id="@+id/imageView19"
-        android:layout_width="wrap_content"
+    <!-- HEADER personalizado con el layout especificado -->
+    <com.example.sedora.presentation.views.Header
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample15"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/heading13"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icono_campana" />
+        app:headerLayout="@layout/header_3"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView19"
-        app:layout_constraintEnd_toEndOf="@+id/imageView19"
-        app:layout_constraintHorizontal_bias="0.913"
-        app:layout_constraintStart_toStartOf="@+id/imageView19"
-        app:layout_constraintTop_toTopOf="@+id/imageView19"
-        app:layout_constraintVertical_bias="0.28"
-        app:srcCompat="@drawable/icono_puntorojo" />
-
+    <!-- FIN DEL HEADER -->
 
     <View
         android:id="@+id/boxExample15"
@@ -38,202 +25,52 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.83"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/heading13"
-        app:layout_constraintVertical_bias="1.0" />
-
-
-    <View
-        android:id="@+id/boxExample16"
-        style="@style/BoxBackground2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/box_background_blanco"
-        app:layout_constraintBottom_toTopOf="@+id/heading15"
-        app:layout_constraintEnd_toEndOf="@+id/heading14"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/heading14"
-        app:layout_constraintTop_toBottomOf="@+id/heading14"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/paragraphNegro2"
-        style="@style/ParagraphNegro"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_meta_actual"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="50dp"
-        android:text="Menos de 5 avisos sobre postura incorrecta durante un día."
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView25"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample16"
-        app:layout_constraintStart_toStartOf="@+id/boxExample16"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-    <TextView
-        android:id="@+id/textView20"
-        style="@style/Heading3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Tiempo sentado"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/paragraphNegro2"
-        app:layout_constraintEnd_toEndOf="@+id/paragraphNegro2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/boxExample16"
-        app:layout_constraintTop_toTopOf="@+id/boxExample16" />
-
-    <View
-        android:id="@+id/boxExample18"
-        style="@style/BoxBackground2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/box_background_blanco"
-        android:backgroundTint="#CDC8C8"
-        app:layout_constraintBottom_toBottomOf="@+id/boxExample15"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample19"
-        app:layout_constraintStart_toStartOf="@+id/boxExample19"
-        app:layout_constraintTop_toBottomOf="@+id/boxExample19" />
-
-
-    <View
-        android:id="@+id/boxExample19"
-        style="@style/BoxBackground2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/box_background_blanco"
-        android:backgroundTint="#CDC8C8"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample18"
-        app:layout_constraintEnd_toEndOf="@+id/heading15"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/heading15"
-        app:layout_constraintTop_toBottomOf="@+id/heading15" />
-
-    <TextView
-        android:id="@+id/paragraphNegro3"
-        style="@style/ParagraphNegro"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="60dp"
-        android:text="Haz pausas de 5 minutos cada 50 minutos para mover los músculos."
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView23"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample19"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/boxExample19"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-    <TextView
-        android:id="@+id/paragraphNegro4"
-        style="@style/ParagraphNegro"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Menos de 10 avisos sobre la distancia a a tu pantalla durante una semana."
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView24"
-        app:layout_constraintEnd_toStartOf="@+id/imageView11"
-        app:layout_constraintStart_toStartOf="@+id/boxExample18"
-        app:layout_constraintTop_toBottomOf="@+id/textView22" />
-
-    <TextView
-        android:id="@+id/textView21"
-        style="@style/Heading3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
-        android:text="Menos de 1 hora sentado"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/paragraphNegro3"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample19"
-        app:layout_constraintHorizontal_bias="0.314"
-        app:layout_constraintStart_toStartOf="@+id/boxExample19"
-        app:layout_constraintTop_toTopOf="@+id/boxExample19" />
+        app:layout_constraintTop_toBottomOf="@+id/heading14"
+        app:layout_constraintStart_toStartOf="@+id/boxExample15"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample15"
+        app:layout_constraintBottom_toTopOf="@+id/heading15" />
 
-    <TextView
-        android:id="@+id/textView23"
-        style="@style/Heading3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Finaliza tu meta anterior..."
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/boxExample19"
-        app:layout_constraintEnd_toEndOf="@+id/paragraphNegro3"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/paragraphNegro3"
-        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro3" />
-
-    <TextView
-        android:id="@+id/textView25"
-        style="@style/Heading3"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_proximas_metas"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Llevas 1 de 5 posibles..."
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/boxExample16"
-        app:layout_constraintEnd_toEndOf="@+id/paragraphNegro2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/boxExample16"
-        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro2" />
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/heading15"
+        app:layout_constraintStart_toStartOf="@+id/boxExample15"
+        app:layout_constraintEnd_toEndOf="@+id/boxExample15"
+        app:layout_constraintBottom_toBottomOf="@+id/boxExample15" />
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/textView26"
         style="@style/Heading3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="1dp"
-        android:text="Finaliza tu meta anterior..."
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/boxExample18"
-        app:layout_constraintEnd_toStartOf="@+id/imageView11"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="0/20"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/heading14"
+        app:layout_constraintEnd_toEndOf="@+id/heading14"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/boxExample18"
-        app:layout_constraintTop_toBottomOf="@+id/paragraphNegro4" />
-
-    <TextView
-        android:id="@+id/textView22"
-        style="@style/Heading3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Menos de 1 hora sentado"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample18"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/boxExample18"
-        app:layout_constraintTop_toTopOf="@+id/boxExample18" />
-
-    <TextView
-        android:id="@+id/heading13"
-        style="@style/Heading1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="Tus Metas"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample15"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55" />
-
+        app:layout_constraintStart_toEndOf="@+id/heading4"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/heading14"
@@ -241,137 +78,58 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="4dp"
         android:text="Meta Actual"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample16"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_meta_actual"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/boxExample15" />
 
     <TextView
+        android:id="@+id/heading4"
+        style="@style/Heading1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="Metas conseguidas:"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/heading14"
+        app:layout_constraintEnd_toStartOf="@+id/textView26"
+        app:layout_constraintStart_toStartOf="@+id/heading14"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
         android:id="@+id/heading15"
         style="@style/Heading1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="8dp"
         android:text="Próximas Metas"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample16"
-        app:layout_constraintStart_toStartOf="@+id/boxExample16"
-        app:layout_constraintTop_toBottomOf="@+id/boxExample16"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample19"
-        tools:layout_editor_absoluteY="433dp" />
-
-
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/boxExample16"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample16"
-        app:layout_constraintStart_toEndOf="@+id/paragraphNegro2"
-        app:layout_constraintTop_toTopOf="@+id/boxExample16"
-        app:srcCompat="@drawable/icono_sentado" />
-
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/boxExample19"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample19"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/paragraphNegro3"
-        app:layout_constraintTop_toTopOf="@+id/boxExample19"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/icono_andando" />
-
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="40dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/boxExample18"
-        app:layout_constraintEnd_toEndOf="@+id/boxExample18"
-        app:layout_constraintHorizontal_bias="0.962"
-        app:layout_constraintStart_toStartOf="@+id/boxExample18"
-        app:layout_constraintTop_toTopOf="@+id/boxExample18"
-        app:srcCompat="@drawable/icono_sentado2" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="58dp"
-        android:layout_height="48dp"
-        android:text="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button5" />
-
-    <TextView
-        android:id="@+id/textView26"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="Anterior"
-        android:textColor="#009774"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="58dp"
-        android:layout_height="48dp"
-        android:backgroundTint="@color/blanco"
-        android:text="3"
-        android:textColor="#009774"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView27"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button" />
-
-    <TextView
-        android:id="@+id/textView27"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="Siguiente"
-        android:textColor="#009774"
-        android:textColorLink="#009774"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_proximas_metas"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button4" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="58dp"
-        android:layout_height="48dp"
-        android:backgroundTint="@color/blanco"
-        android:text="1"
-        android:textColor="#009774"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView26" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_meta_actual" />
 
     <ImageView
-        android:id="@+id/volver_metas"
-        android:layout_width="56dp"
-        android:layout_height="38dp"
-        android:layout_marginEnd="64dp"
-        app:layout_constraintBottom_toTopOf="@+id/boxExample15"
-        app:layout_constraintEnd_toStartOf="@+id/heading13"
-        app:layout_constraintHorizontal_bias="0.968"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icono_flecha" />
+        android:id="@+id/boton_proximas_metas"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/heading15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/heading15"
+        app:layout_constraintTop_toTopOf="@+id/heading15"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/icono_mas" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

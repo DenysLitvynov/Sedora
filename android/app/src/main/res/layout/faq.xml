@@ -8,68 +8,28 @@
     android:layout_height="match_parent"
     android:padding="8dp">
 
-    <ImageButton
-        android:id="@+id/FlechaRetrocesoFAQ"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:contentDescription="TODO"
-        android:elevation="4dp"
-        android:focusable="true"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icono_flecha"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <ImageButton
-        android:id="@+id/CamapanaNotificacionesFAQ"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:contentDescription="TODO"
-        android:elevation="4dp"
-        android:focusable="true"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icono_campana_2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/FAQ"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <TextView
-        android:id="@+id/FAQ"
-        style="@style/Heading1"
-        android:layout_width="wrap_content"
+    <!-- HEADER personalizado con el layout especificado -->
+    <com.example.sedora.presentation.views.Header
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="24dp"
-        android:text="FAQ"
-        app:layout_constraintStart_toEndOf="@+id/FlechaRetrocesoFAQ"
+        app:headerLayout="@layout/header_3"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- FIN DEL HEADER -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFAQ"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.753"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/FAQ"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintVertical_bias="0.041"
         tools:listitem="@layout/recycler_view_item" />
 

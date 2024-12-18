@@ -1,0 +1,40 @@
+plugins {
+    id 'java-library'
+    id 'application'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    implementation("com.google.firebase:firebase-admin:6.13.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-storage")
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
+    implementation 'com.pi4j:pi4j-core:2.3.0'
+    implementation 'com.pi4j:pi4j-plugin-pigpio:2.0'
+    implementation 'com.pi4j:pi4j-plugin-raspberrypi:2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.testng:testng:6.9.6'
+}
+
+application {
+    mainClass = 'com.example.raspberry.RaspberryFirebase'
+}
+
+test {
+    useTestNG()
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes 'Main-Class' : 'com.example.raspberry.RaspberryFirebase'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA"
+}

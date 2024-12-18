@@ -23,7 +23,15 @@
     <string name="ConfirmContra">Confirmar contraseña</string>
     <string name="HeLeido">He leído y acepto la</string>
     <string name="Polpriv">Política de privacidad</string>
-
     <string name="flecha_vuelta_desc">Volver</string>
+
+    <!--Metas-->
+    <string name="descripcion_imagen_meta">Imagen representativa de la meta</string>
+
+
+    <!--Popup Informe-->
+    <string name="titulo_informe_diario">Informe Diario</string>
+    <string name="contenido_informe_diario">Aquí se mostrará tu informe diario.</string>
+    <string name="cerrar_popup">Cerrar Popup</string>
 
 </resources>
