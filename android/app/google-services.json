@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "293841495614",
     "project_id": "sedora-gti",
-    "storage_bucket": "sedora-gti.appspot.com"
+    "storage_bucket": "sedora-gti.firebasestorage.app"
   },
   "client": [
     {

@@ -1,18 +1,28 @@
 package com.example.sedora.presentation.managers;
 
+import android.net.Uri;
 import android.util.Log;
+import android.os.Environment;
+
+import androidx.annotation.NonNull;
 
 import com.example.sedora.model.Notificacion;
 import com.example.sedora.model.SensorData;
 import com.example.sedora.model.Usuario;
-import com.google.firebase.Timestamp;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -296,4 +306,52 @@ public class FirebaseHelper {
     }
 
 
+   /* public static void crearCarpetaUsuario(FirebaseUser user) {
+        if (user != null) {
+            // Obtener el ID del usuario y construir la ruta específica
+            String userId = user.getUid();
+            String path = "/carpeta/Informes/prueba.txt";
+
+            // Referencia al archivo en Firebase Storage
+            StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(path);
+
+            // Contenido inicial del archivo (para simular la creación de la carpeta)
+            byte[] contenidoInicial = "Este archivo se crea automáticamente para validar la carpeta.".getBytes(StandardCharsets.UTF_8);
+
+            // Subir el archivo a Firebase Storage
+            fileRef.putBytes(contenidoInicial)
+                    .addOnSuccessListener(taskSnapshot -> Log.d("FirebaseStorage", "Carpeta y archivo creados exitosamente en: " + path))
+                    .addOnFailureListener(e -> Log.e("FirebaseStorage", "Error al crear la carpeta/archivo", e));
+        } else {
+            Log.e("FirebaseStorage", "Usuario no autenticado.");
+        }
+    }*/
+
+    public static void crearCarpetaUsuario(FirebaseUser user) {
+        String fileName = "fichero.txt";
+        String fileContent = "Hola Mundo en Bytes";
+        byte[] data = fileContent.getBytes();
+
+        // Referencia a Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference ficheroRef = storageRef.child("/carpeta/Informes/"+user.getUid()+"/"+fileName);
+        ficheroRef.getParent();
+        // Subir el archivo usando bytes
+        UploadTask uploadTask = ficheroRef.putBytes(data);
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            // Archivo subido exitosamente
+            Log.d("Almacenamiento", "Fichero subido correctamente: " + fileName);
+
+            // Obtener la URL de descarga
+            /*ficheroRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                Log.d("Almacenamiento", "URL de descarga: " + uri.toString());
+            });*/
+        }).addOnFailureListener(exception -> {
+            // Error al subir el archivo
+            exception.printStackTrace();
+            Log.e("Almacenamiento", "ERROR subiendo fichero", exception);
+        });
+
+    }
 }

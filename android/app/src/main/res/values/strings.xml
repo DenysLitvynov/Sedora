@@ -29,4 +29,9 @@
     <string name="descripcion_imagen_meta">Imagen representativa de la meta</string>
 
 
+    <!--Popup Informe-->
+    <string name="titulo_informe_diario">Informe Diario</string>
+    <string name="contenido_informe_diario">Aquí se mostrará tu informe diario.</string>
+    <string name="cerrar_popup">Cerrar Popup</string>
+
 </resources>
