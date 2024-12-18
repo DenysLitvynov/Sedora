@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (usuario != null && usuario.isEmailVerified()) {
                                 // Guardar la información del usuario en Firebase Firestore
                                 FirebaseHelper.guardarUsuario(usuario);
-
+                                FirebaseHelper.crearCarpetaUsuario(usuario);
 
                                 //---------------------------------------------------------------
                                 FirebaseHelper firebaseHelper = new FirebaseHelper();
@@ -169,20 +169,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //---------------------------------------------------------------
-    // Metodo para iniciar sesión con Google
+    // Método para iniciar sesión con Google
     //---------------------------------------------------------------
 
     private void googleAuth(String idToken) {
+
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
                             FirebaseUser usuario = auth.getCurrentUser();
                             if (usuario != null) {
                                 // Guardar la información del usuario en Firebase Firestore
+
+                                System.out.println("Guarda Información del usuario");
                                 FirebaseHelper.guardarUsuario(usuario);
+                                FirebaseHelper.crearCarpetaUsuario(usuario);
 
 
                                 //---------------------------------------------------------------
@@ -206,6 +211,8 @@ public class LoginActivity extends AppCompatActivity {
                             verificaSiUsuarioValidado();
                         } else {
                             mensaje(task.getException().getLocalizedMessage());
+
+
                         }
                     }
                 });
@@ -264,6 +271,8 @@ public class LoginActivity extends AppCompatActivity {
                     if (usuario != null) {
                         // Guardar la información del usuario en Firebase Firestore
                         FirebaseHelper.guardarUsuario(usuario);
+                        FirebaseHelper.crearCarpetaUsuario(usuario);
+
 
 
                         //---------------------------------------------------------------
@@ -302,6 +311,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (usuario != null) {
                         // Guardar la información del usuario en Firebase Firestore
                         FirebaseHelper.guardarUsuario(usuario);
+                        FirebaseHelper.crearCarpetaUsuario(usuario);
 
 
                         //---------------------------------------------------------------

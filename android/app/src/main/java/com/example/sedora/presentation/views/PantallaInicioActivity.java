@@ -5,6 +5,7 @@ import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.example.sedora.presentation.managers.MetasManager;
 
 import android.Manifest;
 import com.example.sedora.presentation.managers.MenuManager;
+import com.example.sedora.presentation.managers.PopUp;
 import com.example.sedora.presentation.managers.Popup_pantalla_inicio;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +47,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.nio.charset.StandardCharsets;
 
 public class PantallaInicioActivity extends AppCompatActivity implements MqttCallback {
 
@@ -134,6 +143,35 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
             mostrarConsejoDelDia();
             calcularTiempoSentado();
         }
+
+        // Botón Popup Informe:
+        ImageView btnInformeDiario = findViewById(R.id.iconoAbrirInforme);
+        btnInformeDiario.setOnClickListener(v -> {
+            PopUp popupInformeDiario = new PopUp(this, R.layout.popup_informe_diario);
+            popupInformeDiario.setupBotonCerrar(R.id.cerrar_popup);
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                String userId = user.getUid();
+                String path = "/carpeta/Informes/" + userId + "/fichero.txt";
+
+                StorageReference fileRef = FirebaseStorage.getInstance().getReference(path);
+
+                fileRef.getBytes(1024 * 1024)
+                        .addOnSuccessListener(bytes -> {
+                            String contenido = new String(bytes, StandardCharsets.UTF_8);
+                            TextView popupContenido = popupInformeDiario.getDialog().findViewById(R.id.contenido_popup);
+                            popupContenido.setText(contenido);
+                            popupInformeDiario.enseñarPopUp();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("FirebaseStorage", "Error al descargar informe.txt", e);
+                            Toast.makeText(this, "Error al cargar el informe.", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupMQTT() {

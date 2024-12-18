@@ -254,12 +254,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Consejo del día"
+                android:text="Informe diario"
                 app:layout_constraintStart_toStartOf="@+id/boxExample23"
                 app:layout_constraintTop_toTopOf="@+id/boxExample23" />
 
             <ImageView
-                android:id="@+id/iconoConsejo"
+                android:id="@+id/iconoInforme"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="8dp"
@@ -267,6 +267,17 @@
                 app:layout_constraintStart_toEndOf="@+id/textView28"
                 app:layout_constraintTop_toTopOf="@+id/textView28"
                 app:srcCompat="@drawable/icono_check" />
+
+            <ImageView
+                android:id="@+id/iconoAbrirInforme"
+                android:layout_width="34dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="200dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView28"
+                app:layout_constraintStart_toEndOf="@+id/textView28"
+                app:layout_constraintTop_toTopOf="@+id/textView28"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/icono_mas" />
 
             <TextView
                 android:id="@+id/textView29"
@@ -276,7 +287,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Es recomendable que trates de disminuir el nivel de ruido en tu ambiente. "
+                android:text="pulse el botón para ver su informe diario."
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/boxExample23"
                 app:layout_constraintEnd_toEndOf="@+id/boxExample23"
@@ -389,21 +400,24 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- RecyclerView -->
+
+                <!-- Botón Añadir -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewMetaActual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:minHeight="100dp"
                     android:maxHeight="200dp"
+                    android:minHeight="100dp"
                     android:overScrollMode="ifContentScrolls"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11"
+                    android:scrollbars="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/imageView21"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:scrollbars="vertical" />
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11"
+                    app:layout_constraintVertical_bias="1.0" />
 
-                <!-- Botón Añadir -->
                 <ImageView
                     android:id="@+id/imageView21"
                     android:layout_width="34dp"
