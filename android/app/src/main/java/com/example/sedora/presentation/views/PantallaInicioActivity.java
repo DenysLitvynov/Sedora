@@ -153,7 +153,7 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
                 // Suscripciones si la conexión es exitosa
                 client.subscribe("Sedora/sensores/temperatura", QOS);
                 client.subscribe("Sedora/sensores/humedad", QOS);
-                client.subscribe("Sedora/sensores/sonido", QOS);
+                client.subscribe("Sedora/sensores/ruido", QOS);
                 client.subscribe("Sedora/sensores/luminosidad", QOS);
                 Log.i(TAG, "Conectado al broker y suscrito a los tópicos.");
 
@@ -463,10 +463,10 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
                     if (textHumidity != null) {
                         textHumidity.setText(humedad + " %");
                     }
-                } else if (topic.equals("Sedora/sensores/sonido")) {
+                } else if (topic.equals("Sedora/sensores/ruido")) {
                     int sonido = Integer.parseInt(payload);
                     if (textView18 != null) {
-                        String estadoSonido = (sonido == 1) ? "Inadecuado" : "Adecuado";
+                        String estadoSonido = (sonido == 0) ? "Inadecuado" : "Adecuado";
                         textView18.setText(estadoSonido);
                     }
                 } else if (topic.equals("Sedora/sensores/luminosidad")) {
