@@ -3,8 +3,8 @@
 #include <ArduinoJson.h>
 
 // Configuración WiFi
-const char* ssid = "MiFibra-3078";
-const char* password = "V5AQboPQ";
+const char* ssid = "MiFibra-E917";
+const char* password = "7z3Mm7Tk";
 
 // Pines del sensor HC-SR04
 const int trigPin = 26;

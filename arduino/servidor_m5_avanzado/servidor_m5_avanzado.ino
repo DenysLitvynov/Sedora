@@ -5,12 +5,12 @@
 #include <ArduinoJson.h>
 #include "sedora1_map.h"
 #include <PubSubClient.h>
-#include <WiFiClientSecure.h> // Necesario para WebSocket
+#include <WiFiClientSecure.h>
 
 // Definiciones
 #define DHTPIN 26
 #define DHTTYPE DHT11
-#define LED_PIN 2 // Pin donde está conectado el LED
+#define LED_PIN 2  // Pin donde está conectado el LED
 DHT dht(DHTPIN, DHTTYPE);
 int micPin = 35;
 int ldrPin = 36;
@@ -30,15 +30,18 @@ int pulsador2 = 0;
 #define AZUL 0x001F
 
 //Cambiar a la red wifi que se vaya a usar cada vez
-const char* ssid = "MiFibra-3078";
-const char* password = "V5AQboPQ";
+const char* ssid = "MiFibra-E917";
+const char* password = "7z3Mm7Tk";
 
-char texto[200];
-boolean recibidoDist = false;
-boolean recibidoPulsadores = false;
 
 AsyncUDP udp;
 int currentScreen = 0;
+
+char textoDistancia[200];
+char textoPulsadores[200];
+bool recibidoDist = false;
+bool recibidoPulsadores = false;
+
 
 //=============LED=============
 #define MQTT_CLIENT_ID "M5Stack_LED"
@@ -46,7 +49,7 @@ int currentScreen = 0;
 const char* mqtt_server_led = "broker.hivemq.com";
 const char* mqtt_client_led_name = "M5Stack_LED";
 const int mqtt_port_led = 1883;
-WiFiClient espClient_led;    // En lugar de WiFiClientSecure
+WiFiClient espClient_led;  // En lugar de WiFiClientSecure
 PubSubClient client_led(espClient_led);
 // Variables
 bool ledState = false;
@@ -129,30 +132,32 @@ void callbackMQTTLed(char* topic, byte* payload, unsigned int length) {
     }
   }
 }
-
 //------------------------------------------------
+// Inicializar UDP
 //------------------------------------------------
 void iniciarUDP() {
   if (udp.listen(1234)) {
     udp.onPacket([](AsyncUDPPacket packet) {
-      strncpy(texto, (char*)packet.data(), sizeof(texto));
-      texto[sizeof(texto) - 1] = '\0';
-
+      char data[200];
+      strncpy(data, (char*)packet.data(), sizeof(data));
+      data[sizeof(data) - 1] = '\0';
 
       DynamicJsonDocument doc(200);
-      DeserializationError error = deserializeJson(doc, texto);
+      DeserializationError error = deserializeJson(doc, data);
 
       if (!error) {
         if (doc.containsKey("Distancia")) {
+          strncpy(textoDistancia, data, sizeof(textoDistancia));
           recibidoDist = true;
           Serial.println("Datos de distancia recibidos");
         } else if (doc.containsKey("asiento") && doc.containsKey("respaldo")) {
+          strncpy(textoPulsadores, data, sizeof(textoPulsadores));
           recibidoPulsadores = true;
           Serial.println("Datos de pulsadores recibidos");
         }
       } else {
         Serial.println("Error al deserializar JSON");
-        Serial.println(error.c_str());  
+        Serial.println(error.c_str());
       }
     });
   } else {
@@ -160,18 +165,16 @@ void iniciarUDP() {
   }
 }
 
-
 //------------------------------------------------
+// Función para mostrar datos de distancia
 //------------------------------------------------
-unsigned long tiempoUltimaAlerta = 0;  // Variable global para almacenar el tiempo de la última alerta
-const unsigned long intervaloAlerta = 60000;  // 1 minuto en milisegundos
-
-// Función para mostrar los datos de distancia
 void mostrarDatosUDP_DISTANCIA() {
+
+
   if (recibidoDist) {
     recibidoDist = false;
     DynamicJsonDocument jsonBufferRecv(200);
-    DeserializationError error = deserializeJson(jsonBufferRecv, texto);
+    DeserializationError error = deserializeJson(jsonBufferRecv, textoDistancia);
     if (error) return;
 
     distancia = jsonBufferRecv["Distancia"];
@@ -190,59 +193,50 @@ void mostrarDatosUDP_DISTANCIA() {
   }
 }
 
-// Función para mostrar los datos de los pulsadores
+//------------------------------------------------
+// Función para mostrar datos de pulsadores
+//------------------------------------------------
 void mostrarDatosUDP_PULSADORES() {
-  
+
+  unsigned long tiempoUltimaAlerta = 0;         // Variable global para almacenar el tiempo de la última alerta
+  const unsigned long intervaloAlerta = 60000;  // 1 minuto en milisegundos
+
   if (recibidoPulsadores) {
     recibidoPulsadores = false;
-
     DynamicJsonDocument jsonBufferRecv(200);
-    DeserializationError error = deserializeJson(jsonBufferRecv, texto);
+    DeserializationError error = deserializeJson(jsonBufferRecv, textoPulsadores);
     if (error) {
       Serial.println("Error al deserializar el JSON recibido");
     } else {
+      pulsador1 = jsonBufferRecv["asiento"];
+      pulsador2 = jsonBufferRecv["respaldo"];
+    }
 
-      if (jsonBufferRecv.containsKey("asiento")) {
-        pulsador1 = jsonBufferRecv["asiento"];
+    M5.Lcd.setCursor(10, 170);
+    M5.Lcd.print("Pulsador1: ");
+    M5.Lcd.print(pulsador1 == 1 ? "Pulsado" : "No pulsado");
+
+    M5.Lcd.setCursor(10, 190);
+    M5.Lcd.print("Pulsador2: ");
+    M5.Lcd.print(pulsador2 == 1 ? "Pulsado" : "No pulsado");
+
+    M5.Lcd.setCursor(10, 210);
+    if (pulsador1 == 1 && pulsador2 == 1) {
+      M5.Lcd.println("Sentado correctamente");
+    } else {
+      M5.Lcd.println("Sentado incorrectamente");
+    }
+
+    if (pulsador1 == 0 || pulsador2 == 0) {
+      if (millis() - tiempoUltimaAlerta >= intervaloAlerta) {
+        M5.Speaker.tone(500, 200);
+        tiempoUltimaAlerta = millis();
       }
-      if (jsonBufferRecv.containsKey("respaldo")) {
-        pulsador2 = jsonBufferRecv["respaldo"];
-      }
-      
+    } else {
+      M5.Speaker.mute();
     }
   }
-
- // Mostrar el estado de los pulsadores
-M5.Lcd.setCursor(10, 170);
-M5.Lcd.print("Pulsador1: ");
-M5.Lcd.print(pulsador1 == 1 ? "Pulsado" : "No pulsado");
-
-M5.Lcd.setCursor(10, 190);
-M5.Lcd.print("Pulsador2: ");
-M5.Lcd.print(pulsador2 == 1 ? "Pulsado" : "No pulsado");
-
-// Mostrar si está sentado correctamente o incorrectamente
-M5.Lcd.setCursor(10, 210);
-if (pulsador1 == 1 && pulsador2 == 1) {
-  M5.Lcd.println("Sentado correctamente");
-} else {
-  M5.Lcd.println("Sentado incorrectamente");
 }
-
-
-  // Lógica de alerta si está mal sentado
-  if (pulsador1 == 0 || pulsador2 == 0) {  // Si cualquiera de los pulsadores no está presionado
-    if (millis() - tiempoUltimaAlerta >= intervaloAlerta) {  // Si ha pasado 1 minuto desde la última alerta    
-
-      M5.Speaker.tone(500, 200);  // Emitir un tono
-      tiempoUltimaAlerta = millis();  // Reiniciar el temporizador de la última alerta
-    }
-  } else {
-    // Si está sentado correctamente, apagar cualquier alerta previa
-    M5.Speaker.mute();
-  }
-}
-
 
 //------------------------------------------------
 //Funciones que tiene que ver con los sensores
@@ -307,8 +301,12 @@ void verPantallaPrincipal(float hum, float temp, int micValue, int ldrValue) {
   mostrarTemperatura(10, 90, temp);
   mostrarNivelDeSonido(10, 50, micValue);
   mostrarLuminosidad(10, 70, ldrValue);
-  mostrarDatosUDP_DISTANCIA();
-  mostrarDatosUDP_PULSADORES();
+  if (recibidoDist) {
+    mostrarDatosUDP_DISTANCIA();
+  }
+  if (recibidoPulsadores) {
+    mostrarDatosUDP_PULSADORES();
+  }
 }
 //------------------------------------------------
 //------------------------------------------------
@@ -415,20 +413,20 @@ void setup() {
   conectarWiFi();
   client.setServer(mqtt_server, mqtt_port);
 
-//================LED================
+  //================LED================
   // Configurar MQTT LED
-    client_led.setServer(mqtt_server_led, mqtt_port_led);
-    client_led.setCallback(callbackMQTTLed);
-    conectarMQTTLed();
+  client_led.setServer(mqtt_server_led, mqtt_port_led);
+  client_led.setCallback(callbackMQTTLed);
+  conectarMQTTLed();
 
-    // Configurar LED
-    pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, LOW);
-//====================================
+  // Configurar LED
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
+  //====================================
 
   // Conectar al broker MQTT
   conectarMQTT();
-  
+
   iniciarUDP();
   dht.begin();
   verPantallaPrincipal(0, 0, 0, 0);
@@ -438,10 +436,10 @@ void setup() {
 void loop() {
   M5.update();
 
-   if (!client.connected()) {
+  if (!client.connected()) {
     conectarMQTT();
   }
-  
+
   //========LED=======
   if (!client_led.connected()) {
     conectarMQTTLed();
@@ -451,7 +449,7 @@ void loop() {
   client.loop();
   client_led.loop();
 
-  
+
   unsigned long currentMillis = millis();
 
   float temp = dht.readTemperature();
