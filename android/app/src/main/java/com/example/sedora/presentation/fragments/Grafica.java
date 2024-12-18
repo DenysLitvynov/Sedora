@@ -127,12 +127,12 @@ public class Grafica extends Fragment {
 
                 case "Horas Sensibles":
                         crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSensibles,
-                                "Horas","Dias",null,true,false);
+                                "Avisos","Horas",null,true,false);
                     break;
 
                 case "Progreso Avisos":
                     crearGraficaNotis(vista_graficas,vistaGrafica,puntosProgresoAvisos,
-                            "Numero de Avisos","Dias","Distancia al monitor",true,false);
+                            "Avisos","Dias","Distancia al monitor",true,false);
 
                             hacerVisible_Grafica2(vista_graficas,true);
                     break;
@@ -147,25 +147,25 @@ public class Grafica extends Fragment {
          else if (mensual_o_semanal.equals("mensual")) {
             switch (grafica_elegida) {
                 case "Horas Sentado":
-                    crearGraficaDatos("presion1Promedio",puntosHorasSentado,vistaGrafica,"Horas","Dias",
+                    crearGraficaDatos("presion1Promedio",puntosHorasSentado,vistaGrafica,"Cantidad de Horas","Dias",
                             false,false,vista_graficas);
                     break;
 
                 case "Horas Sensibles":
                     crearGraficaNotis(vista_graficas,vistaGrafica,puntosHorasSensibles,
-                            "Horas","Dias",null,false,false);
+                            "Avisos","Horas",null,false,false);
 
                     break;
 
                 case "Progreso Avisos":
                     crearGraficaNotis(vista_graficas,vistaGrafica,puntosProgresoAvisos,
-                            "Numero de Avisos","Dias","Distancia al monitor",false,false);
+                            "Avisos","Dias","Distancia al monitor",false,false);
                     hacerVisible_Grafica2(vista_graficas,false);
                     break;
 
                 case "Avisos Ignorados":
                     crearGraficaNotis(vista_graficas,vistaGrafica,puntosAvisosIgnorados,
-                            "Avisos","Dias",null,false,false);
+                            "Avisos Ignorados","Dias",null,false,false);
                     break;
             }
         }
@@ -199,15 +199,10 @@ public class Grafica extends Fragment {
                         if (es_semanal==true){
                             // Llama a crearGrafica aquí, cuando los datos ya estén listos
                             grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
-                            crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
-                            if (esGrafica2){
-                                setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
-                            }
-                            //ESTO SE PODRIA HACER EN UN CALLBACK pa no meter to.do en la funcion,
-                            // pero no se como van los callbacks en JAVA. Esta nota es pa mi.
+                        }else {
+                            grafica_a_cual_se_añade.filtrarDatosPorMesActual();
                         }
-                        grafica_a_cual_se_añade.filtrarDatosPorMesActual();
+
                         crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
                         setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
                         if (esGrafica2){
@@ -283,15 +278,10 @@ public class Grafica extends Fragment {
                         if (es_semanal==true){
                             // Llama a crearGrafica aquí, cuando los datos ya estén listos
                             grafica_a_cual_se_añade.filtrarDatosPorSemanaActual();
-                            crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
-                            setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
-
-                            if (esGrafica2){
-                                setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, true);
-                            }
-
+                        }else {
+                            grafica_a_cual_se_añade.filtrarDatosPorMesActual();
                         }
-                        grafica_a_cual_se_añade.filtrarDatosPorMesActual();
+
                         crearGrafica(grafica_a_cual_se_añade, vistaGrafica, yTitulo, xTitulo);
                         setMaximo_Minimos_Promedios(vista,grafica_a_cual_se_añade, false);
                         if (esGrafica2){
@@ -418,7 +408,7 @@ public class Grafica extends Fragment {
         grafica2.setVisibility(View.VISIBLE);
 
         crearGraficaNotis(vista_graficas,grafica2,puntosProgresoAvisos2,
-                "Horas","Dias","Postura",esSemanal,true);
+                "Avisos","Dias","Postura",esSemanal,true);
 
 //
 //        // Hacer visibles los valores asociados
