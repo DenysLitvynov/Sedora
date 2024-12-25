@@ -14,11 +14,51 @@
       },
       "oauth_client": [
         {
+          "client_id": "293841495614-aors1kc252vk078jqm8bkntb45kardug.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sedora",
+            "certificate_hash": "3e4047f8cd49ba9e5605ca0b4918bd9a0a6791b4"
+          }
+        },
+        {
           "client_id": "293841495614-hlbaf5a2cdg7ak64rjcjjagr2qmdmlp8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.sedora",
             "certificate_hash": "1b83de06f3d8bbc7a27df84a7bb8cc41d0066e1a"
+          }
+        },
+        {
+          "client_id": "293841495614-jt5ruk1prf2p3j4kemmoqn6vth947ll6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sedora",
+            "certificate_hash": "9a5054c221f853972c2a67038592f4b09e431652"
+          }
+        },
+        {
+          "client_id": "293841495614-mjibl55dcao07sls7v82sfnlbndqkv29.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sedora",
+            "certificate_hash": "a4e232bd4209bb1108a672d841abe996aeb214b3"
+          }
+        },
+        {
+          "client_id": "293841495614-mqpggai4nnrcbtdldh5ogdqo84827a13.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sedora",
+            "certificate_hash": "de1ac42dd5a12c866f6bff1a32b313256cab5d2d"
+          }
+        },
+        {
+          "client_id": "293841495614-r9p5snjv6hlishl2f6aum1afivnum1dp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sedora",
+            "certificate_hash": "3ae506611cdc7e58bf4a287ce4fa877172f71e34"
           }
         },
         {
@@ -28,7 +68,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCZD_v8SBYJliG5KWE_9ALBhDrja5-OjKs"
+          "current_key": "AIzaSyDWJU2rAua4el9y6DkXLY7az7UjCV1qnPI"
         }
       ],
       "services": {
