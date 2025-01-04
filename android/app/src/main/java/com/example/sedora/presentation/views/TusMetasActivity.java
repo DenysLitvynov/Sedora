@@ -2,7 +2,6 @@ package com.example.sedora.presentation.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,13 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sedora.R;
-import com.example.sedora.model.Meta;
-import com.example.sedora.presentation.adapters.MetaAdapter;
-import com.example.sedora.presentation.managers.NotificacionManager;
+import com.example.sedora.model.EstadoMeta;
+import com.example.sedora.model.MetaUsuario;
+import com.example.sedora.presentation.adapters.MetaUsuarioAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +27,20 @@ public class TusMetasActivity extends AppCompatActivity {
 
     private RecyclerView recyclerMetaActual;
     private RecyclerView recyclerProximasMetas;
-    private MetaAdapter metaActualAdapter;
-    private MetaAdapter proximasMetasAdapter;
-    private List<Meta> metasList;
-    private List<Meta> metaActualList;
-    private List<Meta> proximasMetasList;
+    private MetaUsuarioAdapter metaActualAdapter;
+    private MetaUsuarioAdapter proximasMetasAdapter;
+    private List<MetaUsuario> metasList;
+    private List<MetaUsuario> metaActualList;
+    private List<MetaUsuario> proximasMetasList;
     private FirebaseFirestore db;
     private ImageView botonProximasMetas;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tus_metas);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         // Configurar el Header
         Header header = findViewById(R.id.header);
@@ -62,63 +64,93 @@ public class TusMetasActivity extends AppCompatActivity {
         metaActualList = new ArrayList<>();
         proximasMetasList = new ArrayList<>();
 
-        // Cargar datos desde Firestore
-        cargarMetasDesdeFirestore();
-
-        // Configurar el botón para abrir "TusMetas2Activity"
         botonProximasMetas = findViewById(R.id.boton_proximas_metas);
         botonProximasMetas.setOnClickListener(v -> {
             Intent intent = new Intent(TusMetasActivity.this, TusMetas2Activity.class);
             startActivity(intent);
         });
+
+        cargarTusMetasActivityMetaActualDesdeFirestore();
+
+        cargarProximasMetasDesdeFirestore();
     }
 
-    private void cargarMetasDesdeFirestore() {
-        db.collection("metas")
-                .orderBy("numeroMeta", Query.Direction.ASCENDING)
-                .addSnapshotListener((querySnapshot, error) -> {
-                    if (error != null) {
-                        Toast.makeText(this, "Error al cargar las metas.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (querySnapshot != null) {
-                        metasList.clear();
-                        metaActualList.clear();
-                        proximasMetasList.clear();
+    private void cargarProximasMetasDesdeFirestore() {
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
 
                         for (DocumentSnapshot document : querySnapshot) {
-                            Meta meta = document.toObject(Meta.class);
-                            if (meta != null) {
-                                metasList.add(meta);
-                                if ("actual".equals(meta.getEstado())) {
-                                    metaActualList.add(meta);
-                                } else if ("pendiente".equals(meta.getEstado())) {
-                                    proximasMetasList.add(meta);
+                            String estado = document.getString("estadoMeta");
+                            if (EstadoMeta.PENDIENTE.name().equals(estado)) {
+                                if (proximasMetasList.size() < 2) {
+                                    MetaUsuario metaUsuario = document.toObject(MetaUsuario.class);
+                                    proximasMetasList.add(metaUsuario);
                                 }
+
                             }
                         }
 
-                        // Limitar las próximas metas a las 2 siguientes
-                        if (proximasMetasList.size() > 2) {
-                            proximasMetasList = proximasMetasList.subList(0, 2);
+
+                        if (proximasMetasAdapter == null) {
+                            proximasMetasAdapter = new MetaUsuarioAdapter(this, proximasMetasList, 0);
+                            recyclerProximasMetas.setAdapter(proximasMetasAdapter);
+                        } else {
+                            proximasMetasAdapter.notifyDataSetChanged();
                         }
 
-                        actualizarAdaptadores();
+                    } else {
+                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
+                    }
+                    actualizarAdaptadores();
+                });
+    }
+
+    private void cargarTusMetasActivityMetaActualDesdeFirestore() {
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        metaActualList.clear();
+
+                        for (DocumentSnapshot document : querySnapshot) {
+                            String estado = document.getString("estadoMeta");
+                            if (EstadoMeta.ACTUAL.name().equals(estado)) {
+                                MetaUsuario metaUsuario = document.toObject(MetaUsuario.class);
+                                metaActualList.add(metaUsuario);
+                            }
+                        }
+
+                        if (metaActualAdapter == null) {
+                            metaActualAdapter = new MetaUsuarioAdapter(this, metaActualList, 0);
+                            recyclerMetaActual.setAdapter(metaActualAdapter);
+                        } else {
+                            metaActualAdapter.notifyDataSetChanged();
+                        }
+
+                    } else {
+                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void actualizarAdaptadores() {
         if (metaActualAdapter == null) {
-            metaActualAdapter = new MetaAdapter(this, metaActualList, 0);
+            metaActualAdapter = new MetaUsuarioAdapter(this, metaActualList, 0);
             recyclerMetaActual.setAdapter(metaActualAdapter);
         } else {
             metaActualAdapter.notifyDataSetChanged();
         }
 
         if (proximasMetasAdapter == null) {
-            proximasMetasAdapter = new MetaAdapter(this, proximasMetasList, 1);
+            proximasMetasAdapter = new MetaUsuarioAdapter(this, proximasMetasList, 1);
             recyclerProximasMetas.setAdapter(proximasMetasAdapter);
         } else {
             proximasMetasAdapter.notifyDataSetChanged();

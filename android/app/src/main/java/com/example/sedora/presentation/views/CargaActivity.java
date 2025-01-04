@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sedora.R;
 import com.example.sedora.firebase.MetasSeeder;
+import com.example.sedora.presentation.managers.MetasManager;
 
 public class CargaActivity extends AppCompatActivity {
 
@@ -17,7 +18,8 @@ public class CargaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_de_carga);
 
-       //MetasSeeder.seedMetas();
+       MetasManager metasManager = new MetasManager();
+       metasManager.comprobarMetas();
 
 
         new Handler().postDelayed(new Runnable() {

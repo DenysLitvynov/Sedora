@@ -12,19 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sedora.R;
-import com.example.sedora.model.Meta;
+import com.example.sedora.model.MetaUsuario;
 
 import java.util.List;
 
-public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MetaViewHolder> {
+public class MetaUsuarioAdapter extends RecyclerView.Adapter<MetaUsuarioAdapter.MetaViewHolder> {
 
-    private final List<Meta> metas;
+    private final List<MetaUsuario> metasUsuario;
     private final Context context;
     private final int tipoVista; // 0: Meta Actual, 1: Próximas Metas
 
-    public MetaAdapter(Context context, List<Meta> metas, int tipoVista) {
+    public MetaUsuarioAdapter(Context context, List<MetaUsuario> metasUsuario, int tipoVista) {
         this.context = context;
-        this.metas = metas;
+        this.metasUsuario = metasUsuario;
         this.tipoVista = tipoVista; // Aquí establecemos el tipo de vista
     }
 
@@ -38,20 +38,21 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MetaViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MetaViewHolder holder, int position) {
-        Meta meta = metas.get(position);
+        MetaUsuario metaUsuario = metasUsuario.get(position);
 
         // Configurar datos
-        holder.metaTitulo.setText(meta.getNombre());
-        holder.metaDescripcion.setText(meta.getDescripcion());
-        holder.metaNumero.setText(String.valueOf(meta.getNumeroMeta()));
+        holder.metaTitulo.setText(metaUsuario.getMeta().getNombre());
+        holder.metaDescripcion.setText(metaUsuario.getMeta().getDescripcion());
+        holder.metaNumero.setText(String.valueOf(metaUsuario.getMeta().getNumeroMeta()));
 
-        holder.metaProgresoBar.setMax(meta.getProgresoTotal());
-        holder.metaProgresoBar.setProgress(meta.getProgresoActual());
 
-        String progresoTexto = meta.getProgresoActual() + "/" + meta.getProgresoTotal();
+        holder.metaProgresoBar.setMax(metaUsuario.getMeta().getPorcentaje());
+        holder.metaProgresoBar.setProgress(metaUsuario.getPorcentajeActual());
+
+        String progresoTexto = metaUsuario.getPorcentajeActual() + "/" + metaUsuario.getMeta().getPorcentaje();
         holder.metaProgresoTexto.setText(progresoTexto);
 
-        int imageResId = context.getResources().getIdentifier(meta.getImagenDrawableName(), "drawable", context.getPackageName());
+        int imageResId = context.getResources().getIdentifier(metaUsuario.getMeta().getImagenDrawableName(), "drawable", context.getPackageName());
         if (imageResId != 0) {
             holder.metaIcono.setImageResource(imageResId);
         } else {
@@ -68,7 +69,7 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MetaViewHolder
 
     @Override
     public int getItemCount() {
-        return metas.size();
+        return metasUsuario.size();
     }
 
     public static class MetaViewHolder extends RecyclerView.ViewHolder {

@@ -5,7 +5,6 @@ import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,8 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.sedora.R;
-import com.example.sedora.model.Meta;
-import com.example.sedora.presentation.adapters.MetaAdapter;
+import com.example.sedora.model.EstadoMeta;
+import com.example.sedora.model.MetaUsuario;
+import com.example.sedora.presentation.adapters.MetaUsuarioAdapter;
 import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.example.sedora.presentation.managers.MetasManager;
 
@@ -41,15 +41,13 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import com.example.sedora.presentation.managers.MetasManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -83,8 +81,8 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     private TextView textView6;
     private TextView textView5;
     private RecyclerView recyclerMetaActual;
-    private MetaAdapter metaActualAdapter;
-    private List<Meta> metaActualList;
+    private MetaUsuarioAdapter metaActualAdapter;
+    private List<MetaUsuario> metaUsuarioActualList;
     private FirebaseFirestore db;
 
     TextView metaTitulo, metaDescripcion;
@@ -98,7 +96,11 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
         // Inicializar Firebase y lista de datos
         db = FirebaseFirestore.getInstance();
-        metaActualList = new ArrayList<>();
+        metaUsuarioActualList = new ArrayList<>();
+
+        // Inicializar Firebase y obtener usuario actual
+        firebaseHelper = new FirebaseHelper();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         // Inicializar RecyclerView
         recyclerMetaActual = findViewById(R.id.recyclerViewMetaActual);
@@ -117,10 +119,6 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         // Cargar meta actual desde Firestore
         cargarMetaActualDesdeFirestore();
         gestionarCambioDeMeta();
-
-        // Inicializar Firebase y obtener usuario actual
-        firebaseHelper = new FirebaseHelper();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         // Inicializar referencias a los elementos de la interfaz
         halfDonutChart = findViewById(R.id.halfDonutChart);
@@ -269,30 +267,32 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     }
 
     private void cargarMetaActualDesdeFirestore() {
-        db.collection("metas")
-                .whereEqualTo("estado", "actual")
-                .addSnapshotListener((querySnapshot, error) -> {
-                    if (error != null) {
-                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (querySnapshot != null) {
-                        metaActualList.clear();
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        metaUsuarioActualList.clear();
 
                         for (DocumentSnapshot document : querySnapshot) {
-                            Meta meta = document.toObject(Meta.class);
-                            if (meta != null) {
-                                metaActualList.add(meta);
+                            String estado = document.getString("estadoMeta");
+                            if (EstadoMeta.ACTUAL.name().equals(estado)) {
+                                MetaUsuario metaUsuario = document.toObject(MetaUsuario.class);
+                                metaUsuarioActualList.add(metaUsuario);
                             }
                         }
 
                         if (metaActualAdapter == null) {
-                            metaActualAdapter = new MetaAdapter(this, metaActualList, 0);
+                            metaActualAdapter = new MetaUsuarioAdapter(this, metaUsuarioActualList, 0);
                             recyclerMetaActual.setAdapter(metaActualAdapter);
                         } else {
                             metaActualAdapter.notifyDataSetChanged();
                         }
+
+                    } else {
+                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

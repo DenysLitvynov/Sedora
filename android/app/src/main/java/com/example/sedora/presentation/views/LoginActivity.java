@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import com.example.sedora.R;
 import com.example.sedora.data.SensorDataList;
 import com.example.sedora.model.SensorData;
 import com.example.sedora.presentation.managers.FirebaseHelper;
-import com.example.sedora.presentation.managers.NotificacionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,10 +27,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GithubAuthProvider;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
-import com.google.firebase.auth.OAuthCredential;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -207,6 +203,10 @@ public class LoginActivity extends AppCompatActivity {
 //                                NotificacionManager notificacionManager = new NotificacionManager();
 //                                notificacionManager.subirNotificacionesAFirestore(usuario);
 
+
+                                //CollectionReference metasReference = db.collection("metas");
+
+                                firebaseHelper.metasManager.comprobarMetasUsuario(usuario);
                             }
                             verificaSiUsuarioValidado();
                         } else {

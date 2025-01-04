@@ -1,9 +1,15 @@
 package com.example.sedora.presentation.managers;
 
-import android.util.Log;
+
+import com.example.sedora.firebase.MetasSeeder;
 import com.example.sedora.model.Meta;
+import com.example.sedora.model.MetaUsuario;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MetasManager {
 
@@ -19,9 +25,108 @@ public class MetasManager {
         void onError(Exception e);
     }
 
-    public void pasarMetaActualAConseguida(MetaUpdateCallback callback) {
-        // Buscar la meta actual
+
+    public void iniciarMetas(){
+        MetasSeeder.seedMetas();
+    }
+
+    public void iniciarMetasUsuario(FirebaseUser user) {
+        if (user == null) {
+            System.err.println("Usuario no válido.");
+            return;
+        }
+
+        List<Meta> listaMetas = new ArrayList<>();
+
         db.collection("metas")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Meta meta = document.toObject(Meta.class);
+                            listaMetas.add(meta);
+                        }
+
+                        for (Meta meta : listaMetas) {
+                            db.collection("usuarios")
+                                    .document(user.getUid())
+                                    .collection("metasUsuario")
+                                    .document(String.valueOf(meta.getNumeroMeta())).set(new MetaUsuario(meta))
+                                    .addOnSuccessListener(docRef -> {
+                                        System.out.println("Meta añadida con ID: " + docRef.toString());
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        System.err.println("Error al guardar meta: " + e.getMessage());
+                                    });
+                        }
+                    } else {
+                        System.err.println("No se encontraron metas en la colección 'metas'.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    System.err.println("Error al recuperar metas: " + e.getMessage());
+                });
+    }
+
+
+    public void comprobarMetas() {
+
+        db.collection("metas")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult() == null || task.getResult().isEmpty()) {
+                            iniciarMetas();
+                            System.out.println("Metas creadas");
+                        }
+                    }
+                });
+    }
+
+
+    public void comprobarMetasUsuario(FirebaseUser user) {
+
+        db.collection("usuarios")
+                .document(user.getUid())
+                .collection("metasUsuario")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult() == null || task.getResult().isEmpty()) {
+                            System.out.println("El usuario no tiene metas. Es necessario crearlas");
+                            iniciarMetasUsuario(user);
+                        }
+                    } else {
+                        System.err.println("Error al comprobar metas: " + task.getException());
+                    }
+                });
+    }
+
+    public void obtenerMetasUsuaruio(FirebaseUser user) {
+
+        db.collection("usuarios")
+                .document(user.getUid())
+                .collection("metasUsuario")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult() == null || task.getResult().isEmpty()) {
+                            System.out.println("El usuario no tiene metas. Es necessario crearlas");
+                            iniciarMetasUsuario(user);
+                        }
+                    } else {
+                        System.err.println("Error al comprobar metas: " + task.getException());
+                    }
+                });
+    }
+
+
+
+    public void pasarMetaActualAConseguida(MetaUpdateCallback callback) {
+        System.out.println("asdf");
+
+        // Buscar la meta actual
+      /*  db.collection("metasUsuario")
                 .whereEqualTo("estado", "actual")
                 .limit(1)
                 .get()
@@ -78,5 +183,7 @@ public class MetasManager {
                     }
                 })
                 .addOnFailureListener(callback::onError);
+        */
     }
+
 }
