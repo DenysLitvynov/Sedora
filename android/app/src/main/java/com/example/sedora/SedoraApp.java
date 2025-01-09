@@ -8,7 +8,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import com.example.sedora.presentation.managers.NotificationWorker;
+//import com.example.sedora.presentation.managers.NotificationWorker;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,15 +20,15 @@ public class SedoraApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        PeriodicWorkRequest notificationWorkRequest =
-                new PeriodicWorkRequest.Builder(NotificationWorker.class, 15, TimeUnit.MINUTES)
-                        .build();
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                "NotificationWork",
-                ExistingPeriodicWorkPolicy.KEEP,
-                notificationWorkRequest
-        );
+//        PeriodicWorkRequest notificationWorkRequest =
+//                new PeriodicWorkRequest.Builder(NotificationWorker.class, 15, TimeUnit.MINUTES)
+//                        .build();
+//
+//        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+//                "NotificationWork",
+//                ExistingPeriodicWorkPolicy.KEEP,
+//                notificationWorkRequest
+//        );
 
         Log.d("SedoraApp", "Aplicación iniciada");
 
