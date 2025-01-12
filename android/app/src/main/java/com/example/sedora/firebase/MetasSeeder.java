@@ -18,15 +18,16 @@ public class MetasSeeder {
         metas.add(new Meta("¡Mantente correcto 2 h!", "Mantén tu posición correcta durante 2 horas.", "icono_sentado", "03"));
         metas.add(new Meta("Luz suficiente", "No recibas alertas por falta de luz durante 1 hora.", "icono_iluminacion", "04"));
         metas.add(new Meta("Luz suficiente II", "No recibas alertas por falta de luz durante 2 horas.", "icono_iluminacion", "05"));
+
         metas.add(new Meta("Perfecto por 3 horas", "Mantén una postura perfecta sin recibir alertas durante 3 horas seguidas.", "icono_sentado2", "06"));
         metas.add(new Meta("No todo es trabajo", "Levántate de la silla al menos 3 veces en 4 horas.","levantarse", "07"));
         metas.add(new Meta("Mantente correcto 4 h", "Mantén una postura correcta durante 4 horas.", "icono_sentado2", "08"));
         metas.add(new Meta("Luz suficiente III", "No recibas alertas por falta de luz durante 3 horas.",  "icono_iluminacion", "09"));
         metas.add(new Meta("No tan cerca", "Evita alertas de proximidad a la pantalla durante 2 horas.", "proximidad_pantalla", "10"));
         metas.add(new Meta("Corrige rápido", "Responde a una alerta de postura poniéndote correctamente 20 veces.", "icono_sentado2", "11"));
-        metas.add(new Meta("Estírate y sigue", "Haz al menos 2 pausas durante 2 horas de trabajo.","estiramiento_meta", "12"));
+        metas.add(new Meta("Estírate y sigue", "Haz al menos 2 pausas durante 2 horas de trabajo.","estiramiento_meta",  "12"));
         metas.add(new Meta("Postura perfecta", "Completa un día laboral con menos de 5 alertas de postura incorrecta.", "postura_incorrecta", "13"));
-        metas.add(new Meta("Distancia saludable", "Mantén una distancia adecuada del dispositivo durante 4 horas sin alertas de proximidad.", "proximidad_pamntalla", "14"));
+        metas.add(new Meta("Distancia saludable", "Mantén una distancia adecuada del dispositivo durante 4 horas sin alertas de proximidad.", "proximidad_pantalla", "14"));
         metas.add(new Meta("Aumenta tus pausas", "Levántate de la silla al menos 8 veces en un día.", "levantarse", "15"));
         metas.add(new Meta("Relaja tu espalda", "Mantén la espalda recta durante 2 horas sin recibir alertas de corrección.", "icono_sentado2", "16"));
         metas.add(new Meta("Sin distracciones", "Evita cualquier alerta de postura o luz durante 3 horas.", "icono_campana_2", "17"));

@@ -7,7 +7,6 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sedora.R;
-import com.example.sedora.firebase.MetasSeeder;
 import com.example.sedora.presentation.managers.MetasManager;
 
 public class CargaActivity extends AppCompatActivity {

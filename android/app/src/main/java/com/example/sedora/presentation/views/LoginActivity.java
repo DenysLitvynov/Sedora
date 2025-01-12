@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
             startActivity(i);
             finish();
         }
@@ -205,8 +206,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                 //CollectionReference metasReference = db.collection("metas");
-
-                                firebaseHelper.metasManager.comprobarMetasUsuario(usuario);
                             }
                             verificaSiUsuarioValidado();
                         } else {

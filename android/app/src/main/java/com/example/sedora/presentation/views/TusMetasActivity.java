@@ -13,15 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sedora.R;
 import com.example.sedora.model.EstadoMeta;
 import com.example.sedora.model.MetaUsuario;
+import com.example.sedora.model.SensorMediaData;
 import com.example.sedora.presentation.adapters.MetaUsuarioAdapter;
+import com.example.sedora.presentation.managers.MetasManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class TusMetasActivity extends AppCompatActivity {
 
@@ -35,12 +39,16 @@ public class TusMetasActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private ImageView botonProximasMetas;
     private FirebaseUser currentUser;
+    private TextView metasCompletadas;
+    private MetasManager metasManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tus_metas);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
 
         // Configurar el Header
         Header header = findViewById(R.id.header);
@@ -58,6 +66,10 @@ public class TusMetasActivity extends AppCompatActivity {
         recyclerMetaActual.setLayoutManager(new LinearLayoutManager(this));
         recyclerProximasMetas.setLayoutManager(new LinearLayoutManager(this));
 
+        metasCompletadas = findViewById(R.id.textViewMetasCompletadas);
+
+        cargarMetasCompletadasDesdeFirestore();
+
         // Inicializar Firebase y listas
         db = FirebaseFirestore.getInstance();
         metasList = new ArrayList<>();
@@ -70,10 +82,17 @@ public class TusMetasActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        metasManager = new MetasManager();
         cargarTusMetasActivityMetaActualDesdeFirestore();
-
         cargarProximasMetasDesdeFirestore();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
 
     private void cargarProximasMetasDesdeFirestore() {
         db.collection("usuarios")
@@ -137,6 +156,25 @@ public class TusMetasActivity extends AppCompatActivity {
 
                     } else {
                         Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void cargarMetasCompletadasDesdeFirestore() {
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .whereEqualTo("estadoMeta", EstadoMeta.COMPLETADO.name()) // Filtrar por estado COMPLETADO
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        int metasCompletadasCount = querySnapshot.size(); // Contar metas completadas
+
+                        // Actualizar el TextView con el número de metas completadas
+                        metasCompletadas.setText(metasCompletadasCount + "/20");
+                    } else {
+                        Toast.makeText(this, "Error al cargar las metas completadas.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

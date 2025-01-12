@@ -49,7 +49,7 @@ public class FirebaseHelper {
                 .add(data)
                 .addOnSuccessListener(docRef -> {
                     System.out.println("Toma guardada: " + docRef.getId());
-                    actualizarResumenDiario(user, data); // Actualizar promedios después de guardar la toma
+                    actualizarResumenDiario(user, data);
                 })
                 .addOnFailureListener(e -> System.err.println("Error al guardar toma: " + e.getMessage()));
     }
