@@ -1,16 +1,10 @@
 package com.example.sedora.presentation.managers;
 
-import android.net.Uri;
 import android.util.Log;
-import android.os.Environment;
-
-import androidx.annotation.NonNull;
 
 import com.example.sedora.model.Notificacion;
 import com.example.sedora.model.SensorData;
 import com.example.sedora.model.Usuario;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -19,9 +13,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,14 +22,20 @@ public class FirebaseHelper {
 
     public final FirebaseFirestore db;
 
+    public final MetasManager metasManager;
+
     public FirebaseHelper() {
         db = FirebaseFirestore.getInstance();
+        metasManager = new MetasManager();
     }
 
     public static void guardarUsuario(final FirebaseUser user) {
-        Usuario usuario = new Usuario(user.getDisplayName(), user.getEmail());
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Usuario usuario = new Usuario(user.getDisplayName(), user.getEmail());
         db.collection("usuarios").document(user.getUid()).set(usuario);
+
     }
 
     public void guardarToma(FirebaseUser user, SensorData data) {
@@ -52,7 +49,7 @@ public class FirebaseHelper {
                 .add(data)
                 .addOnSuccessListener(docRef -> {
                     System.out.println("Toma guardada: " + docRef.getId());
-                    actualizarResumenDiario(user, data); // Actualizar promedios después de guardar la toma
+                    actualizarResumenDiario(user, data);
                 })
                 .addOnFailureListener(e -> System.err.println("Error al guardar toma: " + e.getMessage()));
     }
@@ -305,27 +302,6 @@ public class FirebaseHelper {
                 });
     }
 
-
-   /* public static void crearCarpetaUsuario(FirebaseUser user) {
-        if (user != null) {
-            // Obtener el ID del usuario y construir la ruta específica
-            String userId = user.getUid();
-            String path = "/carpeta/Informes/prueba.txt";
-
-            // Referencia al archivo en Firebase Storage
-            StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(path);
-
-            // Contenido inicial del archivo (para simular la creación de la carpeta)
-            byte[] contenidoInicial = "Este archivo se crea automáticamente para validar la carpeta.".getBytes(StandardCharsets.UTF_8);
-
-            // Subir el archivo a Firebase Storage
-            fileRef.putBytes(contenidoInicial)
-                    .addOnSuccessListener(taskSnapshot -> Log.d("FirebaseStorage", "Carpeta y archivo creados exitosamente en: " + path))
-                    .addOnFailureListener(e -> Log.e("FirebaseStorage", "Error al crear la carpeta/archivo", e));
-        } else {
-            Log.e("FirebaseStorage", "Usuario no autenticado.");
-        }
-    }*/
 
     public static void crearCarpetaUsuario(FirebaseUser user) {
         String fileName = "fichero.txt";
