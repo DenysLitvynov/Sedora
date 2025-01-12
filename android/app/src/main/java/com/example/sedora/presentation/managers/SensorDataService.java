@@ -6,86 +6,80 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import com.example.sedora.R;
-import com.example.sedora.model.SensorData;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
+import com.example.sedora.model.Notificacion;
+
+import java.util.List;
 
 public class SensorDataService extends Service {
 
     private static final String CHANNEL_ID = "SEDORA_SENSOR_SERVICE";
-    private FirebaseHelper firebaseHelper;
+    private static final int NOTIFICATION_ID = 1;
+    private NotificacionManager notificacionManager;
+    private Handler handler;
+    private Runnable notificationRunnable;
+    private boolean areNotificationsBlocked = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d("SensorDataService", "Servicio iniciado");
 
-        // Crear el canal de notificación para el servicio
         createNotificationChannel();
 
-        // Iniciar el servicio en primer plano
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Servicio de Sensores Activo")
                 .setContentText("Recolectando datos del sensor")
-                .setSmallIcon(R.mipmap.ic_launcher) // Usa el ícono predeterminado de tu app
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build();
 
-        startForeground(1, notification);
+        startForeground(NOTIFICATION_ID, notification);
 
-        firebaseHelper = new FirebaseHelper();
+        notificacionManager = new NotificacionManager();
+        handler = new Handler();
+
+        notificationRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (!areNotificationsBlocked) {
+                    enviarNotificacionesPredefinidas();
+                }
+                handler.postDelayed(this, 20000); // 20 segundos
+            }
+        };
+
+        handler.post(notificationRunnable);
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
-        if (usuario != null) {
-            firebaseHelper.escucharCambiosEnDatos(usuario, this::verificarDatosYNotificar);
-        } else {
-            Log.d("SensorDataService", "Usuario no autenticado");
+    private void enviarNotificacionesPredefinidas() {
+        if (areNotificationsBlocked) {
+            Log.d("SensorDataService", "Notificaciones bloqueadas, no se enviarán.");
+            return;
         }
-        return START_STICKY; // Mantener el servicio activo
-    }
 
-    private void verificarDatosYNotificar(SensorData data) {
-        if (data != null) {
-            // Usamos WorkManager para ejecutar NotificationWorker
-            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
-                    .setInputData(createInputDataForWorker(data))  // Pasamos los datos de SensorData al worker
+        List<Notificacion> notificacionesVisibles = notificacionManager.getNotificaciones();
+
+        for (Notificacion notificacion : notificacionesVisibles) {
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle(notificacion.getTitulo())
+                    .setContentText(notificacion.getMensaje())
+                    .setSmallIcon(notificacion.getIcono())
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
                     .build();
-            WorkManager.getInstance(getApplicationContext()).enqueue(workRequest); // Encolamos el worker
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.notify(notificacion.getTitulo().hashCode(), notification);
+            }
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.d("SensorDataService", "Servicio detenido");
-        super.onDestroy();
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    private Data createInputDataForWorker(SensorData data) {
-        // Convertimos SensorData a JSON y lo pasamos como entrada al Worker
-        String jsonData = new Gson().toJson(data);
-        return new Data.Builder()
-                .putString("sensor_data", jsonData) // Pasamos los datos como un String en JSON
-                .build();
     }
 
     private void createNotificationChannel() {
@@ -100,5 +94,18 @@ public class SensorDataService extends Service {
                 manager.createNotificationChannel(channel);
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("SensorDataService", "Servicio detenido");
+        handler.removeCallbacks(notificationRunnable);
+        super.onDestroy();
     }
 }
