@@ -21,6 +21,8 @@ import java.util.List;
 public class SensorDataService extends Service {
 
     private static final String CHANNEL_ID = "SEDORA_SENSOR_SERVICE";
+    private FirebaseHelper firebaseHelper;
+    private final NotificationVerifier notificationVerifier=new NotificationVerifier(this);
     private static final int NOTIFICATION_ID = 1;
     private NotificacionManager notificacionManager;
     private Handler handler;
@@ -43,6 +45,9 @@ public class SensorDataService extends Service {
 
         startForeground(NOTIFICATION_ID, notification);
 
+        firebaseHelper = new FirebaseHelper();
+
+    }
         notificacionManager = new NotificacionManager();
         handler = new Handler();
 
@@ -58,6 +63,15 @@ public class SensorDataService extends Service {
 
         handler.post(notificationRunnable);
     }
+
+    private void verificarDatosYNotificar(SensorData data) {
+        if (data != null) {
+//            // Usamos WorkManager para ejecutar NotificationWorker
+//            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
+//                    .setInputData(createInputDataForWorker(data))  // Pasamos los datos de SensorData al worker
+//                    .build();
+//            WorkManager.getInstance(getApplicationContext()).enqueue(workRequest); // Encolamos el worker
+            notificationVerifier.verificarDatosYNotificar(data);
 
     private void enviarNotificacionesPredefinidas() {
         if (areNotificationsBlocked) {

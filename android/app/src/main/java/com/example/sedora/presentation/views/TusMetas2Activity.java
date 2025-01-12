@@ -8,11 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.sedora.R;
-import com.example.sedora.model.Meta;
-import com.example.sedora.presentation.adapters.MetaAdapter;
+import com.example.sedora.model.EstadoMeta;
+import com.example.sedora.model.MetaUsuario;
+import com.example.sedora.presentation.adapters.MetaUsuarioAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +23,8 @@ import java.util.List;
 public class TusMetas2Activity extends AppCompatActivity {
 
     private RecyclerView recyclerViewMetas;
-    private MetaAdapter metaAdapter;
-    private List<Meta> metasList;
+    private MetaUsuarioAdapter metaUsuarioAdapter;
+    private List<MetaUsuario> metasList;
     private FirebaseFirestore db;
 
     @Override
@@ -45,32 +48,33 @@ public class TusMetas2Activity extends AppCompatActivity {
     }
 
     private void cargarMetasPendientesDesdeFirestore() {
-        db.collection("metas")
-                .whereEqualTo("estado", "pendiente")
-                .addSnapshotListener((querySnapshot, error) -> {
-                    if (error != null) {
-                        Toast.makeText(this, "Error al cargar las metas pendientes.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
 
-                    if (querySnapshot != null) {
-                        metasList.clear();
-
+        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+        db.collection("usuarios")
+        .document(usuario.getUid())
+                .collection("metasUsuario")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
                         for (DocumentSnapshot document : querySnapshot) {
-                            Meta meta = document.toObject(Meta.class);
-                            if (meta != null) {
-                                metasList.add(meta);
+                            String estado = document.getString("estadoMeta");
+                            if (EstadoMeta.PENDIENTE.name().equals(estado)) {
+                                MetaUsuario metaUsuario = document.toObject(MetaUsuario.class);
+                                metasList.add(metaUsuario);
                             }
                         }
 
-                       metasList.sort((meta1, meta2) -> meta1.getNumeroMeta().compareTo(meta2.getNumeroMeta()));
 
-                        if (metaAdapter == null) {
-                            metaAdapter = new MetaAdapter(TusMetas2Activity.this, metasList, 1);
-                            recyclerViewMetas.setAdapter(metaAdapter);
+                        if (metaUsuarioAdapter == null) {
+                            metaUsuarioAdapter = new MetaUsuarioAdapter(TusMetas2Activity.this, metasList, 1);
+                            recyclerViewMetas.setAdapter(metaUsuarioAdapter);
                         } else {
-                            metaAdapter.notifyDataSetChanged();
+                            metaUsuarioAdapter.notifyDataSetChanged();
                         }
+
+                    } else {
+                        Toast.makeText(this, "Error al cargar las metas pendientes.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
