@@ -1,5 +1,9 @@
 package com.example.sedora.presentation.managers;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.sedora.R;
 import com.example.sedora.model.Notificacion;
 
@@ -47,6 +51,7 @@ public class NotificacionManager {
         return habilitadas;
     }
 
+
     // Métodos para habilitar o deshabilitar todas las notificaciones
     public void permitirNotificaciones() {
         luzEnabled = true;
@@ -56,6 +61,36 @@ public class NotificacionManager {
         distanciaEnabled = true;
         estiramientosEnabled = true;
         descansosEnabled = true;
+        hidratacionEnabled = true;
+    }
+
+    public void permitirLuz(){
+        luzEnabled = true;
+    }
+
+    public void permitirSonido(){
+        sonidoEnabled = true;
+    }
+
+    public void permitirTemperatura(){
+        temperaturaEnabled = true;
+    }
+
+    public void permitirPostura(){
+        posturaEnabled = true;
+    }
+    public void permitirDistancia(){
+        distanciaEnabled = true;
+    }
+
+    public void permitirEstiramientos(){
+        estiramientosEnabled = true;
+    }
+    public void permitirDescansos(){
+        descansosEnabled = true;
+    }
+
+    public void permitirHidratacion(){
         hidratacionEnabled = true;
     }
 
@@ -70,36 +105,96 @@ public class NotificacionManager {
         hidratacionEnabled = false;
     }
 
+    public void bloquearLuz(){
+        luzEnabled = false;
+    }
+
+    public void bloquearSonido(){
+        sonidoEnabled = false;
+    }
+
+    public void bloquearTemperatura(){
+        temperaturaEnabled = false;
+    }
+
+    public void bloquearPostura(){
+        posturaEnabled = false;
+    }
+    public void bloquearDistancia(){
+        distanciaEnabled = false;
+    }
+
+    public void bloquearEstiramientos(){
+        estiramientosEnabled = false;
+    }
+    public void bloquearDescansos(){
+        descansosEnabled = false;
+    }
+
+    public void bloquearHidratacion(){
+        hidratacionEnabled = false;
+    }
+
+
+    public void logEstadosNotificaciones() {
+        Log.d("NotificacionManager", "Estado actual de las notificaciones:");
+        Log.d("NotificacionManager", "Luz: " + luzEnabled);
+        Log.d("NotificacionManager", "Sonido: " + sonidoEnabled);
+        Log.d("NotificacionManager", "Temperatura: " + temperaturaEnabled);
+        Log.d("NotificacionManager", "Postura: " + posturaEnabled);
+        Log.d("NotificacionManager", "Distancia: " + distanciaEnabled);
+        Log.d("NotificacionManager", "Estiramientos: " + estiramientosEnabled);
+        Log.d("NotificacionManager", "Descansos: " + descansosEnabled);
+        Log.d("NotificacionManager", "Hidratación: " + hidratacionEnabled);
+    }
+
+
+
     // Métodos individuales para modificar el estado de cada tipo de notificación
     public void toggleLuz(boolean enabled) {
         luzEnabled = enabled;
+        Log.d("NotificacionManager", "Estado de Luz actualizado a: " + luzEnabled);
     }
 
     public void toggleSonido(boolean enabled) {
         sonidoEnabled = enabled;
+        Log.d("NotificacionManager", "Estado de Sonido actualizado a: " + sonidoEnabled);
     }
 
     public void toggleTemperatura(boolean enabled) {
         temperaturaEnabled = enabled;
+        Log.d("NotificacionManager", "Estado de Temperatura actualizado a: " + temperaturaEnabled);
     }
 
     public void togglePostura(boolean enabled) {
         posturaEnabled = enabled;
+        Log.d("NotificacionManager", "Estado de postura actualizado a: " + posturaEnabled);
     }
 
     public void toggleDistancia(boolean enabled) {
         distanciaEnabled = enabled;
+        Log.d("NotificacionManager", "Estado de distancia actualizado a: " + distanciaEnabled);
     }
 
     public void toggleEstiramientos(boolean enabled) {
         estiramientosEnabled = enabled;
+        Log.d("NotificacionManager", "Estado de estiramientos actualizado a: " + estiramientosEnabled);
     }
 
     public void toggleDescansos(boolean enabled) {
         descansosEnabled = enabled;
+        Log.d("NotificacionManager", "Estado de descansos actualizado a: " + descansosEnabled);
     }
 
     public void toggleHidratacion(boolean enabled) {
         hidratacionEnabled = enabled;
+        Log.d("NotificacionManager", "Estado de hidratacion actualizado a: " + hidratacionEnabled);
     }
+
+    public boolean areNotificationsEnabled() {
+        // Devuelve `true` si al menos una notificación está habilitada
+        return luzEnabled || sonidoEnabled || temperaturaEnabled || posturaEnabled ||
+                distanciaEnabled || estiramientosEnabled || descansosEnabled || hidratacionEnabled;
+    }
+
 }

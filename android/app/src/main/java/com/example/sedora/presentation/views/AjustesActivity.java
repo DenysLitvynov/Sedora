@@ -1,7 +1,11 @@
 package com.example.sedora.presentation.views;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -9,14 +13,23 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sedora.model.Notificacion;
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.NotificacionManager;
+import com.example.sedora.presentation.managers.SensorDataService;
 
 public class AjustesActivity extends AppCompatActivity {
 
-    private Switch switchNotificaciones, switchLuz, switchSonido, switchTemperatura,
-            switchPostura, switchDistancia, switchEstiramientos, switchDescansos, switchHidratacion;
+    private Switch switchNotificaciones = null;
+    private Switch switchLuz = null;
+    private Switch switchSonido = null;
+    private Switch switchTemperatura = null;
+    private Switch switchPostura = null;
+    private Switch switchDistancia = null;
+    private Switch switchEstiramientos = null;
+    private Switch switchDescansos = null;
+    private Switch switchHidratacion = null;
 
     private NotificacionManager notificacionManager;
 
@@ -36,67 +49,175 @@ public class AjustesActivity extends AppCompatActivity {
         switchDescansos = findViewById(R.id.switchDescansos);
         switchHidratacion = findViewById(R.id.switchHidratacion);
 
+        // Configurar switches como apagados por defecto
+        switchNotificaciones.setChecked(false);
+        switchLuz.setChecked(false);
+        switchSonido.setChecked(false);
+        switchTemperatura.setChecked(false);
+        switchPostura.setChecked(false);
+        switchDistancia.setChecked(false);
+        switchEstiramientos.setChecked(false);
+        switchDescansos.setChecked(false);
+        switchHidratacion.setChecked(false);
+
+        cargarEstadoSwitches();
+
         notificacionManager = new NotificacionManager();
 
         // Listener para el switch de notificaciones globales
         switchNotificaciones.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
+                Log.d(TAG, "Switch Notificaciones: Activado");
+                Log.d(TAG, "Activando todos los switches individuales.");
                 activarTodosLosSwitches();
                 notificacionManager.permitirNotificaciones();
+                SensorDataService.areNotificationsBlocked = true;
+                Log.d(TAG, "Notificaciones bloqueadas globalmente.");
+                guardarEstadoSwitches();
             } else {
+                Log.d(TAG, "Switch Notificaciones: Desactivado");
+                Log.d(TAG, "Desactivando todos los switches individuales.");
                 desactivarTodosLosSwitches();
                 notificacionManager.bloquearNotificaciones();
+                SensorDataService.areNotificationsBlocked = false;
+                Log.d(TAG, "Notificaciones permitidas globalmente.");
+                guardarEstadoSwitches();
             }
+            notificacionManager.logEstadosNotificaciones();
+            // Log para ver el valor de areNotificationsBlocked
+            Log.d(TAG, "Estado de areNotificationsBlocked: " + SensorDataService.areNotificationsBlocked);
         });
 
-        // Listeners para cada switch individual de notificación
+// Cambiar estado de la notificación de luz
         switchLuz.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (switchNotificaciones.isChecked()) {
-                notificacionManager.toggleLuz(isChecked);
+            if (isChecked){
+                notificacionManager.permitirLuz();
+                SensorDataService.isNotiLuzBlocked = true;
+            } else {
+                notificacionManager.bloquearLuz();
+                SensorDataService.isNotiLuzBlocked = false;
             }
+            Log.d(TAG, "Switch Luz: " + (isChecked ? "Activado, noti bloqueada" : "Desactivado, noti permitida"));
+
+            notificacionManager.logEstadosNotificaciones();
+            guardarEstadoSwitches();
         });
 
+// Cambiar estado de la notificación de sonido
         switchSonido.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (switchNotificaciones.isChecked()) {
-                notificacionManager.toggleSonido(isChecked);
+            if (isChecked){
+                notificacionManager.permitirSonido();
+                SensorDataService.isNotiSonidoBlocked = true;
+            } else {
+                notificacionManager.bloquearSonido();
+                SensorDataService.isNotiSonidoBlocked = false;
             }
+            Log.d(TAG, "Switch Sonido: " + (isChecked ? "Activado, noti bloqueada" : "Desactivado, noti permitida"));
+
+            notificacionManager.logEstadosNotificaciones();
+            guardarEstadoSwitches();
         });
 
+// Cambiar estado de la notificación de temperatura
         switchTemperatura.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (switchNotificaciones.isChecked()) {
-                notificacionManager.toggleTemperatura(isChecked);
+            if (isChecked){
+                notificacionManager.permitirTemperatura();
+                SensorDataService.isNotiTemperaturaBlocked = true;
+            } else {
+                notificacionManager.bloquearTemperatura();
+                SensorDataService.isNotiTemperaturaBlocked = false;
             }
+            Log.d(TAG, "Switch Temperatura: " + (isChecked ? "Activado, noti bloqueada" : "Desactivado, noti permitida"));
+
+            notificacionManager.logEstadosNotificaciones();
+            guardarEstadoSwitches();
+
         });
 
+// Cambiar estado de la notificación de postura
         switchPostura.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (switchNotificaciones.isChecked()) {
-                notificacionManager.togglePostura(isChecked);
+            if (isChecked){
+                notificacionManager.permitirPostura();
+                SensorDataService.isNotiPosturaBlocked = true;
+            } else {
+                notificacionManager.bloquearPostura();
+                SensorDataService.isNotiPosturaBlocked = false;
             }
+            Log.d(TAG, "Switch Postura: " + (isChecked ? "Activado, noti bloqueada" : "Desactivado, noti permitida"));
+
+            notificacionManager.logEstadosNotificaciones();
+            guardarEstadoSwitches();
+
         });
 
+// Cambiar estado de la notificación de distancia
         switchDistancia.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (switchNotificaciones.isChecked()) {
-                notificacionManager.toggleDistancia(isChecked);
+            if (isChecked){
+                notificacionManager.permitirDistancia();
+                SensorDataService.isNotiDistanciaBlocked = true;
+            } else {
+                notificacionManager.bloquearDistancia();
+                SensorDataService.isNotiDistanciaBlocked = false;
             }
+            Log.d(TAG, "Switch Distancia: " + (isChecked ? "Activado, noti bloqueada" : "Desactivado, noti permitida"));
+
+            notificacionManager.logEstadosNotificaciones();
+            guardarEstadoSwitches();
+
         });
 
+// Cambiar estado de la notificación de estiramientos
         switchEstiramientos.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (switchNotificaciones.isChecked()) {
-                notificacionManager.toggleEstiramientos(isChecked);
+            if (isChecked){
+                notificacionManager.permitirEstiramientos();
+                SensorDataService.isNotiEstiramientosBlocked = true;
+            } else {
+                notificacionManager.bloquearEstiramientos();
+                SensorDataService.isNotiEstiramientosBlocked = false;
             }
+            Log.d(TAG, "Switch Estiramientos: " + (isChecked ? "Activado, noti bloqueada" : "Desactivado, noti permitida"));
+
+            notificacionManager.logEstadosNotificaciones();
+            guardarEstadoSwitches();
+
         });
 
+// Cambiar estado de la notificación de descansos
         switchDescansos.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (switchNotificaciones.isChecked()) {
-                notificacionManager.toggleDescansos(isChecked);
+            if (isChecked){
+                notificacionManager.permitirDescansos();
+                SensorDataService.isNotiDescansosBlocked = true;
+            } else {
+                notificacionManager.bloquearDescansos();
+                SensorDataService.isNotiDescansosBlocked = false;
             }
+            Log.d(TAG, "Switch Descansos: " + (isChecked ? "Activado, noti bloqueada" : "Desactivado, noti permitida"));
+
+            notificacionManager.logEstadosNotificaciones();
+            guardarEstadoSwitches();
+
         });
 
+// Cambiar estado de la notificación de hidratación
         switchHidratacion.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (switchNotificaciones.isChecked()) {
-                notificacionManager.toggleHidratacion(isChecked);
+            if (isChecked){
+                notificacionManager.permitirHidratacion();
+                SensorDataService.isNotiHidratacionBlocked = true;
+            } else {
+                notificacionManager.bloquearHidratacion();
+                SensorDataService.isNotiHidratacionBlocked = false;
             }
+            Log.d(TAG, "Switch Hidratacion: " + (isChecked ? "Activado, noti bloqueada" : "Desactivado, noti permitida"));
+
+            notificacionManager.logEstadosNotificaciones();
+            guardarEstadoSwitches();
+
         });
+
+
+
+
+
 
         // Configura el título del Header
         TextView headerTitle = findViewById(R.id.textView8);
@@ -170,4 +291,49 @@ public class AjustesActivity extends AppCompatActivity {
         switchDescansos.setChecked(false);
         switchHidratacion.setChecked(false);
     }
+
+    private void guardarEstadoSwitches() {
+        SharedPreferences sharedPreferences = getSharedPreferences("ajustes", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean("switchNotificaciones", switchNotificaciones.isChecked());
+        editor.putBoolean("switchLuz", switchLuz.isChecked());
+        editor.putBoolean("switchSonido", switchSonido.isChecked());
+        editor.putBoolean("switchTemperatura", switchTemperatura.isChecked());
+        editor.putBoolean("switchPostura", switchPostura.isChecked());
+        editor.putBoolean("switchDistancia", switchDistancia.isChecked());
+        editor.putBoolean("switchEstiramientos", switchEstiramientos.isChecked());
+        editor.putBoolean("switchDescansos", switchDescansos.isChecked());
+        editor.putBoolean("switchHidratacion", switchHidratacion.isChecked());
+
+        editor.apply(); // Aplicar los cambios
+    }
+
+
+    private void cargarEstadoSwitches() {
+        SharedPreferences sharedPreferences = getSharedPreferences("ajustes", MODE_PRIVATE);
+
+        // Cargar el estado de cada switch
+        boolean notificacionesActivadas = sharedPreferences.getBoolean("switchNotificaciones", false);
+        switchNotificaciones.setChecked(notificacionesActivadas);
+
+        switchLuz.setChecked(sharedPreferences.getBoolean("switchLuz", false));
+        switchSonido.setChecked(sharedPreferences.getBoolean("switchSonido", false));
+        switchTemperatura.setChecked(sharedPreferences.getBoolean("switchTemperatura", false));
+        switchPostura.setChecked(sharedPreferences.getBoolean("switchPostura", false));
+        switchDistancia.setChecked(sharedPreferences.getBoolean("switchDistancia", false));
+        switchEstiramientos.setChecked(sharedPreferences.getBoolean("switchEstiramientos", false));
+        switchDescansos.setChecked(sharedPreferences.getBoolean("switchDescansos", false));
+        switchHidratacion.setChecked(sharedPreferences.getBoolean("switchHidratacion", false));
+
+        // Si las notificaciones están activadas, activar todos los switches
+        if (notificacionesActivadas) {
+            activarTodosLosSwitches();
+        } else {
+            desactivarTodosLosSwitches();
+        }
+    }
+
+
+
 }
