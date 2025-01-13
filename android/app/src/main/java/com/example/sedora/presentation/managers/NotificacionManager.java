@@ -138,58 +138,18 @@ public class NotificacionManager {
 
     public void logEstadosNotificaciones() {
         Log.d("NotificacionManager", "Estado actual de las notificaciones:");
-        Log.d("NotificacionManager", "Luz: " + luzEnabled);
-        Log.d("NotificacionManager", "Sonido: " + sonidoEnabled);
-        Log.d("NotificacionManager", "Temperatura: " + temperaturaEnabled);
-        Log.d("NotificacionManager", "Postura: " + posturaEnabled);
-        Log.d("NotificacionManager", "Distancia: " + distanciaEnabled);
-        Log.d("NotificacionManager", "Estiramientos: " + estiramientosEnabled);
-        Log.d("NotificacionManager", "Descansos: " + descansosEnabled);
-        Log.d("NotificacionManager", "Hidratación: " + hidratacionEnabled);
+        Log.d("NotificacionManager", "Luz Bloqueada: " + luzEnabled);
+        Log.d("NotificacionManager", "Sonido Bloqueada: " + sonidoEnabled);
+        Log.d("NotificacionManager", "Temperatura Bloqueada: " + temperaturaEnabled);
+        Log.d("NotificacionManager", "Postura Bloqueada: " + posturaEnabled);
+        Log.d("NotificacionManager", "Distancia Bloqueada: " + distanciaEnabled);
+        Log.d("NotificacionManager", "Estiramientos Bloqueada: " + estiramientosEnabled);
+        Log.d("NotificacionManager", "Descansos Bloqueada: " + descansosEnabled);
+        Log.d("NotificacionManager", "Hidratación Bloqueada: " + hidratacionEnabled);
     }
 
 
 
-    // Métodos individuales para modificar el estado de cada tipo de notificación
-    public void toggleLuz(boolean enabled) {
-        luzEnabled = enabled;
-        Log.d("NotificacionManager", "Estado de Luz actualizado a: " + luzEnabled);
-    }
-
-    public void toggleSonido(boolean enabled) {
-        sonidoEnabled = enabled;
-        Log.d("NotificacionManager", "Estado de Sonido actualizado a: " + sonidoEnabled);
-    }
-
-    public void toggleTemperatura(boolean enabled) {
-        temperaturaEnabled = enabled;
-        Log.d("NotificacionManager", "Estado de Temperatura actualizado a: " + temperaturaEnabled);
-    }
-
-    public void togglePostura(boolean enabled) {
-        posturaEnabled = enabled;
-        Log.d("NotificacionManager", "Estado de postura actualizado a: " + posturaEnabled);
-    }
-
-    public void toggleDistancia(boolean enabled) {
-        distanciaEnabled = enabled;
-        Log.d("NotificacionManager", "Estado de distancia actualizado a: " + distanciaEnabled);
-    }
-
-    public void toggleEstiramientos(boolean enabled) {
-        estiramientosEnabled = enabled;
-        Log.d("NotificacionManager", "Estado de estiramientos actualizado a: " + estiramientosEnabled);
-    }
-
-    public void toggleDescansos(boolean enabled) {
-        descansosEnabled = enabled;
-        Log.d("NotificacionManager", "Estado de descansos actualizado a: " + descansosEnabled);
-    }
-
-    public void toggleHidratacion(boolean enabled) {
-        hidratacionEnabled = enabled;
-        Log.d("NotificacionManager", "Estado de hidratacion actualizado a: " + hidratacionEnabled);
-    }
 
     public boolean areNotificationsEnabled() {
         // Devuelve `true` si al menos una notificación está habilitada

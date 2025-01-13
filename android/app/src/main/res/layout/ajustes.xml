@@ -96,6 +96,7 @@
                 android:id="@+id/switchNotificaciones"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textNotificaciones"
                 app:layout_constraintEnd_toEndOf="@+id/view6"
                 app:layout_constraintStart_toEndOf="@+id/textNotificaciones"
@@ -106,6 +107,7 @@
                 android:id="@+id/switchLuz"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textLuz"
                 app:layout_constraintEnd_toEndOf="@+id/switchNotificaciones"
                 app:layout_constraintStart_toStartOf="@+id/switchNotificaciones"
@@ -116,26 +118,23 @@
                 android:id="@+id/switchSonido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textSonido"
                 app:layout_constraintEnd_toEndOf="@+id/switchLuz"
                 app:layout_constraintStart_toStartOf="@+id/switchLuz"
                 app:layout_constraintTop_toTopOf="@+id/textSonido"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <!-- BLOQUE MODO NO MOLESTAR -->
-
-            <!-- SENSIBILIDAD DE SENSORES -->
-
             <Switch
                 android:id="@+id/switchTemperatura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textTemperatura"
                 app:layout_constraintEnd_toEndOf="@+id/switchSonido"
                 app:layout_constraintStart_toStartOf="@+id/switchSonido"
                 app:layout_constraintTop_toTopOf="@+id/textTemperatura" />
 
-            <!-- FIN DE CONTENIDO -->
             <View
                 android:id="@+id/view4"
                 android:layout_width="0dp"
@@ -299,6 +298,7 @@
                 android:id="@+id/switchPostura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textPostura"
                 app:layout_constraintEnd_toEndOf="@+id/switchTemperatura"
                 app:layout_constraintStart_toStartOf="@+id/switchTemperatura"
@@ -308,6 +308,7 @@
                 android:id="@+id/switchDistancia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textDistancia"
                 app:layout_constraintEnd_toEndOf="@+id/switchPostura"
                 app:layout_constraintStart_toStartOf="@+id/switchPostura"
@@ -317,6 +318,7 @@
                 android:id="@+id/switchEstiramientos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textEstiramientos"
                 app:layout_constraintEnd_toEndOf="@+id/switchDistancia"
                 app:layout_constraintStart_toStartOf="@+id/switchDistancia"
@@ -326,6 +328,7 @@
                 android:id="@+id/switchDescansos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textDescansos"
                 app:layout_constraintEnd_toEndOf="@+id/switchEstiramientos"
                 app:layout_constraintStart_toStartOf="@+id/switchEstiramientos"
@@ -335,6 +338,7 @@
                 android:id="@+id/switchHidratacion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@+id/textHidratacion"
                 app:layout_constraintEnd_toEndOf="@+id/switchDescansos"
                 app:layout_constraintStart_toStartOf="@+id/switchDescansos"
