@@ -1,11 +1,13 @@
 package com.example.sedora.presentation.managers;
 
 import android.util.Log;
-
-import androidx.annotation.NonNull;
+import android.util.Pair;
 
 import com.example.sedora.R;
 import com.example.sedora.model.Notificacion;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class NotificacionManager {
     private boolean descansosEnabled = true;
     private boolean hidratacionEnabled = true;
 
+
     public NotificacionManager() {
         notificaciones = new ArrayList<>();
         notificaciones.add(new Notificacion("Postura", "Tu postura no es la adecuada, corrígela para evitar molestias.", "Aviso", "13:27 19/09/2024", 4, R.drawable.icono_silla));
@@ -34,7 +37,7 @@ public class NotificacionManager {
         notificaciones.add(new Notificacion("Hidratación", "Es recomendable que tomes un momento para beber agua y asegurarte de que estás bien hidratado.", "Recordatorio", "14:15 19/09/2024", 2, R.drawable.icono_hidratacion));
     }
 
-    public List<Notificacion> getNotificaciones() {
+    public Pair<List<Notificacion>, List<Notificacion>> getNotificaciones() {
         List<Notificacion> habilitadas = new ArrayList<>();
         for (Notificacion n : notificaciones) {
             if ((n.getTitulo().equals("Postura") && posturaEnabled) ||
@@ -48,9 +51,20 @@ public class NotificacionManager {
                 habilitadas.add(n);
             }
         }
-        return habilitadas;
+        return new Pair<>(habilitadas, notificaciones);  // Devuelves ambas listas como un par
     }
 
+    public void addNotificacion(Notificacion notificacion) {
+        notificaciones.add(notificacion);
+    }
+
+    public void subirNotificacionesAFirestore(FirebaseUser usuario) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference notificacionesRef = db.collection("usuarios").document(usuario.getUid()).collection("notificaciones");
+        for (Notificacion notificacion : notificaciones) {
+            notificacionesRef.add(notificacion);
+        }
+    }
 
     // Métodos para habilitar o deshabilitar todas las notificaciones
     public void permitirNotificaciones() {
@@ -148,13 +162,10 @@ public class NotificacionManager {
         Log.d("NotificacionManager", "Hidratación Bloqueada: " + hidratacionEnabled);
     }
 
-
-
-
     public boolean areNotificationsEnabled() {
         // Devuelve `true` si al menos una notificación está habilitada
         return luzEnabled || sonidoEnabled || temperaturaEnabled || posturaEnabled ||
                 distanciaEnabled || estiramientosEnabled || descansosEnabled || hidratacionEnabled;
     }
-
 }
+

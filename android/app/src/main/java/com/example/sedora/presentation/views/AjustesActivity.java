@@ -1,19 +1,17 @@
 package com.example.sedora.presentation.views;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.sedora.model.Notificacion;
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.NotificacionManager;
@@ -162,10 +160,17 @@ public class AjustesActivity extends AppCompatActivity {
                 });
 
 
+        // Obtén el Header
+        Header header = findViewById(R.id.header);
 
         // Configura el título del Header
-        TextView headerTitle = findViewById(R.id.textView8);
+        TextView headerTitle = findViewById(R.id.headerTitleTextView);
         headerTitle.setText("Ajustes");
+
+//        // Comprueba las notificaciones
+//        NotificacionManager notificacionManager = new NotificacionManager();
+//        boolean hasNotifications = !notificacionManager.getNotificaciones().isEmpty();
+//        header.updateNotificationIcon(hasNotifications);
 
         // FUNCIONALIDAD BOTONES MENUS
         MenuManager funcionMenu = new MenuManager();
@@ -183,9 +188,10 @@ public class AjustesActivity extends AppCompatActivity {
         btnPantallaPerfil.setOnClickListener(v -> funcionMenu.abrirPantallaPerfil(AjustesActivity.this));
 
         // FUNCIONALIDAD TEXTVIEW Y RECUADROS PARA ABRIR OTRAS PÁGINAS
+
         // Ver Sobre Nosotros
-        View viewSobreNosotros = findViewById(R.id.view4);
-        TextView tvVerSobreNosotros = findViewById(R.id.textView31);
+        View viewSobreNosotros = findViewById(R.id.view4); // Recuadro
+        TextView tvVerSobreNosotros = findViewById(R.id.textView31); // Texto
         View.OnClickListener sobreNosotrosListener = v -> {
             Intent intent = new Intent(AjustesActivity.this, AcercaDe.class);
             startActivity(intent);
@@ -194,8 +200,8 @@ public class AjustesActivity extends AppCompatActivity {
         tvVerSobreNosotros.setOnClickListener(sobreNosotrosListener);
 
         // Ver Preguntas Frecuentes (FAQ)
-        View viewFAQ = findViewById(R.id.view5);
-        TextView tvVerFAQ = findViewById(R.id.textView33);
+        View viewFAQ = findViewById(R.id.view5); // Recuadro
+        TextView tvVerFAQ = findViewById(R.id.textView33); // Texto
         View.OnClickListener faqListener = v -> {
             Intent intent = new Intent(AjustesActivity.this, FAQ.class);
             startActivity(intent);
@@ -204,8 +210,8 @@ public class AjustesActivity extends AppCompatActivity {
         tvVerFAQ.setOnClickListener(faqListener);
 
         // Ver Política de Privacidad
-        View viewPoliticaPrivacidad = findViewById(R.id.view10);
-        TextView tvVerPoliticaPrivacidad = findViewById(R.id.textView35);
+        View viewPoliticaPrivacidad = findViewById(R.id.view10); // Recuadro
+        TextView tvVerPoliticaPrivacidad = findViewById(R.id.textView35); // Texto
         View.OnClickListener politicaPrivacidadListener = v -> {
             Intent intent = new Intent(AjustesActivity.this, PoliticaDePrivacidad.class);
             startActivity(intent);
@@ -213,7 +219,6 @@ public class AjustesActivity extends AppCompatActivity {
         viewPoliticaPrivacidad.setOnClickListener(politicaPrivacidadListener);
         tvVerPoliticaPrivacidad.setOnClickListener(politicaPrivacidadListener);
     }
-
     private void configurarSwitchIndividual(Switch switchComponent, String nombre, Runnable
             habilitar, Runnable deshabilitar){
         switchComponent.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -279,6 +284,5 @@ public class AjustesActivity extends AppCompatActivity {
         switchHidratacion.setChecked(sharedPreferences.getBoolean("switchHidratacion", false));
     }
 
-
-
 }
+
