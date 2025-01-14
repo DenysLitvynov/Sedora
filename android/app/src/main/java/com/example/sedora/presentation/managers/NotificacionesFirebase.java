@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.sedora.R;
 import com.example.sedora.model.Notificacion;
+import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
