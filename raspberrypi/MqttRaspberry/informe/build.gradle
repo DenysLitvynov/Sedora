@@ -23,7 +23,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.example.raspberry.RaspberryFirebase'
+    mainClass = 'com.example.informe.ConvBot'
 }
 
 test {
@@ -33,7 +33,7 @@ test {
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes 'Main-Class' : 'com.example.raspberry.RaspberryFirebase'
+        attributes 'Main-Class' : 'com.example.informe.ConvBot'
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
