@@ -274,6 +274,7 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="200dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView28"
+                app:layout_constraintEnd_toEndOf="@+id/boxExample23"
                 app:layout_constraintStart_toEndOf="@+id/textView28"
                 app:layout_constraintTop_toTopOf="@+id/textView28"
                 app:layout_constraintVertical_bias="0.0"
