@@ -1,5 +1,6 @@
 package com.example.sedora.presentation.adapters;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sedora.model.Notificacion;
 import com.example.sedora.presentation.managers.NotificacionManager;
 import com.example.sedora.R;
+
+import java.util.List;
 
 public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
     private NotificacionManager notificacionManager; // Cambiamos a NotificacionManagerSedora
@@ -28,7 +31,8 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Notificacion notificacion = notificacionManager.getNotificaciones().get(position); // Obtenemos notificación de NotificacionManagerSedora
+        Pair<List<Notificacion>, List<Notificacion>> result = notificacionManager.getNotificaciones();
+        Notificacion notificacion = result.first.get(position);  // Usamos la lista de habilitadas (first)
 
         holder.icono.setImageResource(notificacion.getIcono());
         holder.titulo.setText(notificacion.getTitulo());
@@ -51,7 +55,9 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return notificacionManager.getNotificaciones().size();
+        // Obtener las notificaciones habilitadas a través del Pair
+        Pair<List<Notificacion>, List<Notificacion>> result = notificacionManager.getNotificaciones();
+        return result.first.size();  // Usamos la lista de habilitadas (first)
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -69,5 +75,3 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
         }
     }
 }
-
-

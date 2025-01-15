@@ -1,0 +1,1 @@
+{"luminosidadPromedio": 302.57022121527723,"ruidoPromedio": 47.176123650321315,"presion1Promedio": 1.5073445578360738,"presion2Promedio": 1.629255200617492,"temperaturaPromedio": 22.49265709290966,"humedadPromedio": 58.849700268515946,"proximidadPromedio": 0.6070097993667526}

@@ -60,20 +60,34 @@ public class RaspberryFirebase implements MqttCallback {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        subirFichero(PATH_TO_CREDENTIALS, "carpeta/Informes/L9ZGAhbYotZIqlK4aKMKkgAFWbL2/juanba.txt");
-
+        // Subir el archivo generado por ConvBot a Firebase Storage
+        String archivoGenerado = "/home/pi/dlitvyn/fichero.txt"; // Ruta exacta del archivo en la Raspberry Pi
+        String storagePath = "carpeta/Informes/k1gKUfsO2qXi1e3TJh5C7VbVFUS2/fichero.txt";
+        subirFichero(archivoGenerado, storagePath);
     }
+
+
 
     static private void subirFichero(String fichero, String referencia) {
         try {
             BlobId blobId = BlobId.of(BUCKET, referencia);
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+            // Generar un token de acceso
+            String token = UUID.randomUUID().toString();
+
+            // Establecer el tipo de contenido y agregar el token
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                    .setContentType("text/plain")
+                    .setMetadata(Map.of("firebaseStorageDownloadTokens", token))
+                    .build();
+
+            // Subir el archivo con los permisos adecuados
             storage.create(blobInfo, Files.readAllBytes(Paths.get(fichero)));
-            //Da acceso al fichero a través de https. la URL es
-            //https://storage.googleapis.com/BUCKET/nombre_recurso
-            storage.createAcl(blobId, Acl.of(Acl.User.ofAllUsers(),
-                    Acl.Role.READER));
+
+            // Proporcionar acceso público al archivo
+            storage.createAcl(blobId, Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
+
             System.out.println("Fichero subido: " + referencia);
+            System.out.println("URL del fichero: https://firebasestorage.googleapis.com/v0/b/" + BUCKET + "/o/" + referencia.replace("/", "%2F") + "?alt=media&token=" + token);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -213,6 +227,4 @@ public class RaspberryFirebase implements MqttCallback {
             System.err.println("Error subiendo datos a Firestore: " + e.getMessage());
         }
     }
-
-
 }

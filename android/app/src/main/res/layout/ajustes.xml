@@ -4,260 +4,160 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+    <!-- SCROLLVIEW PARA CONTENIDO DESPLAZABLE -->
+    <com.example.sedora.presentation.views.Header
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headerLayout="@layout/header_4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@id/menu_acciones"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- HEADER personalizado con el layout especificado -->
-
-            <!-- FIN DEL HEADER -->
 
 
-            <com.example.sedora.presentation.views.Header
-                android:id="@+id/header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:headerLayout="@layout/header_4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/view6"
                 style="@style/BoxBackground"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="325dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/view9"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textNotificaciones"
                 style="@style/Heading3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Silenciar Sensores"
+                android:text="Silenciar Notificaciones"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/view6"
                 app:layout_constraintTop_toTopOf="@+id/view6" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/textLuz"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Sensor de Luz "
+                android:text="Notificación de Luz "
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/view6"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/textNotificaciones" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/textSonido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Sensor de Sonido"
+                android:text="Notificación de Sonido"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/view6"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                app:layout_constraintTop_toBottomOf="@+id/textLuz" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/textTemperatura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="12dp"
-                android:text="Sensor de Temperatura"
+                android:text="Notificación de Temperatura"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/view6"
                 app:layout_constraintStart_toStartOf="@+id/view6"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                app:layout_constraintTop_toBottomOf="@+id/textSonido" />
 
             <!-- BLOQUE MODO NO MOLESTAR -->
-
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/switchNotificaciones"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textNotificaciones"
                 app:layout_constraintEnd_toEndOf="@+id/view6"
-                app:layout_constraintHorizontal_bias="0.64"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
-                app:layout_constraintTop_toTopOf="@+id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/textNotificaciones"
+                app:layout_constraintTop_toTopOf="@+id/textNotificaciones"
                 app:layout_constraintVertical_bias="1.0" />
 
             <Switch
-                android:id="@+id/switch2"
+                android:id="@+id/switchLuz"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView6"
-                app:layout_constraintEnd_toEndOf="@+id/switch1"
-                app:layout_constraintHorizontal_bias="0.756"
-                app:layout_constraintStart_toStartOf="@+id/switch1"
-                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textLuz"
+                app:layout_constraintEnd_toEndOf="@+id/switchNotificaciones"
+                app:layout_constraintStart_toStartOf="@+id/switchNotificaciones"
+                app:layout_constraintTop_toTopOf="@+id/textLuz"
                 app:layout_constraintVertical_bias="1.0" />
 
             <Switch
-                android:id="@+id/switch3"
+                android:id="@+id/switchSonido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/textView7"
-                app:layout_constraintEnd_toEndOf="@+id/switch2"
-                app:layout_constraintHorizontal_bias="0.716"
-                app:layout_constraintStart_toStartOf="@+id/switch2"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textSonido"
+                app:layout_constraintEnd_toEndOf="@+id/switchLuz"
+                app:layout_constraintStart_toStartOf="@+id/switchLuz"
+                app:layout_constraintTop_toTopOf="@+id/textSonido"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <View
-                android:id="@+id/view9"
-                style="@style/BoxBackgroundblanco"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/box_background"
-                app:layout_constraintBottom_toTopOf="@+id/view11"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view6" />
-
-            <TextView
-                android:id="@+id/textView13"
-                style="@style/Heading3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Modo no molestar"
-                app:layout_constraintStart_toStartOf="@+id/view9"
-                app:layout_constraintTop_toTopOf="@+id/view9" />
-
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Desactivar"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/view9"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-            <!-- BLOQUE SENSIBILIDAD SENSORES -->
             <Switch
-                android:id="@+id/switch4"
+                android:id="@+id/switchTemperatura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/textView17"
-                app:layout_constraintEnd_toEndOf="@+id/switch5"
-                app:layout_constraintStart_toStartOf="@+id/switch5"
-                app:layout_constraintTop_toTopOf="@+id/textView17" />
-
-            <View
-                android:id="@+id/view11"
-                style="@style/BoxBackgroundblanco"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/box_background"
-                app:layout_constraintBottom_toTopOf="@+id/view4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view9" />
-
-            <TextView
-                android:id="@+id/textView18"
-                style="@style/Heading3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Sensibilidad Sensores"
-                app:layout_constraintStart_toStartOf="@+id/view11"
-                app:layout_constraintTop_toTopOf="@+id/view11" />
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Ajusta la sensibilidad de los sensores"
-                app:layout_constraintStart_toStartOf="@+id/view11"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-            <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/view11"
-                app:layout_constraintStart_toStartOf="@+id/view11"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-            <Switch
-                android:id="@+id/switch5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/textView15"
-                app:layout_constraintEnd_toEndOf="@+id/switch3"
-                app:layout_constraintStart_toStartOf="@+id/switch3"
-                app:layout_constraintTop_toTopOf="@+id/textView15" />
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textTemperatura"
+                app:layout_constraintEnd_toEndOf="@+id/switchSonido"
+                app:layout_constraintStart_toStartOf="@+id/switchSonido"
+                app:layout_constraintTop_toTopOf="@+id/textTemperatura" />
 
             <View
                 android:id="@+id/view4"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="8dp"
                 android:background="@drawable/box_background"
-                app:layout_constraintBottom_toTopOf="@+id/view5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view11" />
+                app:layout_constraintTop_toBottomOf="@+id/view6" />
 
             <View
                 android:id="@+id/view5"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="8dp"
                 android:background="@drawable/box_background"
-                app:layout_constraintBottom_toTopOf="@+id/view10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view4" />
@@ -267,7 +167,7 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/box_background"
@@ -278,6 +178,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/view5"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <!-- INFORMACIÓN DE LA APLICACIÓN -->
             <TextView
                 android:id="@+id/textView30"
                 style="@style/Heading3"
@@ -341,13 +242,110 @@
                 app:layout_constraintStart_toStartOf="@+id/view10"
                 app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
+            <TextView
+                android:id="@+id/textPostura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="20dp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Notificación de Postura"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/view6"
+                app:layout_constraintTop_toBottomOf="@+id/textTemperatura" />
 
+            <TextView
+                android:id="@+id/textDistancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Notificación de distancia"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/view6"
+                app:layout_constraintTop_toBottomOf="@+id/textPostura" />
+
+            <TextView
+                android:id="@+id/textEstiramientos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Notificación de Estiramientos"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/view6"
+                app:layout_constraintTop_toBottomOf="@+id/textDistancia" />
+
+            <TextView
+                android:id="@+id/textDescansos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Notificación de Descansos"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/view6"
+                app:layout_constraintTop_toBottomOf="@+id/textEstiramientos" />
+
+            <TextView
+                android:id="@+id/textHidratacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Notificación de Hidratación"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/view6"
+                app:layout_constraintTop_toBottomOf="@+id/textDescansos" />
+
+            <Switch
+                android:id="@+id/switchPostura"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textPostura"
+                app:layout_constraintEnd_toEndOf="@+id/switchTemperatura"
+                app:layout_constraintStart_toStartOf="@+id/switchTemperatura"
+                app:layout_constraintTop_toTopOf="@+id/textPostura" />
+
+            <Switch
+                android:id="@+id/switchDistancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textDistancia"
+                app:layout_constraintEnd_toEndOf="@+id/switchPostura"
+                app:layout_constraintStart_toStartOf="@+id/switchPostura"
+                app:layout_constraintTop_toTopOf="@+id/textDistancia" />
+
+            <Switch
+                android:id="@+id/switchEstiramientos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textEstiramientos"
+                app:layout_constraintEnd_toEndOf="@+id/switchDistancia"
+                app:layout_constraintStart_toStartOf="@+id/switchDistancia"
+                app:layout_constraintTop_toTopOf="@+id/textEstiramientos" />
+
+            <Switch
+                android:id="@+id/switchDescansos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textDescansos"
+                app:layout_constraintEnd_toEndOf="@+id/switchEstiramientos"
+                app:layout_constraintStart_toStartOf="@+id/switchEstiramientos"
+                app:layout_constraintTop_toTopOf="@+id/textDescansos" />
+
+            <Switch
+                android:id="@+id/switchHidratacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@+id/textHidratacion"
+                app:layout_constraintEnd_toEndOf="@+id/switchDescansos"
+                app:layout_constraintStart_toStartOf="@+id/switchDescansos"
+                app:layout_constraintTop_toTopOf="@+id/textHidratacion" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
@@ -367,5 +365,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,9 +5,7 @@ import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.sedora.R;
+import com.example.sedora.model.EstadoMeta;
 import com.example.sedora.model.Meta;
-import com.example.sedora.presentation.adapters.MetaAdapter;
+import com.example.sedora.model.MetaUsuario;
+import com.example.sedora.model.SensorData;
+import com.example.sedora.presentation.adapters.MetaUsuarioAdapter;
 import com.example.sedora.presentation.managers.FirebaseHelper;
 import com.example.sedora.presentation.managers.MetasManager;
 
@@ -41,19 +42,23 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import com.example.sedora.presentation.managers.MetasManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 public class PantallaInicioActivity extends AppCompatActivity implements MqttCallback {
 
@@ -83,14 +88,13 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
     private TextView textView6;
     private TextView textView5;
     private RecyclerView recyclerMetaActual;
-    private MetaAdapter metaActualAdapter;
-    private List<Meta> metaActualList;
+    private MetaUsuarioAdapter metaActualAdapter;
     private FirebaseFirestore db;
+    private MetasManager metasManager;
+    private MetaUsuario metaActual;
 
-    TextView metaTitulo, metaDescripcion;
-    ProgressBar metaProgresoBar;
-    ImageView metaIcono;
-
+    private ArrayList<SensorData> sensorsData;
+    private List<String> notificaciones = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +102,14 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
         // Inicializar Firebase y lista de datos
         db = FirebaseFirestore.getInstance();
-        metaActualList = new ArrayList<>();
+
+        metasManager = new MetasManager();
+
+        // Inicializar Firebase y obtener usuario actual
+        firebaseHelper = new FirebaseHelper();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
 
         // Inicializar RecyclerView
         recyclerMetaActual = findViewById(R.id.recyclerViewMetaActual);
@@ -113,14 +124,6 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
 
         // Configurar botón para encender/apagar el LED
         ledButton.setOnClickListener(v -> toggleLed());
-
-        // Cargar meta actual desde Firestore
-        cargarMetaActualDesdeFirestore();
-        gestionarCambioDeMeta();
-
-        // Inicializar Firebase y obtener usuario actual
-        firebaseHelper = new FirebaseHelper();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         // Inicializar referencias a los elementos de la interfaz
         halfDonutChart = findViewById(R.id.halfDonutChart);
@@ -172,6 +175,181 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
                 Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        sensorsData = new ArrayList<>();
+        getSensors();
+        getNotificaciones();
+        comprobarMetasUsuario();
+    }
+
+
+    public void comprobarMetasUsuario() {
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .get(Source.SERVER)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot result = task.getResult();
+                        if (result == null || result.isEmpty()) {
+                            List<Meta> listaMetas = new ArrayList<>();
+                            db.collection("metas")
+                                    .get()
+                                    .addOnCompleteListener(task2-> {
+                                        if (task2.isSuccessful() && task2.getResult() != null && !task2.getResult().isEmpty()) {
+                                            for (QueryDocumentSnapshot document : task2.getResult()) {
+                                                Meta meta = document.toObject(Meta.class);
+                                                listaMetas.add(meta);
+                                            }
+                                            for (Meta meta : listaMetas) {
+                                                db.collection("usuarios")
+                                                        .document(currentUser.getUid())
+                                                        .collection("metasUsuario")
+                                                        .document(String.valueOf(meta.getNumeroMeta())).set(new MetaUsuario(meta))
+                                                        .addOnSuccessListener(docRef -> {
+                                                            System.out.println("Meta añadida con ID: " + docRef);
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            System.err.println("Error al guardar meta: " + e.getMessage());
+                                                        });
+                                            }
+                                        } else {
+                                            System.err.println("No se encontraron metas en la colección 'metas'.");
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        System.err.println("Error al recuperar metas: " + e.getMessage());
+                                    });
+                        } else {
+                            Log.d("DEBUG_METAS", "El usuario ya tiene metas. Cantidad: " + result.size());
+                        }
+                    } else {
+                        Log.e("DEBUG_METAS", "Error al comprobar metas: ", task.getException());
+                    }
+                });
+    }
+
+    private boolean comprobarPresion() {
+        long total = sensorsData.stream().filter(sensorData -> sensorData.getPresion1() >= 1 && sensorData.getPresion2() >= 1).count();
+        return total == sensorsData.size();
+    }
+
+    private boolean comprobarLuz() {
+        long total = sensorsData.stream().filter(sensorData -> sensorData.getIluminacion() >= 500 && sensorData.getIluminacion() <= 1000).count();
+        return total == sensorsData.size();
+    }
+
+    private boolean comprobarProximidad() {
+        long total = sensorsData.stream().filter(sensorData -> sensorData.getIluminacion() >= 500 && sensorData.getIluminacion() <= 1000).count();
+        return total == sensorsData.size();
+    }
+
+    private boolean comprobarNotificacionesIluminacion() {
+
+        for (String titulo : notificaciones) {
+            if (titulo.equalsIgnoreCase("Iluminación")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean comprobarNotificacionesPostura() {
+
+        for (String titulo : notificaciones) {
+            if (titulo.equalsIgnoreCase("Postura")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean comprobarNotificacionesDistanciaMonitor() {
+
+        for (String titulo : notificaciones) {
+            if (titulo.equalsIgnoreCase("Distancia al monitor")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean comprobarNotificacionesEstiramientos() {
+
+        for (String titulo : notificaciones) {
+            if (titulo.equalsIgnoreCase("Estiramientos")) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean comprobarNotificacionesDescanso() {
+
+        for (String titulo : notificaciones) {
+            if (titulo.equalsIgnoreCase("Descanso")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void getSensors() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date = sdf.format(new Date());
+        Log.d("DATE",date);
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("Datos")
+                .document(date)
+                .collection("Tomas")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+
+                            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                                SensorData sensorData = document.toObject(SensorData.class);
+                                if (sensorData != null) {
+                                    sensorsData.add(sensorData);
+                                }
+                            }
+                        } else {
+                            Log.d("Firestore", "No se encontraron documentos en la subcolección Tomas");
+
+                        }
+                    } else {
+                        Log.e("Firestore", "Error al cargar las metas actuales", task.getException());
+
+                    }
+                });
+
+    }
+
+    private void getNotificaciones() {
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("notificaciones")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            // Procesa cada documento encontrado
+                            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                                String titulo = document.getString("titulo");
+                                if (titulo != null) {
+                                    notificaciones.add(titulo); // Agregar el título de la notificación a la lista
+                                }
+                            }
+                            Log.d("Firestore", "Notificaciones cargadas correctamente");
+                        } else {
+                            Log.d("Firestore", "No se encontraron documentos en la colección notificaciones.");
+                        }
+                    } else {
+                        Log.e("Firestore", "Error al cargar las notificaciones", task.getException());
+                    }
+                });
     }
 
     private void setupMQTT() {
@@ -268,38 +446,40 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         btnPantallaPerfil.setOnClickListener(v -> funcionMenu.abrirPantallaPerfil(PantallaInicioActivity.this));
     }
 
-    private void cargarMetaActualDesdeFirestore() {
-        db.collection("metas")
-                .whereEqualTo("estado", "actual")
-                .addSnapshotListener((querySnapshot, error) -> {
-                    if (error != null) {
-                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+    private void cargarMetaActual() {
 
-                    if (querySnapshot != null) {
-                        metaActualList.clear();
-
-                        for (DocumentSnapshot document : querySnapshot) {
-                            Meta meta = document.toObject(Meta.class);
-                            if (meta != null) {
-                                metaActualList.add(meta);
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .whereEqualTo("estadoMeta", EstadoMeta.ACTUAL.name())
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            DocumentSnapshot document= querySnapshot.getDocuments().get(0);
+                            MetaUsuario metaUsuario = document.toObject(MetaUsuario.class);
+                            if (metaUsuario != null) {
+                                metaActual = metaUsuario;
+                                metaActualAdapter = new MetaUsuarioAdapter(this, List.of(metaActual), 0);
+                                recyclerMetaActual.setAdapter(metaActualAdapter);
+                                metaActualAdapter.notifyDataSetChanged();
                             }
-                        }
-
-                        if (metaActualAdapter == null) {
-                            metaActualAdapter = new MetaAdapter(this, metaActualList, 0);
-                            recyclerMetaActual.setAdapter(metaActualAdapter);
                         } else {
+                            Toast.makeText(this, "No hay metas actuales disponibles.", Toast.LENGTH_SHORT).show();
+                            Meta meta = new Meta("Mantente correcto 1 h", "Mantén una posición correcta durante 1 hora.","icono_sentado", "01");
+                            metaActual = new MetaUsuario(meta);
+                            metaActualAdapter = new MetaUsuarioAdapter(this, List.of(metaActual), 0);
+                            recyclerMetaActual.setAdapter(metaActualAdapter);
                             metaActualAdapter.notifyDataSetChanged();
                         }
+                    } else {
+                        Toast.makeText(this, "Error al cargar las metas actuales.", Toast.LENGTH_SHORT).show();
                     }
                 });
+
     }
-
-
-
-
 
     private void calcularTiempoSentado() {
         String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -541,33 +721,83 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         return Integer.parseInt(value);
     }
 
+    public void actualizarMeta(MetaUsuario metaUsuario, EstadoMeta estadoMeta, int porcentaje){
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("estadoMeta", estadoMeta.name());
+        updates.put("porcentajeActual", porcentaje);
+
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .document(metaUsuario.getMeta().getNumeroMeta())
+                .update(updates)
+                .addOnCompleteListener(updateTask -> {
+                    if (updateTask.isSuccessful()) {
+                        System.out.println("Meta de usuario actualizada correctamente.");
+                    } else {
+                        System.out.println("Error al actualizar la meta de usuario: " + updateTask.getException());
+                    }
+                });
+    }
+
+    public void nuevaMetaActual(String numeroMeta){
+
+        int number = Integer.parseInt(numeroMeta);
+        number += 1;
+
+        String  siguienteMetaUsuario= String.format("%02d", number);
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("estadoMeta", EstadoMeta.ACTUAL);
+
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .document(siguienteMetaUsuario)
+                .update(updates)
+                .addOnCompleteListener(updateTask -> {
+                    if (updateTask.isSuccessful()) {
+                        System.out.println("Meta de usuario actualizada correctamente.");
+                    } else {
+                        System.out.println("Error al actualizar la meta de usuario: " + updateTask.getException());
+                    }
+                });
+    }
+
+
+    public void pasarMetaActualAConseguida() {
+
+        db.collection("usuarios")
+                .document(currentUser.getUid())
+                .collection("metasUsuario")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        MetaUsuario metaUsuario = null;
+                        for (DocumentSnapshot document : querySnapshot) {
+                            metaUsuario = document.toObject(MetaUsuario.class);
+
+                            if (EstadoMeta.ACTUAL.name().equals(metaUsuario.getEstadoMeta().name())) {
+
+                                metaUsuario.setEstadoMeta(EstadoMeta.COMPLETADO);
+                                metaUsuario.setPorcentajeActual(100);
+                                actualizarMeta(metaUsuario,EstadoMeta.COMPLETADO, 100);
+                                nuevaMetaActual(metaUsuario.getMeta().getNumeroMeta());
+                            }
+                        }
+
+                    } else {
+                        System.out.println("Error al obtener metas: "+ task.getException());
+                    }
+                });
+    }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         Log.i(TAG, "Entrega completada");
     }
-
-    private void gestionarCambioDeMeta() {
-        MetasManager metasManager = new MetasManager();
-        metasManager.pasarMetaActualAConseguida(new MetasManager.MetaUpdateCallback() {
-            @Override
-            public void onMetaUpdated() {
-                Log.d("PantallaInicio", "Meta completada y promovida correctamente.");
-                // Actualizar la vista de metas
-                cargarMetaActualDesdeFirestore();
-            }
-
-            @Override
-            public void onError(Exception e) {
-                // Manejar el error si ocurre
-                Log.e("PantallaInicio", "Error al cambiar de meta: " + e.getMessage(), e);
-                Toast.makeText(PantallaInicioActivity.this, "Error al cambiar de meta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-
 
     @Override
     protected void onDestroy() {
@@ -582,6 +812,306 @@ public class PantallaInicioActivity extends AppCompatActivity implements MqttCal
         }
     }
 
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("PASO","3");
+        checkConfirmarMetaAPasada();
+    }
+
+    private void checkConfirmarMetaAPasada() {
+        cargarMetaActual();
+        if(metaActual != null){
+            if(sensorsData!=null && !sensorsData.isEmpty()){
+                switch (metaActual.getMeta().getNumeroMeta()){
+                    case "01":
+                        long actualizar = sensorsData.stream().filter(sensorData -> sensorData.getPresion1() >= 1 && sensorData.getPresion2() >=1).count();
+                        if(sensorsData.size() == actualizar){
+                            actualizarMeta(metaActual,EstadoMeta.COMPLETADO,100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                        }
+                        break;
+                    case "02":
+                        long actualizar2 = sensorsData.stream()
+                                .filter(sensorData -> sensorData.getPresion1() >= 1 && sensorData.getPresion1() <= 2 &&
+                                        sensorData.getPresion2() >= 1 && sensorData.getPresion2() <= 2)
+                                .count();
+                        if (actualizar2 >= 1) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                        }
+                        break;
+                    case "03":
+                        long actualizar3 = sensorsData.stream().filter(sensorData -> sensorData.getPresion1() >= 1 && sensorData.getPresion2() >=1).count();
+                        if(sensorsData.size() == actualizar3){
+                            actualizarMeta(metaActual,EstadoMeta.COMPLETADO,100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                        }
+                        break;
+                    case "04":
+                        getNotificaciones();
+                        if (comprobarNotificacionesIluminacion()) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta 04", "Meta completada: No se encontraron notificaciones con 'iluminación'.");
+                        } else {
+                            Log.d("Meta 04", "Meta no completada: Se encontró una notificación con 'iluminación'.");
+                        }
+                        break;
+                    case "05":
+                        getNotificaciones();
+                        if (comprobarNotificacionesIluminacion()) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta 05", "Meta completada: No se encontraron notificaciones con 'iluminación'.");
+                        } else {
+                            Log.d("Meta 05", "Meta no completada: Se encontró una notificación con 'iluminación'.");
+                        }
+                        break;
+                    case "06":
+                        getNotificaciones();
+                        if (comprobarNotificacionesPostura()) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta 06", "Meta completada: No se encontraron notificaciones con 'postura'.");
+                        } else {
+                            Log.d("Meta 06", "Meta no completada: Se encontró una notificación con 'postura'.");
+                        }
+                        break;
+                    case "07":
+                        long actualizar7 = sensorsData.stream()
+                                .filter(sensorData -> sensorData.getPresion1() >= 0 && sensorData.getPresion1() <= 1 &&
+                                        sensorData.getPresion2() >= 0 && sensorData.getPresion2() <= 1)
+                                .count();
+                        if (actualizar7 >= 3) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                        }
+                        break;
+                    case "08":
+                        long actualizar8 = sensorsData.stream().filter(sensorData -> sensorData.getPresion1() >= 1 && sensorData.getPresion2() >=1).count();
+                        if(sensorsData.size() == actualizar8){
+                            actualizarMeta(metaActual,EstadoMeta.COMPLETADO,100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                        }
+                        break;
+                    case "09":
+                        getNotificaciones();
+                        if (comprobarNotificacionesIluminacion()) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta 09", "Meta completada: No se encontraron notificaciones con 'iluminación'.");
+                        } else {
+                            Log.d("Meta 09", "Meta no completada: Se encontró una notificación con 'iluminación'.");
+                        }
+                        break;
+                    case "10":
+                        getNotificaciones();
+                        if (comprobarNotificacionesDistanciaMonitor()) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta 10", "Meta completada: No se encontraron notificaciones con 'distancia al monitor'.");
+                        } else {
+                            Log.d("Meta 10", "Meta no completada: Se encontró una notificación con 'distancia al monitor'.");
+                        }
+                        break;
+                    case "11":
+                        long transiciones = IntStream.range(1, sensorsData.size())
+                                .filter(i -> {
+                                    SensorData anterior = sensorsData.get(i - 1);
+                                    SensorData actual = sensorsData.get(i);
+
+                                    boolean posturaIncorrecta = anterior.getPresion1() >= 0 && anterior.getPresion1() < 1 &&
+                                            anterior.getPresion2() >= 0 && anterior.getPresion2() < 1;
+
+                                    boolean posturaCorrecta = actual.getPresion1() >= 1 && actual.getPresion2() >= 1;
+
+                                    return posturaIncorrecta && posturaCorrecta;
+                                })
+                                .count();
+                        if (transiciones >= 20) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Postura", "Meta completada: Se detectaron " + transiciones + " correcciones de postura.");
+                        } else {
+                            Log.d("Meta Postura", "Meta no completada: Solo se detectaron " + transiciones + " correcciones de postura.");
+                        }
+                        break;
+                    case "12":
+                        long notificacionesEstiramientos = notificaciones.stream()
+                                .filter(titulo -> titulo.equalsIgnoreCase("Estiramientos"))
+                                .count();
+                        long transicionesPausa = IntStream.range(1, sensorsData.size())
+                                .filter(i -> {
+                                    SensorData anterior = sensorsData.get(i - 1);
+                                    SensorData actual = sensorsData.get(i);
+                                    boolean posturaActiva = anterior.getPresion1() >= 1 && anterior.getPresion2() >= 1;
+                                    boolean posturaRelajada = actual.getPresion1() >= 0 && actual.getPresion1() < 1 &&
+                                            actual.getPresion2() >= 0 && actual.getPresion2() < 1;
+                                    return posturaActiva && posturaRelajada;
+                                })
+                                .count();
+                        if (notificacionesEstiramientos >= 2 || transicionesPausa >= 2) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Pausas", "Meta completada: Se detectaron suficientes pausas de trabajo.");
+                        } else {
+                            Log.d("Meta Pausas", "Meta no completada: Solo se detectaron " +
+                                    notificacionesEstiramientos + " notificaciones y " +
+                                    transicionesPausa + " transiciones de postura.");
+                        }
+                        break;
+                    case "13":
+                        long alertasPosturaIncorrecta = notificaciones.stream()
+                                .filter(titulo -> titulo.equalsIgnoreCase("Postura Incorrecta"))
+                                .count();
+                        if (alertasPosturaIncorrecta < 5) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Postura", "Meta completada: Se detectaron menos de 5 alertas de postura incorrecta.");
+                        } else {
+                            Log.d("Meta Postura", "Meta no completada: Se detectaron " + alertasPosturaIncorrecta + " alertas de postura incorrecta.");
+                        }
+                        break;
+                    case "14":
+                        long transicionesProximidad = IntStream.range(1, sensorsData.size())
+                                .filter(i -> {
+                                    SensorData anterior = sensorsData.get(i - 1);
+                                    SensorData actual = sensorsData.get(i);
+                                    boolean proximidadAdecuadaAnterior = anterior.getProximidad() >= 500 && anterior.getProximidad() <= 1000;
+                                    boolean proximidadInadecuadaActual = actual.getProximidad() < 500 || actual.getProximidad() > 1000;
+                                    return proximidadAdecuadaAnterior && proximidadInadecuadaActual;
+                                })
+                                .count();
+
+                        if (transicionesProximidad >= 2) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Proximidad", "Meta completada: Se detectaron suficientes ajustes de proximidad.");
+                        } else {
+                            Log.d("Meta Proximidad", "Meta no completada: Solo se detectaron " +
+                                    transicionesProximidad + " transiciones de proximidad.");
+                        }
+                        break;
+                    case "15":
+                        long levantarseTransiciones = IntStream.range(1, sensorsData.size())
+                                .filter(i -> {
+                                    SensorData anterior = sensorsData.get(i - 1);
+                                    SensorData actual = sensorsData.get(i);
+                                    boolean sentado = anterior.getPresion1() >= 1 && anterior.getPresion2() >= 1;
+                                    boolean levantado = actual.getPresion1() < 1 && actual.getPresion2() < 1;
+                                    return sentado && levantado;
+                                })
+                                .count();
+
+                        if (levantarseTransiciones >= 8) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Levantarse", "Meta completada: Te levantaste de la silla al menos 8 veces en un día.");
+                        } else {
+                            Log.d("Meta Levantarse", "Meta no completada: Solo te levantaste " +
+                                    levantarseTransiciones + " veces de la silla.");
+                        }
+                        break;
+                    case "16":
+                        boolean alertaDetectada = IntStream.range(1, sensorsData.size())
+                                .anyMatch(i -> {
+                                    SensorData anterior = sensorsData.get(i - 1);
+                                    SensorData actual = sensorsData.get(i);
+                                    return anterior.getPresion2() >= 1 && actual.getPresion2() < 1;
+                                });
+
+                        if (!alertaDetectada) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Espalda Recta", "Meta completada: Mantuvista la espalda recta durante todo el periodo sin alertas de corrección.");
+                        } else {
+                            Log.d("Meta Espalda Recta", "Meta no completada: Se detectaron alertas de corrección en la postura.");
+                        }
+                        break;
+                    case "17":
+                        boolean alertaDetectada2 = IntStream.range(1, sensorsData.size())
+                                .anyMatch(i -> {
+                                    SensorData anterior = sensorsData.get(i - 1);
+                                    SensorData actual = sensorsData.get(i);
+
+                                    // Condición de alerta de postura: Presión en la espalda (presion1) incorrecta
+                                    boolean alertaPostura = anterior.getPresion1() >= 1 && actual.getPresion1() < 1;
+
+                                    // Condición de alerta de luz: Iluminación fuera del rango adecuado
+                                    boolean alertaLuz = actual.getIluminacion() < 500 || actual.getIluminacion() > 1000;
+
+                                    return alertaPostura || alertaLuz;
+                                });
+
+                        if (!alertaDetectada2) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Sin Alertas", "Meta completada: No se detectaron alertas de postura ni de luz.");
+                        } else {
+                            Log.d("Meta Sin Alertas", "Meta no completada: Se detectaron alertas de postura o luz.");
+                        }
+                        break;
+                    case "18":
+                        boolean alertaDetectada3 = sensorsData.stream()
+                                .anyMatch(data -> data.getPresion1() < 1);
+
+                        if (!alertaDetectada3) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Jornada Postura", "Meta completada: Mantuvista una postura correcta durante toda la jornada laboral.");
+                        } else {
+                            Log.d("Meta Jornada Postura", "Meta no completada: Se detectaron alertas de postura incorrecta durante la jornada laboral.");
+                        }
+                        break;
+                    case "19":
+                        boolean alertaDetectada4 = sensorsData.stream()
+                                .anyMatch(data -> {
+                                    // Condición de alerta de postura: Presión en la espalda (presion1) incorrecta
+                                    boolean alertaPostura = data.getPresion1() < 1;
+
+                                    // Condición de alerta de luz: Iluminación fuera del rango adecuado
+                                    boolean alertaLuz = data.getIluminacion() < 500 || data.getIluminacion() > 1000;
+
+                                    return alertaPostura || alertaLuz;
+                                });
+
+                        if (!alertaDetectada4) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Ambiente Correcto", "Meta completada: Se trabajó en un ambiente iluminado y con postura correcta.");
+                        } else {
+                            Log.d("Meta Ambiente Correcto", "Meta no completada: Se detectaron alertas de postura o iluminación inadecuada.");
+                        }
+                        break;
+                    case "20":
+                        boolean alertaDetectada5 = sensorsData.stream()
+                                .anyMatch(data -> {
+                                    return data.getPresion2() < 1;
+                                });
+                        if (!alertaDetectada5) {
+                            actualizarMeta(metaActual, EstadoMeta.COMPLETADO, 100);
+                            nuevaMetaActual(metaActual.getMeta().getNumeroMeta());
+                            Log.d("Meta Espalda Recta", "Meta completada: Mantuvista la espalda recta y sin alertas de postura durante todo el periodo evaluado.");
+                        } else {
+                            Log.d("Meta Espalda Recta", "Meta no completada: Se detectaron alertas de postura durante el periodo evaluado.");
+                        }
+                        break;
+                    default:
+                        Log.d("ERROR CASOS METAS", "Hay un error en los casos para completar las metas.");
+                        break;
+
+                }
+
+            }else{
+                Toast.makeText(this, "Sensor data is null o vacio", Toast.LENGTH_LONG).show();
+            }
+        }else {
+            Toast.makeText(this, "Meta actual es null", Toast.LENGTH_LONG).show();
+        }
+    }
 
 }
 

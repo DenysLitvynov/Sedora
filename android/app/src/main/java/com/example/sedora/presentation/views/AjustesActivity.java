@@ -1,10 +1,13 @@
 package com.example.sedora.presentation.views;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,13 +15,150 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sedora.presentation.managers.MenuManager;
 import com.example.sedora.R;
 import com.example.sedora.presentation.managers.NotificacionManager;
+import com.example.sedora.presentation.managers.SensorDataService;
 
 public class AjustesActivity extends AppCompatActivity {
+
+    private static final String TAG = "AjustesActivity";
+
+    private SharedPreferences sharedPreferences;
+
+    private Switch switchNotificaciones;
+    private Switch switchLuz;
+    private Switch switchSonido;
+    private Switch switchTemperatura;
+    private Switch switchPostura;
+    private Switch switchDistancia;
+    private Switch switchEstiramientos;
+    private Switch switchDescansos;
+    private Switch switchHidratacion;
+
+    private NotificacionManager notificacionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajustes);
+
+
+        // Inicializamos los switches
+        switchNotificaciones = findViewById(R.id.switchNotificaciones);
+        switchLuz = findViewById(R.id.switchLuz);
+        switchSonido = findViewById(R.id.switchSonido);
+        switchTemperatura = findViewById(R.id.switchTemperatura);
+        switchPostura = findViewById(R.id.switchPostura);
+        switchDistancia = findViewById(R.id.switchDistancia);
+        switchEstiramientos = findViewById(R.id.switchEstiramientos);
+        switchDescansos = findViewById(R.id.switchDescansos);
+        switchHidratacion = findViewById(R.id.switchHidratacion);
+
+        cargarEstadoSwitches();
+
+        notificacionManager = new NotificacionManager();
+
+        // Listener para el switch de notificaciones globales
+        switchNotificaciones.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isChecked) { // No pulsado = habilitado
+                Log.d(TAG, "Switch Notificaciones: Habilitado");
+                Log.d(TAG, "Habilitando todos los switches individuales.");
+                activarTodosLosSwitches();
+                notificacionManager.permitirNotificaciones();
+                SensorDataService.areNotificationsBlocked = false;
+                Log.d(TAG, "Notificaciones permitidas globalmente.");
+            } else { // Pulsado = no habilitado
+                Log.d(TAG, "Switch Notificaciones: No habilitado");
+                Log.d(TAG, "Deshabilitando todos los switches individuales.");
+                desactivarTodosLosSwitches();
+                notificacionManager.bloquearNotificaciones();
+                SensorDataService.areNotificationsBlocked = true;
+                Log.d(TAG, "Notificaciones bloqueadas globalmente.");
+            }
+            guardarEstadoSwitches();
+            notificacionManager.logEstadosNotificaciones();
+            Log.d(TAG, "Estado de areNotificationsBlocked: " + SensorDataService.areNotificationsBlocked);
+        });
+
+        // Configuración de listeners para switches individuales
+        configurarSwitchIndividual(switchLuz, "Luz",
+                () -> {
+                    notificacionManager.permitirLuz();
+                    SensorDataService.isNotiLuzBlocked = false;
+                },
+                () -> {
+                    notificacionManager.bloquearLuz();
+                    SensorDataService.isNotiLuzBlocked = true;
+                });
+
+        configurarSwitchIndividual(switchSonido, "Sonido",
+                () -> {
+                    notificacionManager.permitirSonido();
+                    SensorDataService.isNotiSonidoBlocked = false;
+                },
+                () -> {
+                    notificacionManager.bloquearSonido();
+                    SensorDataService.isNotiSonidoBlocked = true;
+                });
+
+        configurarSwitchIndividual(switchTemperatura, "Temperatura",
+                () -> {
+                    notificacionManager.permitirTemperatura();
+                    SensorDataService.isNotiTemperaturaBlocked = false;
+                },
+                () -> {
+                    notificacionManager.bloquearTemperatura();
+                    SensorDataService.isNotiTemperaturaBlocked = true;
+                });
+
+        configurarSwitchIndividual(switchPostura, "Postura",
+                () -> {
+                    notificacionManager.permitirPostura();
+                    SensorDataService.isNotiPosturaBlocked = false;
+                },
+                () -> {
+                    notificacionManager.bloquearPostura();
+                    SensorDataService.isNotiPosturaBlocked = true;
+                });
+
+        configurarSwitchIndividual(switchDistancia, "Distancia",
+                () -> {
+                    notificacionManager.permitirDistancia();
+                    SensorDataService.isNotiDistanciaBlocked = false;
+                },
+                () -> {
+                    notificacionManager.bloquearDistancia();
+                    SensorDataService.isNotiDistanciaBlocked = true;
+                });
+
+        configurarSwitchIndividual(switchEstiramientos, "Estiramientos",
+                () -> {
+                    notificacionManager.permitirEstiramientos();
+                    SensorDataService.isNotiEstiramientosBlocked = false;
+                },
+                () -> {
+                    notificacionManager.bloquearEstiramientos();
+                    SensorDataService.isNotiEstiramientosBlocked = true;
+                });
+
+        configurarSwitchIndividual(switchDescansos, "Descansos",
+                () -> {
+                    notificacionManager.permitirDescansos();
+                    SensorDataService.isNotiDescansosBlocked = false;
+                },
+                () -> {
+                    notificacionManager.bloquearDescansos();
+                    SensorDataService.isNotiDescansosBlocked = true;
+                });
+
+        configurarSwitchIndividual(switchHidratacion, "Hidratación",
+                () -> {
+                    notificacionManager.permitirHidratacion();
+                    SensorDataService.isNotiHidratacionBlocked = false;
+                },
+                () -> {
+                    notificacionManager.bloquearHidratacion();
+                    SensorDataService.isNotiHidratacionBlocked = true;
+                });
+
 
         // Obtén el Header
         Header header = findViewById(R.id.header);
@@ -79,18 +219,70 @@ public class AjustesActivity extends AppCompatActivity {
         viewPoliticaPrivacidad.setOnClickListener(politicaPrivacidadListener);
         tvVerPoliticaPrivacidad.setOnClickListener(politicaPrivacidadListener);
     }
-
-
-        /*
-        // Configura el clic en el button_icon para entrar en Notificaciones
-        buttonIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AjustesActivity.this, RecyclerActivity.class);
-                startActivity(intent);
-                finish(); // Opcional: cerrar la actividad actual
+    private void configurarSwitchIndividual(Switch switchComponent, String nombre, Runnable
+            habilitar, Runnable deshabilitar){
+        switchComponent.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isChecked) { // No pulsado = habilitado
+                habilitar.run();
+                Log.d(TAG, "Switch " + nombre + ": Habilitado");
+            } else { // Pulsado = no habilitado
+                deshabilitar.run();
+                Log.d(TAG, "Switch " + nombre + ": No habilitado");
             }
-        });*/
+            guardarEstadoSwitches();
+            notificacionManager.logEstadosNotificaciones();
+        });
     }
 
+    private void activarTodosLosSwitches() {
+        switchLuz.setChecked(false);
+        switchSonido.setChecked(false);
+        switchTemperatura.setChecked(false);
+        switchPostura.setChecked(false);
+        switchDistancia.setChecked(false);
+        switchEstiramientos.setChecked(false);
+        switchDescansos.setChecked(false);
+        switchHidratacion.setChecked(false);
+    }
+
+    private void desactivarTodosLosSwitches() {
+        switchLuz.setChecked(true);
+        switchSonido.setChecked(true);
+        switchTemperatura.setChecked(true);
+        switchPostura.setChecked(true);
+        switchDistancia.setChecked(true);
+        switchEstiramientos.setChecked(true);
+        switchDescansos.setChecked(true);
+        switchHidratacion.setChecked(true);
+    }
+
+    private void guardarEstadoSwitches() {
+        SharedPreferences sharedPreferences = getSharedPreferences("ajustes", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("switchNotificaciones", switchNotificaciones.isChecked());
+        editor.putBoolean("switchLuz", switchLuz.isChecked());
+        editor.putBoolean("switchSonido", switchSonido.isChecked());
+        editor.putBoolean("switchTemperatura", switchTemperatura.isChecked());
+        editor.putBoolean("switchPostura", switchPostura.isChecked());
+        editor.putBoolean("switchDistancia", switchDistancia.isChecked());
+        editor.putBoolean("switchEstiramientos", switchEstiramientos.isChecked());
+        editor.putBoolean("switchDescansos", switchDescansos.isChecked());
+        editor.putBoolean("switchHidratacion", switchHidratacion.isChecked());
+        editor.apply();
+    }
+
+    private void cargarEstadoSwitches() {
+        SharedPreferences sharedPreferences = getSharedPreferences("ajustes", MODE_PRIVATE);
+        switchNotificaciones.setChecked(sharedPreferences.getBoolean("switchNotificaciones", false));
+        switchLuz.setChecked(sharedPreferences.getBoolean("switchLuz", false));
+        switchSonido.setChecked(sharedPreferences.getBoolean("switchSonido", false));
+        switchTemperatura.setChecked(sharedPreferences.getBoolean("switchTemperatura", false));
+        switchPostura.setChecked(sharedPreferences.getBoolean("switchPostura", false));
+        switchDistancia.setChecked(sharedPreferences.getBoolean("switchDistancia", false));
+        switchEstiramientos.setChecked(sharedPreferences.getBoolean("switchEstiramientos", false));
+        switchDescansos.setChecked(sharedPreferences.getBoolean("switchDescansos", false));
+        switchHidratacion.setChecked(sharedPreferences.getBoolean("switchHidratacion", false));
+    }
+
+}
 

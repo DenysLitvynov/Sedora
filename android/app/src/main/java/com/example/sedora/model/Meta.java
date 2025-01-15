@@ -4,28 +4,21 @@ public class Meta {
 
     private String nombre;
     private String descripcion;
-    private int progresoTotal;
-    private int progresoActual;
-    private String imagenDrawableName; // Cambiado para reflejar recursos locales
+    private String imagenDrawableName;
     private String numeroMeta;
-    private String estado;
+    private int porcentaje;
 
-    // Constructor vacío
     public Meta() {
     }
 
-    // Constructor con parámetros
-    public Meta(String nombre, String descripcion, int progresoTotal, int progresoActual, String imagenDrawableName, String numeroMeta, String estado) {
+    public Meta(String nombre, String descripcion, String imagenDrawableName, String numeroMeta) {
 
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.progresoTotal = progresoTotal;
-        this.progresoActual = progresoActual;
         this.imagenDrawableName = imagenDrawableName;
         this.numeroMeta = numeroMeta;
-        this.estado = estado;
+        this.porcentaje = 100;
     }
-
 
     public String getNombre() {
         return nombre;
@@ -41,22 +34,6 @@ public class Meta {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public int getProgresoTotal() {
-        return progresoTotal;
-    }
-
-    public void setProgresoTotal(int progresoTotal) {
-        this.progresoTotal = progresoTotal;
-    }
-
-    public int getProgresoActual() {
-        return progresoActual;
-    }
-
-    public void setProgresoActual(int progresoActual) {
-        this.progresoActual = progresoActual;
     }
 
     public String getImagenDrawableName() {
@@ -75,11 +52,12 @@ public class Meta {
         this.numeroMeta = numeroMeta;
     }
 
-    public String getEstado() {
-        return estado;
+    public int getPorcentaje() {
+        return porcentaje;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setPorcentaje(int porcentaje) {
+        this.porcentaje = porcentaje;
     }
+
 }
